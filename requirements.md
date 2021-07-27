@@ -10,7 +10,7 @@ npm i eslint@7.13.0 -DE
 
 ## Зависимости приложения (`dependencies`)
 
-- dayjs@1.10.6
+- dayjs@1.10.6 
 - flatpickr@4.6.9
 - he@1.2.0
 - chart.js@2.9.4

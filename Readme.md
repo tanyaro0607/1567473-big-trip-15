@@ -1,7 +1,7 @@
 # Проект «Большое путешествие»
 
 * Студент: [Татьяна Рохлова](https://up.htmlacademy.ru/ecmascript/15/user/1567473).
-* Наставник: `Неизвестно`.
+* Наставник: [Александра Яковина](https://htmlacademy.ru/profile/sashayakovyna).
 
 ---
 

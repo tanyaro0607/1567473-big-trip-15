@@ -2,9 +2,9 @@ import {createSiteMenuTemplate} from './view/site-menu.js'; //Меню
 import {createTripInfoTemplate} from './view/trip-info.js'; //Маршрут и стоимость
 import {createFilterTemplate} from './view/filter.js'; //Фильтр
 import {createSortFormTemplate} from './view/form-sort.js'; //Сортировка
-import {createNewEventTemplate} from './view/add-new-event.js'; //Форма редактирования
+import {createNewEventTemplate} from './view/add-new-event.js'; //Форма добавления
 import {createEditFormTemplate} from './view/form-edit.js'; //Форма редактирования
-import {createEventListTemplate} from './view/form-event-list.js'; //Форма редактирования
+import {createEventListTemplate} from './view/form-event-list.js'; //Список точек
 
 //Функция для отрисовки компонентов
 //принимает контейнер, вёрстку и место в контейнере для отрисовки
@@ -18,6 +18,7 @@ const siteFilterElement = document.querySelector('.trip-controls__filters');
 const siteEventsElement = document.querySelector('.trip-events');
 const TRIP_POINT_COUNT = 3;
 
+//Отрисовка точек
 for (let i = 0; i < TRIP_POINT_COUNT; i++) {
   render(siteEventsElement, createEventListTemplate(), 'beforeend');
 }

@@ -33,6 +33,6 @@ render(siteMainNavigationElement, createSiteMenuTemplate(), 'beforeend'); //Ме
 render(siteMainElement,createTripInfoTemplate(), 'afterbegin'); //Маршрут и стоимость
 render(siteFilterElement,createFilterTemplate(), 'beforeend'); //Фильтр
 render(siteEventsElement,createSortFormTemplate(), 'afterbegin'); //Сортировка
-render(eventList,createNewEventTemplate(), 'beforebegin'); //Добавление
+render(eventList,createNewEventTemplate(), 'afterbegin'); //Добавление
 render(eventList,createEditFormTemplate(), 'afterbegin'); //Редактирование
 

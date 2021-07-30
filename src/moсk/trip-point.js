@@ -1,3 +1,5 @@
+import dayjs from 'dayjs';
+
 // Функция из интернета по генерации случайного числа из диапазона
 // Источник - https://github.com/you-dont-need/You-Dont-Need-Lodash-Underscore#_random
 const getRandomInteger = (a = 0, b = 1) => {
@@ -27,6 +29,8 @@ const generateDescription = () => {
   return descriptions[randomIndex];
 };
 
+const descriptionText = new Array(3).fill().map(generateDescription); //массив из трух предложений
+
 const generateTripType = () => {
   const tripType = [ 'Taxi', 'Bus', 'Train', 'Ship', 'Drive', 'Flight', 'Check-in', 'Sightseeng', 'Restaurant'];
 
@@ -44,14 +48,19 @@ const generateCityDestination = () => {
   return сityDestination[randomIndex];
 };
 
+const generateDate = () => {
+  const day = getRandomInteger(1, 28);
+  return dayjs().add(day, 'day').toDate();
+};
+
 const generateTripPoint = () => ({
   tripType: generateTripType(), //тип точки маршрута
   сityDestination: generateCityDestination(), //Пункт назначения (город)
-  //dateStart: , //Дата и время начала события. Выбор времени и даты осуществляется с помощью библиотеки flatpickr.js. Выбранная дата и время отображаются в поле в формате: день/месяц/год часы:минуты (например «25/12/2019 16:00»).
-  //dateEnd: , // Дата окончания не может быть меньше даты начала события.
+  dateStart: generateDate(), //Дата и время начала события. Выбор времени и даты осуществляется с помощью библиотеки flatpickr.js. Выбранная дата и время отображаются в поле в формате: день/месяц/год часы:минуты (например «25/12/2019 16:00»).
+  dateEnd: generateDate(), // Дата окончания не может быть меньше даты начала события.
   price: getRandomInteger(1,100), //Стоимость. Целое положительное число.
   placeDestination: {
-    description: generateDescription(3), //описание - исправить на 3
+    descriptionText, //описание
     photo:'"http://picsum.photos/248/152?r"+getRandomInteger(1,100)', //фото - испарвить на несколько
   },
 });

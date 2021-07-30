@@ -160,4 +160,4 @@ const createEditFormTemplate = () =>
               </form>
             </li>`;
 
-export { createEditFormTemplate };
+export {createEditFormTemplate};

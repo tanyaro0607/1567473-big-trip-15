@@ -35,4 +35,3 @@ render(siteFilterElement,createFilterTemplate(), 'beforeend'); //Фильтр
 render(siteEventsElement,createSortFormTemplate(), 'afterbegin'); //Сортировка
 render(eventList,createNewEventTemplate(), 'afterbegin'); //Добавление
 render(eventList,createEditFormTemplate(), 'afterbegin'); //Редактирование
-

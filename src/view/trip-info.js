@@ -1,16 +1,23 @@
-//Маршрут и стоимость
-const createTripInfoTemplate = () => (
-  `<section class="trip-main__trip-info  trip-info">
-  <div class="trip-info__main">
-    <h1 class="trip-info__title">Amsterdam &mdash; Chamonix &mdash; Geneva</h1>
+import dayjs from 'dayjs';
 
-    <p class="trip-info__dates">Mar 18&nbsp;&mdash;&nbsp;20</p>
+//Маршрут и стоимость
+const createTripInfoTemplate = (point) => {
+  const {timeStart, timeEnd, сityDestination} = point;
+
+  const timeStartEvent = dayjs(timeStart).format('MMM D');
+  const timeEndEvent = dayjs(timeEnd).format('D');
+
+  return `<section class="trip-main__trip-info  trip-info">
+  <div class="trip-info__main">
+    <h1 class="trip-info__title">${сityDestination} &mdash; ${сityDestination} &mdash; ${сityDestination}</h1>
+
+    <p class="trip-info__dates">${timeStartEvent}&nbsp;&mdash;&nbsp;${timeEndEvent}</p>
   </div>
 
   <p class="trip-info__cost">
     Total: &euro;&nbsp;<span class="trip-info__cost-value">1230</span>
   </p>
-</section>`
-);
+</section>`;
+};
 
 export {createTripInfoTemplate};

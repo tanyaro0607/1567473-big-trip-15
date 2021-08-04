@@ -37,8 +37,8 @@ for (let i = 0; i < TRIP_POINT_COUNT; i++) {
 }
 
 render(siteMainNavigationElement, createSiteMenuTemplate(), 'beforeend'); //Меню
-render(siteMainElement,createTripInfoTemplate(), 'afterbegin'); //Маршрут и стоимость
+render(siteMainElement,createTripInfoTemplate(points[0]), 'afterbegin'); //Маршрут и стоимость
 render(siteFilterElement,createFilterTemplate(), 'beforeend'); //Фильтр
 render(siteEventsElement,createSortFormTemplate(), 'afterbegin'); //Сортировка
-render(eventList,createNewEventTemplate(), 'afterbegin'); //Добавление
-render(eventList,createEditFormTemplate(), 'afterbegin'); //Редактирование
+render(eventList,createEditFormTemplate(points[0]), 'afterbegin'); //Редактирование
+render(eventList,createNewEventTemplate(points[0]), 'afterbegin'); //Добавление

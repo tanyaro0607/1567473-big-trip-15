@@ -72,7 +72,7 @@ const generateCityDestination = () => {
 // const citys = new Array(20).fill().map(generateCityDestination);
 
 const generateDate = () => {
-  const day = getRandomInteger(1, 28);
+  const day = getRandomInteger(1, 28);//на сколько дней вперед
   return dayjs().add(day, 'day').toDate();
 };
 

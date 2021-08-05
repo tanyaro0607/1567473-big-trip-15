@@ -17,6 +17,7 @@ const createNewEventTemplate = (point) => {
 
   const timeStartEvent = dayjs(timeStart).format('DD/MM/YY HH:mm');
   const timeEndEvent = dayjs(timeEnd).format('DD/MM/YY HH:mm');
+  // нужно добавить проверку ... dayjs(timeEnd).isAfter(timeStart, 'DD/MM/YY HH:mm')
 
   const addChecked = getHighlight()
     ? 'checked'
@@ -144,7 +145,7 @@ const createNewEventTemplate = (point) => {
                       </div>
 
                       <div class="event__offer-selector">
-                        <input class="event__offer-checkbox  visually-hidden" id="event-offer-meal-1" type="checkbox" name="event-offer-meal" ${addChecked}">
+                        <input class="event__offer-checkbox  visually-hidden" id="event-offer-meal-1" type="checkbox" name="event-offer-meal" ${addChecked}>
                         <label class="event__offer-label" for="event-offer-meal-1">
                           <span class="event__offer-title">${offers.offersText[2]}</span>
                           &plus;&euro;&nbsp;
@@ -153,7 +154,7 @@ const createNewEventTemplate = (point) => {
                       </div>
 
                       <div class="event__offer-selector">
-                        <input class="event__offer-checkbox  visually-hidden" id="event-offer-seats-1" type="checkbox" name="event-offer-seats" ${addChecked}">
+                        <input class="event__offer-checkbox  visually-hidden" id="event-offer-seats-1" type="checkbox" name="event-offer-seats" ${addChecked}>
                         <label class="event__offer-label" for="event-offer-seats-1">
                           <span class="event__offer-title">${offers.offersText[3]}</span>
                           &plus;&euro;&nbsp;

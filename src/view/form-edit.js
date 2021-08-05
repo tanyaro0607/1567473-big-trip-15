@@ -12,6 +12,8 @@ const getHighlight = () => {
   return isFavorite;
 };
 
+// const isExpired = (dueDate) => dueDate === null ? false : dayjs().isAfter(dueDate, 'D');
+
 const createEditFormTemplate = (points) => {
   const {tripType, сityDestination, price, icon, offers, placeDestination, timeStart, timeEnd} = points;
 

@@ -10,7 +10,7 @@ import {generateTripPoint} from './moсk/trip-point.js';
 
 // console.log(generateTripPoint())
 
-//сохдаеи массив объектов описывающих 20 точек маршрута
+//создаем массив объектов описывающих 20 точек маршрута
 const TEST_POINT_COUNT = 20;
 const points = new Array(TEST_POINT_COUNT).fill().map(generateTripPoint);
 // console.log(points)

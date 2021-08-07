@@ -1,4 +1,6 @@
 import dayjs from 'dayjs';
+import {OFFERS} from '../const.js';
+
 
 const getRandomInteger = (a = 0, b = 1) => {
   const lower = Math.ceil(Math.min(a, b));
@@ -12,11 +14,44 @@ const getStart = () => {
   return isFavorite;
 };
 
+const generateOffers = () => {
+
+  const randomIndex = getRandomInteger(0, OFFERS.length - 1);
+
+  return OFFERS[randomIndex];
+};
+
+//передаем в шаблон
+const renderOffers = () => {
+  const offersArray = new Array(getRandomInteger(0, OFFERS.length)).fill().map(generateOffers);
+
+  let str = '';
+  for (let i = 0; i < offersArray.length; i++) {
+    str += ` <li class="event__offer">
+    <span class="event__offer-title">${offersArray[i].text}</span>
+    &plus;&euro;&nbsp;
+    <span class="event__offer-price">${offersArray[i].price}</span>
+    </li>`;
+  }
+  return str;
+};
+
 const createEventTemplate = (point) => {
-  const { tripType, сityDestination, price, icon, date, timeStart, timeEnd,offers } = point;
+  const { tripType, сityDestination, price, date, time} = point;
   const dateEvent = dayjs(date).format('D MMM');
-  const timeStartEvent = dayjs(timeStart).format('hh:mm');
-  const timeEndEvent = dayjs(timeEnd).format('hh:mm');
+  const timeStartEvent = dayjs(time.timeStart).format('hh:mm');
+  const timeEndEvent = dayjs(time.timeEnd).format('hh:mm');
+
+  const renderTimeDiff = () => {
+    const timeDiff = (dayjs(time.timeEnd)).diff(dayjs(time.timeStart), 'day');
+    let time1;
+    if (timeDiff > 0) {
+      time1 = `${timeDiff}D 00H 00M`;
+    } else {
+      time1 = `00D 00H ${timeDiff}M`;
+    }
+    return time1;
+  };
 
   const favoriteClassName = getStart()
     ? 'event__favorite-btn--active'
@@ -26,27 +61,25 @@ const createEventTemplate = (point) => {
   <div class="event">
   <time class="event__date" datetime="2019-03-18">${dateEvent}</time>
   <div class="event__type">
-    <img class="event__type-icon" width="42" height="42" src="img/icons/${icon}.png" alt="Event type icon">
+    <img class="event__type-icon" width="42" height="42" src="img/icons/${tripType.icon}.png" alt="Event type icon">
   </div>
-  <h3 class="event__title">${tripType} ${сityDestination}</h3>
+  <h3 class="event__title">${tripType.type} ${сityDestination}</h3>
   <div class="event__schedule">
     <p class="event__time">
       <time class="event__start-time" datetime="${timeStartEvent}">${timeStartEvent}</time>
       &mdash;
       <time class="event__end-time" datetime="${timeEndEvent}">${timeEndEvent}</time>
     </p>
-    <p class="event__duration">30M</p>
+    <p class="event__duration">${renderTimeDiff()}</p>
   </div>
   <p class="event__price">
     &euro;&nbsp;<span class="event__price-value">${price}</span>
   </p>
   <h4 class="visually-hidden">Offers:</h4>
   <ul class="event__selected-offers">
-    <li class="event__offer">
-      <span class="event__offer-title">${offers.offersText[getRandomInteger(1,20)]}</span>
-      &plus;&euro;&nbsp;
-      <span class="event__offer-price">${offers.offersPrice}</span>
-    </li>
+
+  ${renderOffers()}
+
   </ul>
   <button class="event__favorite-btn ${favoriteClassName}" type="button">
     <span class="visually-hidden">Add to favorite</span>

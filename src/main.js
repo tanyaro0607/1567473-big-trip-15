@@ -2,11 +2,10 @@ import {createSiteMenuTemplate} from './view/site-menu.js'; //Меню
 import {createTripInfoTemplate} from './view/trip-info.js'; //Маршрут и стоимость
 import {createFilterTemplate} from './view/filter.js'; //Фильтр
 import {createSortFormTemplate} from './view/form-sort.js'; //Сортировка
-import {createNewEventTemplate} from './view/add-new-event.js'; //Форма добавления
-import {createEditFormTemplate} from './view/form-edit.js'; //Форма редактирования
+import {createEditFormTemplate} from './view/form-edit-and-add.js'; //Форма редактирования
 import {createListEventTemplate} from './view/form-list-event.js'; // Cписок
-import {createEventTemplate} from './view/form-event.js'; // Точки
-import {generateTripPoint} from './moсk/trip-point.js';
+import {createEventTemplate} from './view/form-trip-point.js'; // Точки
+import {generateTripPoint} from './moсk/trip-point- mock.js';
 
 // console.log(generateTripPoint())
 
@@ -37,8 +36,7 @@ for (let i = 0; i < TRIP_POINT_COUNT; i++) {
 }
 
 render(siteMainNavigationElement, createSiteMenuTemplate(), 'beforeend'); //Меню
-render(siteMainElement,createTripInfoTemplate(points[0]), 'afterbegin'); //Маршрут и стоимость
+render(siteMainElement,createTripInfoTemplate(points), 'afterbegin'); //Маршрут и стоимость
 render(siteFilterElement,createFilterTemplate(), 'beforeend'); //Фильтр
 render(siteEventsElement,createSortFormTemplate(), 'afterbegin'); //Сортировка
 render(eventList,createEditFormTemplate(points[0]), 'afterbegin'); //Редактирование
-render(eventList,createNewEventTemplate(points[0]), 'afterbegin'); //Добавление

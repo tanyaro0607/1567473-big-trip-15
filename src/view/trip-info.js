@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import {getRandomInteger} from '../util';
+import {getRandomInteger} from '../utils';
 
 const renderCostValue = () => {
   const costValue = getRandomInteger(1000, 3000);

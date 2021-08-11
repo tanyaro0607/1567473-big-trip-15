@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import {OFFERS, TYPES_OF_TRIP, DESTINATIONS} from '../const.js';
-import {getRandomInteger, getBoolean} from '../util';
+import {getRandomInteger, getBoolean} from '../utils';
 
 const addChecked = getBoolean()
   ? 'checked'

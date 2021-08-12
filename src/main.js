@@ -1,4 +1,5 @@
 import SiteMenuView from './view/site-menu.js'; //Меню
+import TripInfoSectionView from './view/trip-info-section.js'; // Cписок
 import {createTripInfoTemplate} from './view/trip-info.js'; //Маршрут и стоимость
 import FilterView from './view/filter.js'; //Фильтр
 import SortFormView from './view/form-sort.js'; //Сортировка
@@ -31,7 +32,10 @@ for (let i = 0; i < TRIP_POINT_COUNT; i++) {
 }
 
 renderElement(siteMainNavigationElement, new SiteMenuView().getElement(), RenderPosition.BEFOREEND); //Меню
-renderTemplate(siteMainElement,createTripInfoTemplate(points), 'afterbegin'); //Маршрут и стоимость
+renderElement(siteMainElement,new TripInfoSectionView().getElement(), 'afterbegin'); //Маршрут и стоимость - список
+
+const siteTripInfoSection = document.querySelector('.trip-info');
+renderTemplate(siteTripInfoSection,createTripInfoTemplate(points), 'afterbegin'); //Маршрут и стоимость
 renderElement(siteFilterElement, new FilterView().getElement(), RenderPosition.BEFOREEND); //Фильтр
 renderElement(siteEventsElement, new SortFormView().getElement(), RenderPosition.AFTERBEGIN); //Сортировка
 renderTemplate(eventList,createEditFormTemplate(points[0]), 'afterbegin'); //Редактирование

@@ -29,7 +29,7 @@ const renderOffers = () => {
   return str;
 };
 
-const createEventTemplate = (point) => {
+const createTripPointTemplate = (point) => {
   const { tripType, сityDestination, price, date, time} = point;
   const dateEvent = dayjs(date).format('D MMM');
   const timeStartEvent = dayjs(time.timeStart).format('hh:mm');
@@ -87,4 +87,4 @@ const createEventTemplate = (point) => {
 </li>`;
 };
 
-export { createEventTemplate };
+export { createTripPointTemplate };

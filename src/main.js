@@ -5,7 +5,7 @@ import FilterView from './view/filter.js'; //Фильтр
 import SortFormView from './view/form-sort.js'; //Сортировка
 import {createEditFormTemplate} from './view/form-edit-and-add.js'; //Форма редактирования
 import ListTripPointView from './view/form-list-trip-points'; // Cписок
-import {createEventTemplate} from './view/form-trip-point.js'; // Точки
+import {createTripPointTemplate} from './view/form-trip-point.js'; // Точки
 import {generateTripPoint} from './moсk/trip-point- mock.js';
 import {renderTemplate, renderElement, RenderPosition} from './utils.js';
 
@@ -28,7 +28,7 @@ const eventList = document.querySelector('.trip-events__list');
 
 //Отрисовка точек
 for (let i = 0; i < TRIP_POINT_COUNT; i++) {
-  renderTemplate(eventList,createEventTemplate(points[i]), 'beforeend');
+  renderTemplate(eventList,createTripPointTemplate(points[i]), 'beforeend');
 }
 
 renderElement(siteMainNavigationElement, new SiteMenuView().getElement(), RenderPosition.BEFOREEND); //Меню

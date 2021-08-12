@@ -1,4 +1,5 @@
 import {TRIP_SORT} from '../const.js';
+import {createElement} from '../utils';
 
 //генерируем список пунктов сортировки
 const renderListSort = () => {
@@ -20,4 +21,24 @@ const createSortFormTemplate = () => (
 </form>`
 );
 
-export {createSortFormTemplate};
+export default class SortForm {
+  constructor() {
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createSortFormTemplate();
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

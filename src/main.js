@@ -1,9 +1,9 @@
 import SiteMenuView from './view/site-menu.js'; //Меню
 import {createTripInfoTemplate} from './view/trip-info.js'; //Маршрут и стоимость
-import {createFilterTemplate} from './view/filter.js'; //Фильтр
-import {createSortFormTemplate} from './view/form-sort.js'; //Сортировка
+import FilterView from './view/filter.js'; //Фильтр
+import SortFormView from './view/form-sort.js'; //Сортировка
 import {createEditFormTemplate} from './view/form-edit-and-add.js'; //Форма редактирования
-import {createListEventTemplate} from './view/form-list-event.js'; // Cписок
+import ListTripPointsView from './view/form-list-trip-points'; // Cписок
 import {createEventTemplate} from './view/form-trip-point.js'; // Точки
 import {generateTripPoint} from './moсk/trip-point- mock.js';
 import {renderTemplate, renderElement, RenderPosition} from './utils.js';
@@ -21,7 +21,7 @@ const siteFilterElement = document.querySelector('.trip-controls__filters');
 const siteEventsElement = document.querySelector('.trip-events');
 const TRIP_POINT_COUNT = 3;
 
-renderTemplate(siteEventsElement,createListEventTemplate(), 'beforeend'); //Список
+renderElement(siteEventsElement, new ListTripPointsView().getElement(), RenderPosition.BEFOREEND); //Список
 
 const eventList = document.querySelector('.trip-events__list');
 
@@ -32,8 +32,8 @@ for (let i = 0; i < TRIP_POINT_COUNT; i++) {
 
 renderElement(siteMainNavigationElement, new SiteMenuView().getElement(), RenderPosition.BEFOREEND); //Меню
 renderTemplate(siteMainElement,createTripInfoTemplate(points), 'afterbegin'); //Маршрут и стоимость
-renderTemplate(siteFilterElement,createFilterTemplate(), 'beforeend'); //Фильтр
-renderTemplate(siteEventsElement,createSortFormTemplate(), 'afterbegin'); //Сортировка
+renderElement(siteFilterElement, new FilterView().getElement(), RenderPosition.BEFOREEND); //Фильтр
+renderElement(siteEventsElement, new SortFormView().getElement(), RenderPosition.AFTERBEGIN); //Сортировка
 renderTemplate(eventList,createEditFormTemplate(points[0]), 'afterbegin'); //Редактирование
 
 //ф-я renderElement принимает три параметра: сслыку на контейнер, сам элемент, место - куда поместить //куда, что, где

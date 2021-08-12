@@ -5,7 +5,7 @@ const createListTripPointsTemplate = () => (
   </ul>`
 );
 
-export default class ListTripPoints {
+export default class ListTripPoint {
   constructor() {
     this._element = null;
   }

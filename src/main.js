@@ -3,7 +3,7 @@ import {createTripInfoTemplate} from './view/trip-info.js'; //Маршрут и 
 import FilterView from './view/filter.js'; //Фильтр
 import SortFormView from './view/form-sort.js'; //Сортировка
 import {createEditFormTemplate} from './view/form-edit-and-add.js'; //Форма редактирования
-import ListTripPointsView from './view/form-list-trip-points'; // Cписок
+import ListTripPointView from './view/form-list-trip-points'; // Cписок
 import {createEventTemplate} from './view/form-trip-point.js'; // Точки
 import {generateTripPoint} from './moсk/trip-point- mock.js';
 import {renderTemplate, renderElement, RenderPosition} from './utils.js';
@@ -21,7 +21,7 @@ const siteFilterElement = document.querySelector('.trip-controls__filters');
 const siteEventsElement = document.querySelector('.trip-events');
 const TRIP_POINT_COUNT = 3;
 
-renderElement(siteEventsElement, new ListTripPointsView().getElement(), RenderPosition.BEFOREEND); //Список
+renderElement(siteEventsElement, new ListTripPointView().getElement(), RenderPosition.BEFOREEND); //Список
 
 const eventList = document.querySelector('.trip-events__list');
 

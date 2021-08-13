@@ -22,13 +22,12 @@ const siteFilterElement = document.querySelector('.trip-controls__filters');
 const siteEventsElement = document.querySelector('.trip-events');
 const TRIP_POINT_COUNT = 3;
 
-renderElement(siteEventsElement, new ListTripPointView().getElement(), RenderPosition.BEFOREEND); //Список
-
-const eventList = document.querySelector('.trip-events__list');
+const listTripPointComponent = new ListTripPointView();
+renderElement(siteEventsElement, listTripPointComponent.getElement(), RenderPosition.BEFOREEND); //Список
 
 //Отрисовка точек
 for (let i = 0; i < TRIP_POINT_COUNT; i++) {
-  renderTemplate(eventList,createTripPointTemplate(points[i]), 'beforeend');
+  renderTemplate(listTripPointComponent.getElement(),createTripPointTemplate(points[i]), 'beforeend');
 }
 
 renderElement(siteMainNavigationElement, new SiteMenuView().getElement(), RenderPosition.BEFOREEND); //Меню
@@ -39,7 +38,7 @@ const siteTripInfoSection = document.querySelector('.trip-info');
 renderTemplate(siteTripInfoSection,createTripInfoTemplate(points), 'afterbegin'); //Маршрут и стоимость
 renderElement(siteFilterElement, new FilterView().getElement(), RenderPosition.BEFOREEND); //Фильтр
 renderElement(siteEventsElement, new SortFormView().getElement(), RenderPosition.AFTERBEGIN); //Сортировка
-renderTemplate(eventList,createEditFormTemplate(points[0]), 'afterbegin'); //Редактирование
+renderTemplate(listTripPointComponent.getElement(),createEditFormTemplate(points[0]), 'afterbegin'); //Редактирование
 
 //ф-я renderElement принимает три параметра: сслыку на контейнер, сам элемент, место - куда поместить //куда, что, где
 //new SiteMenuView().getElement() - создаем экземпляр класса через new и вызываем метод getElement

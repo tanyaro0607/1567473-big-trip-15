@@ -8,7 +8,7 @@ import TripPointEditView from './view/form-edit-and-add.js'; //Форма ред
 import ListTripPointView from './view/form-list-trip-points'; // Cписок
 import TripPointView from './view/form-trip-point.js'; // Точки
 import {generateTripPoint} from './moсk/trip-point- mock.js';
-import {renderElement, RenderPosition} from './utils.js';
+import {render, RenderPosition} from './utils.js';
 
 // console.log(generateTripPoint())
 
@@ -24,23 +24,23 @@ const siteEventsElement = document.querySelector('.trip-events');
 const TRIP_POINT_COUNT = 3;
 
 const listTripPointComponent = new ListTripPointView();
-renderElement(siteEventsElement, listTripPointComponent.getElement(), RenderPosition.BEFOREEND); //Список
+render(siteEventsElement, listTripPointComponent.getElement(), RenderPosition.BEFOREEND); //Список
 
 //Отрисовка точек
 for (let i = 0; i < TRIP_POINT_COUNT; i++) {
-  renderElement(listTripPointComponent.getElement(), new TripPointView(points[i]).getElement(), RenderPosition.BEFOREEND);
+  render(listTripPointComponent.getElement(), new TripPointView(points[i]).getElement(), RenderPosition.BEFOREEND);
 }
 
 const tripInfoSectionComponent = new TripInfoSectionView();
 
-renderElement(siteMainNavigationElement, new SiteMenuView().getElement(), RenderPosition.BEFOREEND); //Меню
-renderElement(siteMainElement, tripInfoSectionComponent.getElement(), RenderPosition.AFTERBEGIN); //Маршрут и стоимость - список
+render(siteMainNavigationElement, new SiteMenuView().getElement(), RenderPosition.BEFOREEND); //Меню
+render(siteMainElement, tripInfoSectionComponent.getElement(), RenderPosition.AFTERBEGIN); //Маршрут и стоимость - список
 
-renderElement(tripInfoSectionComponent.getElement(), new TripInfoView(points).getElement(), RenderPosition.AFTERBEGIN); //Маршрут и стоимость
-renderElement(tripInfoSectionComponent.getElement(), new TripInfoCostView().getElement(), RenderPosition.BEFOREEND); //Маршрут и стоимость
-renderElement(siteFilterElement, new FilterView().getElement(), RenderPosition.BEFOREEND); //Фильтр
-renderElement(siteEventsElement, new SortFormView().getElement(), RenderPosition.AFTERBEGIN); //Сортировка
-renderElement(listTripPointComponent.getElement(),new TripPointEditView(points[0]).getElement(), RenderPosition.AFTERBEGIN); //Редактирование
+render(tripInfoSectionComponent.getElement(), new TripInfoView(points).getElement(), RenderPosition.AFTERBEGIN); //Маршрут и стоимость
+render(tripInfoSectionComponent.getElement(), new TripInfoCostView().getElement(), RenderPosition.BEFOREEND); //Маршрут и стоимость
+render(siteFilterElement, new FilterView().getElement(), RenderPosition.BEFOREEND); //Фильтр
+render(siteEventsElement, new SortFormView().getElement(), RenderPosition.AFTERBEGIN); //Сортировка
+render(listTripPointComponent.getElement(),new TripPointEditView(points[0]).getElement(), RenderPosition.AFTERBEGIN); //Редактирование
 
 //ф-я renderElement принимает три параметра: сслыку на контейнер, сам элемент, место - куда поместить //куда, что, где
 //new SiteMenuView().getElement() - создаем экземпляр класса через new и вызываем метод getElement

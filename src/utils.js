@@ -20,7 +20,7 @@ export const RenderPosition = {
 
 //позволяет взять элемент и добавить его в контейнер
 //переменные: контейнер/какой элемент/в какое именно место добавить - AFTERBEGIN или BEFOREEND
-export const renderElement = (container, element, place) => {
+export const render = (container, element, place) => {
   switch (place) {
     case RenderPosition.AFTERBEGIN:
       container.prepend(element);

@@ -31,12 +31,6 @@ export const renderElement = (container, element, place) => {
   }
 };
 
-//Функция для отрисовки компонентов
-//принимает контейнер, вёрстку и место в контейнере для отрисовки
-export const renderTemplate = (container, template, place) => {
-  container.insertAdjacentHTML(place, template);
-};
-
 //ф-я, необходимая чтобы создать но основании html-разметки создать новый дом-элемент, который мы потом сможем куда-то вставить
 export const createElement = (template) => {
   const newElement = document.createElement('div'); //создаём div

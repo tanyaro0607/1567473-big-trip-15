@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import {OFFERS} from '../const.js';
-import {getRandomInteger} from '../utils';
+import {getRandomInteger, createElement} from '../utils';
 
 const getStart = () => {
   const isFavorite = Boolean(getRandomInteger(0, 1));
@@ -87,4 +87,26 @@ const createTripPointTemplate = (point) => {
 </li>`;
 };
 
-export { createTripPointTemplate };
+export default class TripPoint {
+  constructor(point) {
+    this._point = point;
+
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createTripPointTemplate(this._point);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

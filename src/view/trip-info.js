@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import {getRandomInteger} from '../utils';
+import {getRandomInteger, createElement} from '../utils';
 
 const renderCostValue = () => {
   const costValue = getRandomInteger(1000, 3000);
@@ -22,4 +22,26 @@ const createTripInfoTemplate = (point) => {
   </p>`;
 };
 
-export {createTripInfoTemplate};
+export default class TripInfo {
+  constructor(point) {
+    this._point = point;
+
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createTripInfoTemplate(this._point);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

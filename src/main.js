@@ -7,6 +7,7 @@ import SortFormView from './view/form-sort.js'; //Сортировка
 import TripPointEditView from './view/form-edit-and-add.js'; //Форма редактирования
 import ListTripPointView from './view/form-list-trip-points'; // контейнер для точек маршрута
 import TripPointView from './view/form-trip-point.js'; // Точки маршрута
+import NoTripPointView from './view/no-trip-point.js';
 import {generateTripPoint} from './moсk/trip-point- mock.js'; //временные данные
 import {render, RenderPosition} from './utils.js';
 
@@ -21,7 +22,6 @@ const siteMainElement = document.querySelector('.trip-main');
 const siteMainNavigationElement = document.querySelector('.trip-controls__navigation');
 const siteFilterElement = document.querySelector('.trip-controls__filters');
 const siteEventsElement = document.querySelector('.trip-events');
-const TRIP_POINT_COUNT = 3;
 
 //отрисовка задач и формы редактирования
 const renderTripPoint = (tripPointListElement, point) => {
@@ -65,8 +65,13 @@ const listTripPointComponent = new ListTripPointView();
 render(siteEventsElement, listTripPointComponent.getElement(), RenderPosition.BEFOREEND);
 
 //Отрисовка точек маршрута
-for (let i = 0; i < TRIP_POINT_COUNT; i++) {
-  renderTripPoint(listTripPointComponent.getElement(), points[i]);
+const TRIP_POINT_COUNT = points.length = 3;
+if (points.every((point) => point.isArchive)) {
+  render(siteEventsElement, new NoTripPointView().getElement(), RenderPosition.BEFOREEND);
+} else {
+  for (let i = 0; i < TRIP_POINT_COUNT; i++) {
+    renderTripPoint(listTripPointComponent.getElement(), points[i]);
+  }
 }
 
 const tripInfoSectionComponent = new TripInfoSectionView(); //контейнер для маршрута и стоимости
@@ -78,5 +83,3 @@ render(tripInfoSectionComponent.getElement(), new TripInfoCostView().getElement(
 render(siteFilterElement, new FilterView().getElement(), RenderPosition.BEFOREEND); //отриосвка Фильтра
 render(siteEventsElement, new SortFormView().getElement(), RenderPosition.AFTERBEGIN); //отриосвка Сортировки
 // render(listTripPointComponent.getElement(),new TripPointEditView(points[0]).getElement(), RenderPosition.AFTERBEGIN); //отриосвка формы Редактирования
-
-//new SiteMenuView().getElement() - создаем экземпляр класса через new и вызываем метод getElement

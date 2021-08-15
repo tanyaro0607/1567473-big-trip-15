@@ -57,6 +57,12 @@ const renderTripPoint = (tripPointListElement, point) => {
     document.removeEventListener('keydown', onEscKeyDown);
   });
 
+  //действия при клике на кнопку
+  tripPointEditComponent.getElement().querySelector('.event__rollup-btn').addEventListener('click', () => {
+    replaceFormEditToPoint();
+    document.addEventListener('keydown', onEscKeyDown);
+  });
+
   render(tripPointListElement, tripPointComponent.getElement(), RenderPosition.BEFOREEND);
 };
 

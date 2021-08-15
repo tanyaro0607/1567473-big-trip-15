@@ -35,14 +35,26 @@ const renderTripPoint = (tripPointListElement, point) => {
   const replaceFormEditToPoint = () => {
     tripPointListElement.replaceChild(tripPointComponent.getElement(), tripPointEditComponent.getElement());
   };
+
+  //закрытие формы редактирования по Esc
+  const onEscKeyDown = (evt) => {
+    if (evt.key === 'Escape' || evt.key === 'Esc') {
+      evt.preventDefault();
+      replaceFormEditToPoint();
+      document.removeEventListener('keydown', onEscKeyDown);
+    }
+  };
+
   //действия при клике на кнопку
   tripPointComponent.getElement().querySelector('.event__rollup-btn').addEventListener('click', () => {
     replacePointToFormEdit();
+    document.addEventListener('keydown', onEscKeyDown);
   });
 
   tripPointEditComponent.getElement().querySelector('form').addEventListener('submit', (evt) => {
     evt.preventDefault();
     replaceFormEditToPoint();
+    document.removeEventListener('keydown', onEscKeyDown);
   });
 
   render(tripPointListElement, tripPointComponent.getElement(), RenderPosition.BEFOREEND);

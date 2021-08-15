@@ -23,12 +23,19 @@ const siteFilterElement = document.querySelector('.trip-controls__filters');
 const siteEventsElement = document.querySelector('.trip-events');
 const TRIP_POINT_COUNT = 3;
 
+const renderTripPoint = (tripPointListElement, point) => {
+  const tripPointComponent = new TripPointView(point);
+  const tripPointEditComponent = new TripPointEditView(point);
+
+  render(tripPointListElement, tripPointComponent.getElement(), RenderPosition.BEFOREEND);
+};
+
 const listTripPointComponent = new ListTripPointView();
 render(siteEventsElement, listTripPointComponent.getElement(), RenderPosition.BEFOREEND); //Список
 
 //Отрисовка точек
 for (let i = 0; i < TRIP_POINT_COUNT; i++) {
-  render(listTripPointComponent.getElement(), new TripPointView(points[i]).getElement(), RenderPosition.BEFOREEND);
+  renderTripPoint(listTripPointComponent.getElement(), points[i]);
 }
 
 const tripInfoSectionComponent = new TripInfoSectionView();

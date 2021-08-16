@@ -23,6 +23,10 @@ const siteMainNavigationElement = document.querySelector('.trip-controls__naviga
 const siteFilterElement = document.querySelector('.trip-controls__filters');
 const siteEventsElement = document.querySelector('.trip-events');
 
+// отрисовка контейнера для точек маршрута
+const listTripPointComponent = new ListTripPointView();
+render(siteEventsElement, listTripPointComponent.getElement(), RenderPosition.BEFOREEND);
+
 //отрисовка задач и формы редактирования
 const renderTripPoint = (tripPointListElement, point) => {
   const tripPointComponent = new TripPointView(point);
@@ -66,10 +70,6 @@ const renderTripPoint = (tripPointListElement, point) => {
   render(tripPointListElement, tripPointComponent.getElement(), RenderPosition.BEFOREEND);
 };
 
-// отрисовка контейнера для точек маршрута
-const listTripPointComponent = new ListTripPointView();
-render(siteEventsElement, listTripPointComponent.getElement(), RenderPosition.BEFOREEND);
-
 //Отрисовка точек маршрута
 const TRIP_POINT_COUNT = points.length = 3;
 if (points.every((point) => point.isArchive)) {
@@ -89,3 +89,12 @@ render(tripInfoSectionComponent.getElement(), new TripInfoCostView().getElement(
 render(siteFilterElement, new FilterView().getElement(), RenderPosition.BEFOREEND); //отриосвка Фильтра
 render(siteEventsElement, new SortFormView().getElement(), RenderPosition.AFTERBEGIN); //отриосвка Сортировки
 // render(listTripPointComponent.getElement(),new TripPointEditView(points[0]).getElement(), RenderPosition.AFTERBEGIN); //отриосвка формы Редактирования
+
+const renderAddTripPoint = () => {
+  //действия при клике на кнопку New Event
+  document.querySelector('.trip-main__event-add-btn').addEventListener('click', () => {
+    render(listTripPointComponent.getElement(),new TripPointEditView().getElement(), RenderPosition.AFTERBEGIN); //отриосвка формы Редактирования
+  });
+};
+
+renderAddTripPoint();

@@ -1,6 +1,14 @@
 import dayjs from 'dayjs';
 import {OFFERS, TYPES_OF_TRIP, DESTINATIONS} from '../const.js';
-import {getRandomInteger, getBoolean} from '../util';
+import {getRandomInteger, getBoolean, createElement} from '../utils';
+
+const BLANK_POINT = {
+  tripType: {icon:'taxi', type: 'Taxi'},
+  price: '0',
+  placeDestination: {descriptionText: '', photos: ''},
+  time: dayjs().toDate(),
+  сityDestination: ''};
+
 
 const addChecked = getBoolean()
   ? 'checked'
@@ -62,7 +70,7 @@ const renderPhotos = () => {
 
 const createEditFormTemplate = (point = {}) => {
 
-  const {tripType = {icon:'taxi', type: 'Taxi'}, price = '0', placeDestination = {descriptionText: '', photos: ''}, time = dayjs().toDate(), сityDestination = ''} = point;
+  const {tripType, price, placeDestination, time, сityDestination} = point;
 
   const timeStartEvent = dayjs(time.timeStart).format('DD/MM/YY HH:mm');
   const timeEndEvent = dayjs(time.timeEnd).format('DD/MM/YY HH:mm');
@@ -150,4 +158,25 @@ const createEditFormTemplate = (point = {}) => {
 </li>`;
 };
 
-export {createEditFormTemplate};
+export default class TripPointEdit {
+  constructor(point = BLANK_POINT) {
+    this._point = point;
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createEditFormTemplate(this._point);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

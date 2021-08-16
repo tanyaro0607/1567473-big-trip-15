@@ -1,3 +1,5 @@
+import {createElement} from '../utils';
+
 const createFilterTemplate = () => (
   `<div class="trip-controls__filters">
   <h2 class="visually-hidden">Filter events</h2>
@@ -23,4 +25,24 @@ const createFilterTemplate = () => (
 </div>`
 );
 
-export {createFilterTemplate};
+export default class Filter {
+  constructor() {
+    this._element = null;
+  }
+
+  getTemplate() {
+    return createFilterTemplate();
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}

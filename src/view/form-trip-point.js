@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import {OFFERS} from '../const.js';
-import {getRandomInteger, createElement} from '../utils';
+import {getRandomInteger} from '../utils';
+import AbstractView from './abstract.js';
 
 const getStart = () => {
   const isFavorite = Boolean(getRandomInteger(0, 1));
@@ -87,26 +88,14 @@ const createTripPointTemplate = (point) => {
 </li>`;
 };
 
-export default class TripPoint {
+export default class TripPoint extends AbstractView {
   constructor(point) {
+    super();
     this._point = point;
-
-    this._element = null;
   }
 
   getTemplate() {
     return createTripPointTemplate(this._point);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
-  }
 }

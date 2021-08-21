@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
-import {getRandomInteger, createElement} from '../utils';
+import {getRandomInteger} from '../utils';
+import AbstractView from './abstract.js';
 
 const renderCostValue = () => {
   const costValue = getRandomInteger(1000, 3000);
@@ -22,26 +23,14 @@ const createTripInfoTemplate = (point) => {
   </p>`;
 };
 
-export default class TripInfo {
+export default class TripInfo extends AbstractView {
   constructor(point) {
+    super();
     this._point = point;
-
-    this._element = null;
   }
 
   getTemplate() {
     return createTripInfoTemplate(this._point);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
-  }
 }

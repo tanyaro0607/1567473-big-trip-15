@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import {OFFERS, TYPES_OF_TRIP, DESTINATIONS} from '../const.js';
-import {getRandomInteger, getBoolean, createElement} from '../utils';
+import {getRandomInteger, getBoolean} from '../utils';
+import AbstractView from './abstract.js';
 
 const BLANK_POINT = {
   tripType: {icon:'taxi', type: 'Taxi'},
@@ -158,25 +159,14 @@ const createEditFormTemplate = (point = {}) => {
 </li>`;
 };
 
-export default class TripPointEdit {
+export default class TripPointEdit extends AbstractView {
   constructor(point = BLANK_POINT) {
+    super();
     this._point = point;
-    this._element = null;
   }
 
   getTemplate() {
     return createEditFormTemplate(this._point);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
-  }
 }

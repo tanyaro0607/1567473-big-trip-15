@@ -49,20 +49,20 @@ const renderTripPoint = (tripPointListElement, point) => {
     }
   };
 
-  //действия при клике на кнопку
-  tripPointComponent.getElement().querySelector('.event__rollup-btn').addEventListener('click', () => {
+  //действия при клике на кнопку - открывает форму редактирования
+  tripPointComponent.setEditClickHandler(() => {
     replacePointToFormEdit();
     document.addEventListener('keydown', onEscKeyDown);
   });
 
-  tripPointEditComponent.getElement().querySelector('form').addEventListener('submit', (evt) => {
-    evt.preventDefault();
+  //действия при отправке формы релактирования
+  tripPointEditComponent.setFormSubmitHandler(() => {
     replaceFormEditToPoint();
     document.removeEventListener('keydown', onEscKeyDown);
   });
 
-  //действия при клике на кнопку
-  tripPointEditComponent.getElement().querySelector('.event__rollup-btn').addEventListener('click', () => {
+  //действия при клике на кнопку - закрывает форму редактирвования
+  tripPointEditComponent.setEditClickHandler(() => {
     replaceFormEditToPoint();
     document.addEventListener('keydown', onEscKeyDown);
   });

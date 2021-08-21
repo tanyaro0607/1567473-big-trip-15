@@ -9,6 +9,7 @@ export default class Abstract {
     }
 
     this._element = null;   // - Объявим свойство _element
+    this._callback = {}; // приватное поле - объект, где будем хранить ссылки на обработчики
   }
 
   //- Объявим методы getElement и removeElement

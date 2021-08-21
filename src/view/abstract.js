@@ -1,4 +1,4 @@
-import {createElement} from '../utils.js';
+import {createElement} from '../utils/render.js';
 
 // Проверка в конструкторе на "new.target" позволит использовать абстрактный класс только в качестве родительского класса.
 //При попытке выполнить "new Abstract()" разработчик получит ошибку

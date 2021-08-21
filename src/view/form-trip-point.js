@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import {OFFERS} from '../const.js';
-import {getRandomInteger} from '../utils';
+import {getRandomInteger} from '../utils/common.js';
 import AbstractView from './abstract.js';
 
 const getStart = () => {

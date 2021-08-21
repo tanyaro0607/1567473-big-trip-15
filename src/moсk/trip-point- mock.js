@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import {DESCRIPTIONS, OFFERS, TYPES_OF_TRIP, DESTINATIONS} from '../const.js';
-import {getRandomInteger, getBoolean} from '../utils';
+import {getRandomInteger, getBoolean} from '../utils/common.js';
 
 //находим одно рандомное описание
 const generateDescription = () => {

@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import {OFFERS, TYPES_OF_TRIP, DESTINATIONS} from '../const.js';
-import {getRandomInteger, getBoolean, createElement} from '../utils';
+import {getRandomInteger, getBoolean} from '../utils/common.js';
+import AbstractView from './abstract.js';
 
 const BLANK_POINT = {
   tripType: {icon:'taxi', type: 'Taxi'},
@@ -158,25 +159,37 @@ const createEditFormTemplate = (point = {}) => {
 </li>`;
 };
 
-export default class TripPointEdit {
+export default class TripPointEdit extends AbstractView {
   constructor(point = BLANK_POINT) {
+    super();
     this._point = point;
-    this._element = null;
+
+    this._formSubmitHandler = this._formSubmitHandler.bind(this);
+    this._editClickHandler = this._editClickHandler.bind(this);
   }
 
   getTemplate() {
     return createEditFormTemplate(this._point);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
+  _formSubmitHandler(evt) {
+    evt.preventDefault();
+    this._callback.formSubmit();
   }
 
-  removeElement() {
-    this._element = null;
+  setFormSubmitHandler(callback) {
+    this._callback.formSubmit = callback;
+    this.getElement().querySelector('form').addEventListener('submit', this._formSubmitHandler);
   }
+
+  _editClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.editClick();
+  }
+
+  setEditClickHandler(callback) {
+    this._callback.editClick = callback;
+    this.getElement().querySelector('.event__rollup-btn').addEventListener('click', this._editClickHandler);
+  }
+
 }

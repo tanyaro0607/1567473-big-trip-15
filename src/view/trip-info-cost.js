@@ -1,4 +1,5 @@
-import {getRandomInteger, createElement} from '../utils';
+import {getRandomInteger} from '../utils/common.js';
+import AbstractView from './abstract.js';
 
 const renderCostValue = () => {
   const costValue = getRandomInteger(1000, 3000);
@@ -12,24 +13,13 @@ const createTripInfoCostTemplate = () => (
 </p>`
 );
 
-export default class TripInfoCost {
+export default class TripInfoCost extends AbstractView {
   constructor() {
-    this._element = null;
+    super();
   }
 
   getTemplate() {
     return createTripInfoCostTemplate();
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
-  }
 }

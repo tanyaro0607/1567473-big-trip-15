@@ -1,5 +1,5 @@
 import {TRIP_SORT} from '../const.js';
-import {createElement} from '../utils';
+import AbstractView from './abstract.js';
 
 //генерируем список пунктов сортировки
 const renderListSort = () => {
@@ -21,24 +21,13 @@ const createSortFormTemplate = () => (
 </form>`
 );
 
-export default class SortForm {
+export default class SortForm extends AbstractView {
   constructor() {
-    this._element = null;
+    super();
   }
 
   getTemplate() {
     return createSortFormTemplate();
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
-  }
 }

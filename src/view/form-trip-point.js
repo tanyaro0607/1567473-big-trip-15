@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import {OFFERS} from '../const.js';
-import {getRandomInteger, createElement} from '../utils';
+import {getRandomInteger} from '../utils/common.js';
+import AbstractView from './abstract.js';
 
 const getStart = () => {
   const isFavorite = Boolean(getRandomInteger(0, 1));
@@ -87,26 +88,27 @@ const createTripPointTemplate = (point) => {
 </li>`;
 };
 
-export default class TripPoint {
+export default class TripPoint extends AbstractView {
   constructor(point) {
+    super();
     this._point = point;
 
-    this._element = null;
+    this._editClickHandler = this._editClickHandler.bind(this);
   }
 
   getTemplate() {
     return createTripPointTemplate(this._point);
   }
 
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
+  _editClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.editClick();
   }
 
-  removeElement() {
-    this._element = null;
+  //публичный метод, принимает аргументом callback
+  setEditClickHandler(callback) {
+    this._callback.editClick = callback; // сохраняем ссылку на callback
+    this.getElement().querySelector('.event__rollup-btn').addEventListener('click', this._editClickHandler); //подписываемся на событие и вызываем приватные метод
   }
+
 }

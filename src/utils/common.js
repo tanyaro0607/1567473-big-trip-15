@@ -13,24 +13,6 @@ export const getBoolean = () => {
   return boolean;
 };
 
-export const RenderPosition = {
-  AFTERBEGIN: 'afterbegin',
-  BEFOREEND: 'beforeend',
-};
-
-//позволяет взять элемент и добавить его в контейнер
-//переменные: контейнер/какой элемент/в какое именно место добавить - AFTERBEGIN или BEFOREEND
-export const render = (container, element, place) => {
-  switch (place) {
-    case RenderPosition.AFTERBEGIN:
-      container.prepend(element);
-      break;
-    case RenderPosition.BEFOREEND:
-      container.append(element);
-      break;
-  }
-};
-
 //ф-я, необходимая чтобы создать но основании html-разметки создать новый дом-элемент, который мы потом сможем куда-то вставить
 export const createElement = (template) => {
   const newElement = document.createElement('div'); //создаём div

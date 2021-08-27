@@ -10,13 +10,12 @@ import TripPointView from './view/form-trip-point.js'; // Точки маршр�
 import NoTripPointView from './view/no-trip-point.js';
 import {generateTripPoint} from './moсk/trip-point- mock.js'; //временные данные
 import {render, RenderPosition, replace} from './utils/render.js';
+// import TripPresenter from './presenter/trip';
 
-// console.log(generateTripPoint())
 
 //создаем массив объектов описывающих 20 точек маршрута
 const TEST_POINT_COUNT = 20;
 const points = new Array(TEST_POINT_COUNT).fill().map(generateTripPoint);
-// console.log(points)
 
 const siteMainElement = document.querySelector('.trip-main');
 const siteMainNavigationElement = document.querySelector('.trip-controls__navigation');

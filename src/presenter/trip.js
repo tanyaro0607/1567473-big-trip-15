@@ -20,24 +20,26 @@ export default class Trip {
   }
 
   //начинаем работу
-  init(listTripPoints) {
-    this._tripPoints = listTripPoints.slice();
+  init(tripPoints) {
+    this._tripPoints = tripPoints.slice(); //копия всех точек
     // Метод для инициализации (начала работы) модуля,
 
-    // отрисовка контейнера для точек маршрута
-    render(this._tripPointContainer, this._listTripPointComponent, RenderPosition.BEFOREEND);
+    this._renderTrip();
+  }
 
+  //список
+  _renderTripPointsList() {
+    render(this._tripPointContainer, this._listTripPointComponent, RenderPosition.BEFOREEND);
     this._renderTripPoints();
   }
 
-  // Метод для рендеринга сортировки
+  // сортировка
   _renderSort() {
     render(this._tripPointContainer, this._sortFormComponent, RenderPosition.AFTERBEGIN);
-
   }
 
+  // точка маршрута
   _renderTripPoint(point) {
-    // Метод, куда уйдёт логика созданию и рендерингу компонетов задачи,
     const tripPointComponent = new TripPointView(point);
     const tripPointEditComponent = new TripPointEditView(point);
 
@@ -79,20 +81,25 @@ export default class Trip {
     render(this._noTripPointEditComponent, tripPointComponent, RenderPosition.BEFOREEND);
   }
 
+  //точки маршрута ??
+  _renderTripPoints() {
+    this._renderTripPoints(0, Math.min(this._tripPoints.length, TRIP_POINT_COUNT));
+  }
+
+  //если нет точек маршрута
   _renderNoTripPoints() {
     render(this._tripPointContainer, this._noTripPointComponent, RenderPosition.BEFOREEND);
   }
 
-  _renderTripPoints() {
-    // Метод для инициализации (начала работы) модуля,
+  // отрисовка всех методов
+  _renderTrip() {
     if (this._tripPoints.every((point) => point.isArchive)) {
       this._renderNoTripPoints();
       return;
     }
 
     this._renderSort();
-
-    this._renderTripPoints(0, Math.min(this._tripPoints.length, TRIP_POINT_COUNT));
+    this._renderTripPointsList();
 
   }
 }

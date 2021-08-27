@@ -54,7 +54,7 @@ const renderTripPoint = (tripPointListElement, point) => {
     document.addEventListener('keydown', onEscKeyDown);
   });
 
-  //действия при отправке формы релактирования
+  //действия при отправке формы редактирования
   tripPointEditComponent.setFormSubmitHandler(() => {
     replaceFormEditToPoint();
     document.removeEventListener('keydown', onEscKeyDown);
@@ -96,3 +96,8 @@ const renderAddTripPoint = () => {
 };
 
 renderAddTripPoint();
+
+//действия при клике на доп услуги
+document.querySelectorAll('.event__offer-label').addEventListener('click', () => {
+  // 
+});

@@ -1,16 +1,17 @@
-import SortFormView from './view/form-sort.js'; //Сортировка
-import ListTripPointView from './view/form-list-trip-points'; // контейнер для точек маршрута
-import TripPointView from './view/form-trip-point.js'; // Точки маршрута
-import NoTripPointView from './view/no-trip-point.js';
-import TripPointEditView from './view/form-edit-and-add.js'; //Форма редактирования
-import {render, RenderPosition, replace} from './utils/render.js';
+import SortFormView from '../view/form-sort.js'; //Сортировка
+import ListTripPointView from '../view/form-list-trip-points'; // контейнер для точек маршрута
+import TripPointView from '../view/form-trip-point.js'; // Точки маршрута
+import NoTripPointView from '../view/no-trip-point.js';
+import TripPointEditView from '../view/form-edit-and-add.js'; //Форма редактирования
+import PointPresenter from './point.js';
+import {render, RenderPosition} from '../utils/render.js';
 
-const TRIP_POINT_COUNT = 3;
+// const TRIP_POINT_COUNT = 3;
 
 export default class Trip {
   //инициализируем
-  constructor() {
-    this._tripPointContainer = document.querySelector('.trip-events');
+  constructor(siteEventsElement) {
+    this._tripPointContainer = siteEventsElement;
 
     this._listTripPointComponent = new ListTripPointView();
     this._sortFormComponent = new SortFormView();
@@ -19,11 +20,12 @@ export default class Trip {
     this._noTripPointEditComponent = new TripPointEditView();
   }
 
-  //начинаем работу
+  //рендер
   init(tripPoints) {
     this._tripPoints = tripPoints.slice(); //копия всех точек
     // Метод для инициализации (начала работы) модуля,
 
+    // console.log(this._tripPoints);
     this._renderTrip();
   }
 
@@ -38,52 +40,17 @@ export default class Trip {
     render(this._tripPointContainer, this._sortFormComponent, RenderPosition.AFTERBEGIN);
   }
 
-  // точка маршрута
+  //точка маршрута
   _renderTripPoint(point) {
-    const tripPointComponent = new TripPointView(point);
-    const tripPointEditComponent = new TripPointEditView(point);
-
-    const replacePointToFormEdit = () => {
-      replace(tripPointEditComponent, tripPointComponent);
-    };
-
-    const replaceFormEditToPoint = () => {
-      replace(tripPointComponent, tripPointEditComponent);
-    };
-
-    //закрытие формы редактирования по Esc
-    const onEscKeyDown = (evt) => {
-      if (evt.key === 'Escape' || evt.key === 'Esc') {
-        evt.preventDefault();
-        replaceFormEditToPoint();
-        document.removeEventListener('keydown', onEscKeyDown);
-      }
-    };
-
-    //действия при клике на кнопку - открывает форму редактирования
-    tripPointComponent.setEditClickHandler(() => {
-      replacePointToFormEdit();
-      document.addEventListener('keydown', onEscKeyDown);
-    });
-
-    //действия при отправке формы релактирования
-    tripPointEditComponent.setFormSubmitHandler(() => {
-      replaceFormEditToPoint();
-      document.removeEventListener('keydown', onEscKeyDown);
-    });
-
-    //действия при клике на кнопку - закрывает форму редактирвования
-    tripPointEditComponent.setEditClickHandler(() => {
-      replaceFormEditToPoint();
-      document.addEventListener('keydown', onEscKeyDown);
-    });
-
-    render(this._noTripPointEditComponent, tripPointComponent, RenderPosition.BEFOREEND);
+    const pointPresenter = new PointPresenter(this._listTripPointComponent);
+    pointPresenter.init(point);
   }
 
-  //точки маршрута ??
+  //все точки
   _renderTripPoints() {
-    this._renderTripPoints(0, Math.min(this._tripPoints.length, TRIP_POINT_COUNT));
+    this._tripPoints
+      .slice() //копируем
+      .forEach((point) => this._renderTripPoint(point));
   }
 
   //если нет точек маршрута

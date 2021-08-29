@@ -10,8 +10,8 @@ import {render, RenderPosition} from '../utils/render.js';
 
 export default class Trip {
   //инициализируем
-  constructor(siteEventsElement) {
-    this._tripPointContainer = siteEventsElement;
+  constructor(tripPointContainer) {
+    this._tripPointContainer = tripPointContainer;
 
     this._listTripPointComponent = new ListTripPointView();
     this._sortFormComponent = new SortFormView();
@@ -23,9 +23,8 @@ export default class Trip {
   //рендер
   init(tripPoints) {
     this._tripPoints = tripPoints.slice(); //копия всех точек
-    // Метод для инициализации (начала работы) модуля,
+    // Метод для инициализации (начала работы) модуля
 
-    // console.log(this._tripPoints);
     this._renderTrip();
   }
 

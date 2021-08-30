@@ -19,6 +19,8 @@ var _point = _interopRequireDefault(require("./point.js"));
 
 var _render = require("../utils/render.js");
 
+var _common = require("../utils/common.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -44,6 +46,7 @@ function () {
     this._tripPointComponent = new _formTripPoint["default"]();
     this._noTripPointComponent = new _noTripPoint["default"]();
     this._noTripPointEditComponent = new _formEditAndAdd["default"]();
+    this._handleTripPointChange = this._handleTripPointChange.bind(this);
   } //рендер
 
 
@@ -62,6 +65,15 @@ function () {
       (0, _render.render)(this._tripPointsContainer, this._listTripPointComponent, _render.RenderPosition.BEFOREEND);
 
       this._renderTripPoints();
+    } //метод, реалирующий на изменения в точке маршрута
+
+  }, {
+    key: "_handleTripPointChange",
+    value: function _handleTripPointChange(updatedTripPoint) {
+      this._tripPoints = (0, _common.updateItem)(this._tripPoints, updatedTripPoint); //обновляем данные
+
+      this._tripPointPresenter.get(updatedTripPoint.id).init(updatedTripPoint); //находим нужную точку по id и вызываем метод init(перерисовываем)
+
     } // сортировка
 
   }, {

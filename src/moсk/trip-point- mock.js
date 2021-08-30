@@ -71,5 +71,3 @@ export const generateTripPoint = () => ({
   isFavorite: getBoolean(),
   id: nanoid(), //присваиваем id для каждой задачи
 });
-
-console.log(generateTripPoint());

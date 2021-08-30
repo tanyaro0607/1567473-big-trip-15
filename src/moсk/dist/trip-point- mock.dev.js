@@ -94,4 +94,3 @@ var generateTripPoint = function generateTripPoint() {
 };
 
 exports.generateTripPoint = generateTripPoint;
-console.log(generateTripPoint());

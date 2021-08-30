@@ -5,15 +5,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
-var _formSort = _interopRequireDefault(require("../view/form-sort.js"));
+var _sort = _interopRequireDefault(require("../view/sort.js"));
 
-var _formListTripPoints = _interopRequireDefault(require("../view/form-list-trip-points"));
+var _listTripPoints = _interopRequireDefault(require("../view/list-trip-points"));
 
-var _formTripPoint = _interopRequireDefault(require("../view/form-trip-point.js"));
+var _tripPoint = _interopRequireDefault(require("../view/trip-point.js"));
 
 var _noTripPoint = _interopRequireDefault(require("../view/no-trip-point.js"));
 
-var _formEditAndAdd = _interopRequireDefault(require("../view/form-edit-and-add.js"));
+var _editTripPoint = _interopRequireDefault(require("../view/edit-trip-point.js"));
 
 var _point = _interopRequireDefault(require("./point.js"));
 
@@ -41,11 +41,11 @@ function () {
     this._tripPointsContainer = tripPointsContainer;
     this._renderedTripPointCount = TRIP_POINT_COUNT;
     this._tripPointPresenter = new Map();
-    this._listTripPointComponent = new _formListTripPoints["default"]();
-    this._sortFormComponent = new _formSort["default"]();
-    this._tripPointComponent = new _formTripPoint["default"]();
+    this._listTripPointComponent = new _listTripPoints["default"]();
+    this._sortFormComponent = new _sort["default"]();
+    this._tripPointComponent = new _tripPoint["default"]();
     this._noTripPointComponent = new _noTripPoint["default"]();
-    this._noTripPointEditComponent = new _formEditAndAdd["default"]();
+    this._noTripPointEditComponent = new _editTripPoint["default"]();
     this._handleTripPointChange = this._handleTripPointChange.bind(this);
   } //рендер
 
@@ -84,11 +84,11 @@ function () {
 
   }, {
     key: "_renderTripPoint",
-    value: function _renderTripPoint(point) {
-      var tripPointPresenter = new _point["default"](this._listTripPointComponent);
-      tripPointPresenter.init(point);
+    value: function _renderTripPoint(tripPoint) {
+      var tripPointPresenter = new _point["default"](this._listTripPointComponent, this._handleTaskChange);
+      tripPointPresenter.init(tripPoint);
 
-      this._tripPointPresenter.set(point.id, tripPointPresenter); //запоминает id
+      this._tripPointPresenter.set(tripPoint.id, tripPointPresenter); //запоминает id
 
     } //все точки
 
@@ -125,8 +125,8 @@ function () {
   }, {
     key: "_renderTrip",
     value: function _renderTrip() {
-      if (this._tripPoints.every(function (point) {
-        return point.isArchive;
+      if (this._tripPoints.every(function (tripPoint) {
+        return tripPoint.isArchive;
       })) {
         this._renderNoTripPoints();
 

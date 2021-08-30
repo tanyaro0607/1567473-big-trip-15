@@ -1,16 +1,18 @@
-import TripPointView from '../view/form-trip-point.js'; // Точки маршрута
-import TripPointEditView from '../view/form-edit-and-add.js'; //Форма редактирования
+import TripPointView from '../view/trip-point.js'; // Точки маршрута
+import TripPointEditView from '../view/edit-trip-point.js'; //Форма редактирования
 import {render, RenderPosition, replace, remove} from '../utils/render.js';
 
 export default class Point {
 
-  constructor(tripPointListContainer) {
+  constructor(tripPointListContainer, changeData) {
     this._tripPointListContainer = tripPointListContainer;
+    this._changeData = changeData;
 
     this._tripPointComponent = null;
     this._tripPointEditComponent = null;
 
     this._handleEditClick = this._handleEditClick.bind(this);
+    this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
     this._handlePointClick = this._handlePointClick.bind(this);
@@ -26,6 +28,7 @@ export default class Point {
     this._tripPointEditComponent = new TripPointEditView(tripPoint);
 
     this._tripPointComponent.setEditClickHandler(this._handleEditClick);
+    this._tripPointComponent.setFavoriteClickHandler(this._handleFavoriteClick);
     this._tripPointEditComponent.setFormSubmitHandler(this._handleFormSubmit);
     this._tripPointEditComponent.setEditClickHandler(this._handlePointClick);
 
@@ -87,7 +90,20 @@ export default class Point {
   }
 
   //клик по кнопке отправить
-  _handleFormSubmit() {
+  _handleFavoriteClick() {
+    this._changeData(
+      Object.assign(
+        {},
+        this._tripPoint,
+        {
+          isFavorite: !this._tripPoint.isFavorite,
+        },
+      ),
+    );
+  }
+
+  _handleFormSubmit(tripPoint) {
+    this._changeData(tripPoint);
     this._replaceFormEditToPoint();
   }
 }

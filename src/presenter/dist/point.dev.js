@@ -5,9 +5,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
-var _formTripPoint = _interopRequireDefault(require("../view/form-trip-point.js"));
+var _tripPoint = _interopRequireDefault(require("../view/trip-point.js"));
 
-var _formEditAndAdd = _interopRequireDefault(require("../view/form-edit-and-add.js"));
+var _editTripPoint = _interopRequireDefault(require("../view/edit-trip-point.js"));
 
 var _render = require("../utils/render.js");
 
@@ -22,13 +22,15 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var Point =
 /*#__PURE__*/
 function () {
-  function Point(tripPointListContainer) {
+  function Point(tripPointListContainer, changeData) {
     _classCallCheck(this, Point);
 
     this._tripPointListContainer = tripPointListContainer;
+    this._changeData = changeData;
     this._tripPointComponent = null;
     this._tripPointEditComponent = null;
     this._handleEditClick = this._handleEditClick.bind(this);
+    this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
     this._handlePointClick = this._handlePointClick.bind(this);
@@ -40,10 +42,12 @@ function () {
       this._tripPoint = tripPoint;
       var prevTripPointComponent = this._tripPointComponent;
       var prevTripPointEditComponent = this._tripPointEditComponent;
-      this._tripPointComponent = new _formTripPoint["default"](tripPoint);
-      this._tripPointEditComponent = new _formEditAndAdd["default"](tripPoint);
+      this._tripPointComponent = new _tripPoint["default"](tripPoint);
+      this._tripPointEditComponent = new _editTripPoint["default"](tripPoint);
 
       this._tripPointComponent.setEditClickHandler(this._handleEditClick);
+
+      this._tripPointComponent.setFavoriteClickHandler(this._handleFavoriteClick);
 
       this._tripPointEditComponent.setFormSubmitHandler(this._handleFormSubmit);
 
@@ -114,8 +118,17 @@ function () {
     } //клик по кнопке отправить
 
   }, {
+    key: "_handleFavoriteClick",
+    value: function _handleFavoriteClick() {
+      this._changeData(Object.assign({}, this._tripPoint, {
+        isFavorite: !this._tripPoint.isFavorite
+      }));
+    }
+  }, {
     key: "_handleFormSubmit",
-    value: function _handleFormSubmit() {
+    value: function _handleFormSubmit(tripPoint) {
+      this._changeData(tripPoint);
+
       this._replaceFormEditToPoint();
     }
   }]);

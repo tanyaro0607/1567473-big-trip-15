@@ -1,8 +1,8 @@
-import SortFormView from '../view/form-sort.js'; //Сортировка
-import ListTripPointView from '../view/form-list-trip-points'; // контейнер для точек маршрута
-import TripPointView from '../view/form-trip-point.js'; // Точки маршрута
+import SortFormView from '../view/sort.js'; //Сортировка
+import ListTripPointView from '../view/list-trip-points'; // контейнер для точек маршрута
+import TripPointView from '../view/trip-point.js'; // Точки маршрута
 import NoTripPointView from '../view/no-trip-point.js';
-import TripPointEditView from '../view/form-edit-and-add.js'; //Форма редактирования
+import TripPointEditView from '../view/edit-trip-point.js'; //Форма редактирования
 import PointPresenter from './point.js';
 import {render, RenderPosition} from '../utils/render.js';
 import {updateItem} from '../utils/common.js';
@@ -51,10 +51,10 @@ export default class Trip {
   }
 
   //точка маршрута
-  _renderTripPoint(point) {
-    const tripPointPresenter = new PointPresenter(this._listTripPointComponent);
-    tripPointPresenter.init(point);
-    this._tripPointPresenter.set(point.id, tripPointPresenter); //запоминает id
+  _renderTripPoint(tripPoint) {
+    const tripPointPresenter = new PointPresenter(this._listTripPointComponent, this._handleTaskChange);
+    tripPointPresenter.init(tripPoint);
+    this._tripPointPresenter.set(tripPoint.id, tripPointPresenter); //запоминает id
   }
 
   //все точки
@@ -77,7 +77,7 @@ export default class Trip {
 
   // отрисовка всех методов
   _renderTrip() {
-    if (this._tripPoints.every((point) => point.isArchive)) {
+    if (this._tripPoints.every((tripPoint) => tripPoint.isArchive)) {
       this._renderNoTripPoints();
       return;
     }

@@ -10,7 +10,7 @@ var _tripInfoCost = _interopRequireDefault(require("./view/trip-info-cost.js"));
 
 var _filter = _interopRequireDefault(require("./view/filter.js"));
 
-var _tripPointMock = require("./mo\u0441k/trip-point- mock.js");
+var _pointMock = require("./mo\u0441k/point-mock.js");
 
 var _render = require("./utils/render.js");
 
@@ -25,13 +25,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 //Фильтр
 //временные данные
 //создаем массив объектов описывающих 20 точек маршрута
-var TEST_POINT_COUNT = 3;
-var points = new Array(TEST_POINT_COUNT).fill().map(_tripPointMock.generateTripPoint);
+var POINT_COUNT = 3;
+var points = new Array(POINT_COUNT).fill().map(_pointMock.generatePoint);
 var siteMainElement = document.querySelector('.trip-main');
 var siteMainNavigationElement = document.querySelector('.trip-controls__navigation');
 var siteFilterElement = document.querySelector('.trip-controls__filters');
-var tripPointsContainer = document.querySelector('.trip-events');
-var tripPresenter = new _trip["default"](tripPointsContainer);
+var pointsContainer = document.querySelector('.trip-events');
+var tripPresenter = new _trip["default"](pointsContainer);
 var tripInfoSectionComponent = new _tripInfoSection["default"](); //контейнер для маршрута и стоимости
 
 (0, _render.render)(siteMainNavigationElement, new _siteMenu["default"](), _render.RenderPosition.BEFOREEND); //отриосвка Меню
@@ -43,13 +43,13 @@ var tripInfoSectionComponent = new _tripInfoSection["default"](); //контей
 (0, _render.render)(tripInfoSectionComponent, new _tripInfoCost["default"](), _render.RenderPosition.BEFOREEND); //отриосвка стоимости
 
 (0, _render.render)(siteFilterElement, new _filter["default"](), _render.RenderPosition.BEFOREEND); //отриосвка Фильтра
-// const renderAddTripPoint = () => {
+// const renderAddPoint = () => {
 //   //действия при клике на кнопку New Event
 //   document.querySelector('.trip-main__event-add-btn').addEventListener('click', () => {
-//     render(listTripPointComponent,new TripPointEditView(), RenderPosition.AFTERBEGIN); //отриосвка формы Редактирования
+//     render(listPointComponent,new PointEditView(), RenderPosition.AFTERBEGIN); //отриосвка формы Редактирования
 //   });
 // };
-// renderAddTripPoint();
+// renderAddPoint();
 // //действия при клике на доп услуги
 // document.querySelectorAll('.event__offer-label').addEventListener('click', () => {
 //   //

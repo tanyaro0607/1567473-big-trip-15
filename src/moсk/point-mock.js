@@ -54,7 +54,7 @@ const generatePhoto = () => {
 //создаем массив фото
 const photos = new Array(getRandomInteger(0,5)).fill().map(generatePhoto);
 
-export const generateTripPoint = () => ({
+export const generatePoint = () => ({
   tripType: generateTripType(), //тип точки маршрута
   сityDestination: generateCityDestination(), //Пункт назначения (город
   date: generateDateStart(), //дата события

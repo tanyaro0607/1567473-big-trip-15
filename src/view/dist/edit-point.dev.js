@@ -110,26 +110,26 @@ var createEditFormTemplate = function createEditFormTemplate() {
   return "<li class=\"trip-events__item\">\n              <form class=\"event event--edit\" action=\"#\" method=\"post\">\n                <header class=\"event__header\">\n                  <div class=\"event__type-wrapper\">\n                    <label class=\"event__type  event__type-btn\" for=\"event-type-toggle-1\">\n                      <span class=\"visually-hidden\">Choose event type</span>\n                      <img class=\"event__type-icon\" width=\"17\" height=\"17\" src=\"img/icons/".concat(tripType.icon, ".png\" alt=\"Event type icon\">\n                    </label>\n                    <input class=\"event__type-toggle  visually-hidden\" id=\"event-type-toggle-1\" type=\"checkbox\">\n\n                    <div class=\"event__type-list\">\n                      <fieldset class=\"event__type-group\">\n                        <legend class=\"visually-hidden\">Event type</legend>\n\n                        ").concat(renderListTypesOfTrip(_const.TYPES_OF_TRIP.type), "\n\n                      </fieldset>\n                    </div>\n                  </div>\n\n                  <div class=\"event__field-group  event__field-group--destination\">\n                    <label class=\"event__label  event__type-output\" for=\"event-destination-1\">\n\n                      ").concat(tripType.type, "\n\n                    </label>\n                    <input class=\"event__input  event__input--destination\" id=\"event-destination-1\" type=\"text\" name=\"event-destination\" value=\"").concat(сityDestination, "\" list=\"destination-list-1\">\n                    <datalist id=\"destination-list-1\">\n\n                      ").concat(renderListDestinations(_const.DESTINATIONS), "\n\n                    </datalist>\n                  </div>\n\n                  <div class=\"event__field-group  event__field-group--time\">\n                    <label class=\"visually-hidden\" for=\"event-start-time-1\">From</label>\n                    <input class=\"event__input  event__input--time\" id=\"event-start-time-1\" type=\"text\" name=\"event-start-time\" value=\"").concat(timeStartEvent, "\">\n                    &mdash;\n                    <label class=\"visually-hidden\" for=\"event-end-time-1\">To</label>\n                    <input class=\"event__input  event__input--time\" id=\"event-end-time-1\" type=\"text\" name=\"event-end-time\" value=\"").concat(timeEndEvent, "\">\n                  </div>\n\n                  <div class=\"event__field-group  event__field-group--price\">\n                    <label class=\"event__label\" for=\"event-price-1\">\n                      <span class=\"visually-hidden\">Price</span>\n                      &euro;\n                    </label>\n                    <input class=\"event__input  event__input--price\" id=\"event-price-1\" type=\"text\" name=\"event-price\" value=\"").concat(price, "\">\n                  </div>\n\n                  <button class=\"event__save-btn  btn  btn--blue\" type=\"submit\">Save</button>\n                  <button class=\"event__reset-btn\" type=\"reset\">Delete</button>\n                  <button class=\"event__rollup-btn\" type=\"button\">\n                    <span class=\"visually-hidden\">Open event</span>\n                  </button>\n                </header>\n                <section class=\"event__details\">\n                  <section class=\"event__section  event__section--offers\">\n                    <h3 class=\"event__section-title  event__section-title--offers\">Offers</h3>\n                    <div class=\"event__available-offers\">\n\n                    ").concat(renderOffers(_const.OFFERS), "\n\n                    </div>\n                  </section>\n\n                  <section class=\"event__section  event__section--destination\">\n                  <h3 class=\"event__section-title  event__section-title--destination\">Destination</h3>\n                  <p class=\"event__destination-description\">").concat(placeDestination.descriptionText, "</p>\n\n                  <div class=\"event__photos-container\">\n                    <div class=\"event__photos-tape\">\n\n                    ").concat(renderPhotos(), "\n\n                    </div>\n                  </div>\n                </section>\n              </section>\n            </form>\n</li>");
 };
 
-var TripPointEdit =
+var PointEdit =
 /*#__PURE__*/
 function (_AbstractView) {
-  _inherits(TripPointEdit, _AbstractView);
+  _inherits(PointEdit, _AbstractView);
 
-  function TripPointEdit() {
+  function PointEdit() {
     var _this;
 
     var point = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : BLANK_POINT;
 
-    _classCallCheck(this, TripPointEdit);
+    _classCallCheck(this, PointEdit);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(TripPointEdit).call(this));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(PointEdit).call(this));
     _this._point = point;
     _this._formSubmitHandler = _this._formSubmitHandler.bind(_assertThisInitialized(_this));
     _this._editClickHandler = _this._editClickHandler.bind(_assertThisInitialized(_this));
     return _this;
   }
 
-  _createClass(TripPointEdit, [{
+  _createClass(PointEdit, [{
     key: "getTemplate",
     value: function getTemplate() {
       return createEditFormTemplate(this._point);
@@ -162,7 +162,7 @@ function (_AbstractView) {
     }
   }]);
 
-  return TripPointEdit;
+  return PointEdit;
 }(_abstract["default"]);
 
-exports["default"] = TripPointEdit;
+exports["default"] = PointEdit;

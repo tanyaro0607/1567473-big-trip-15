@@ -5,9 +5,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
-var _tripPoint = _interopRequireDefault(require("../view/trip-point.js"));
+var _point = _interopRequireDefault(require("../view/point.js"));
 
-var _editTripPoint = _interopRequireDefault(require("../view/edit-trip-point.js"));
+var _editPoint = _interopRequireDefault(require("../view/edit-point.js"));
 
 var _render = require("../utils/render.js");
 
@@ -22,13 +22,13 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var Point =
 /*#__PURE__*/
 function () {
-  function Point(tripPointListContainer, changeData) {
+  function Point(pointListContainer, changeData) {
     _classCallCheck(this, Point);
 
-    this._tripPointListContainer = tripPointListContainer;
+    this._pointListContainer = pointListContainer;
     this._changeData = changeData;
-    this._tripPointComponent = null;
-    this._tripPointEditComponent = null;
+    this._pointComponent = null;
+    this._pointEditComponent = null;
     this._handleEditClick = this._handleEditClick.bind(this);
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
@@ -38,60 +38,60 @@ function () {
 
   _createClass(Point, [{
     key: "init",
-    value: function init(tripPoint) {
-      this._tripPoint = tripPoint;
-      var prevTripPointComponent = this._tripPointComponent;
-      var prevTripPointEditComponent = this._tripPointEditComponent;
-      this._tripPointComponent = new _tripPoint["default"](tripPoint);
-      this._tripPointEditComponent = new _editTripPoint["default"](tripPoint);
+    value: function init(point) {
+      this._point = point;
+      var prevPointComponent = this._pointComponent;
+      var prevPointEditComponent = this._pointEditComponent;
+      this._pointComponent = new _point["default"](point);
+      this._pointEditComponent = new _editPoint["default"](point);
 
-      this._tripPointComponent.setEditClickHandler(this._handleEditClick);
+      this._pointComponent.setEditClickHandler(this._handleEditClick);
 
-      this._tripPointComponent.setFavoriteClickHandler(this._handleFavoriteClick);
+      this._pointComponent.setFavoriteClickHandler(this._handleFavoriteClick);
 
-      this._tripPointEditComponent.setFormSubmitHandler(this._handleFormSubmit);
+      this._pointEditComponent.setFormSubmitHandler(this._handleFormSubmit);
 
-      this._tripPointEditComponent.setEditClickHandler(this._handlePointClick); //если точки отрисовываются и редактируются в первый раз
+      this._pointEditComponent.setEditClickHandler(this._handlePointClick); //если точки отрисовываются и редактируются в первый раз
 
 
-      if (prevTripPointComponent === null || prevTripPointEditComponent === null) {
+      if (prevPointComponent === null || prevPointEditComponent === null) {
         //то отрисовать их
-        (0, _render.render)(this._tripPointListContainer, this._tripPointComponent, _render.RenderPosition.BEFOREEND);
+        (0, _render.render)(this._pointListContainer, this._pointComponent, _render.RenderPosition.BEFOREEND);
         return;
       } // иначе
 
 
-      if (this._tripPointListContainer.getElement().contains(prevTripPointComponent.getElement())) {
-        (0, _render.replace)(this._tripPointComponent, prevTripPointComponent); //замена существующего на новое
+      if (this._pointListContainer.getElement().contains(prevPointComponent.getElement())) {
+        (0, _render.replace)(this._pointComponent, prevPointComponent); //замена существующего на новое
       }
 
-      if (this._tripPointListContainer.getElement().contains(prevTripPointEditComponent.getElement())) {
-        (0, _render.replace)(this._tripPointEditComponent, prevTripPointEditComponent); //замена существующего на новое
+      if (this._pointListContainer.getElement().contains(prevPointEditComponent.getElement())) {
+        (0, _render.replace)(this._pointEditComponent, prevPointEditComponent); //замена существующего на новое
       } //и удалить старое
 
 
-      (0, _render.remove)(prevTripPointComponent);
-      (0, _render.remove)(prevTripPointEditComponent);
+      (0, _render.remove)(prevPointComponent);
+      (0, _render.remove)(prevPointEditComponent);
     } //метод для удаления точек
 
   }, {
     key: "destroy",
     value: function destroy() {
-      (0, _render.remove)(this._tripPointComponent);
-      (0, _render.remove)(this._tripPointEditComponent);
+      (0, _render.remove)(this._pointComponent);
+      (0, _render.remove)(this._pointEditComponent);
     } //замена точки маршрута на форму редактирвоания
 
   }, {
     key: "_replacePointToFormEdit",
     value: function _replacePointToFormEdit() {
-      (0, _render.replace)(this._tripPointEditComponent, this._tripPointComponent);
+      (0, _render.replace)(this._pointEditComponent, this._pointComponent);
       document.addEventListener('keydown', this._escKeyDownHandler);
     } //замена формы редактирвоания на точку маршрута
 
   }, {
     key: "_replaceFormEditToPoint",
     value: function _replaceFormEditToPoint() {
-      (0, _render.replace)(this._tripPointComponent, this._tripPointEditComponent);
+      (0, _render.replace)(this._pointComponent, this._pointEditComponent);
       document.removeEventListener('keydown', this._escKeyDownHandler);
     } //закрытие при нажатии esc
 
@@ -120,14 +120,14 @@ function () {
   }, {
     key: "_handleFavoriteClick",
     value: function _handleFavoriteClick() {
-      this._changeData(Object.assign({}, this._tripPoint, {
-        isFavorite: !this._tripPoint.isFavorite
+      this._changeData(Object.assign({}, this._point, {
+        isFavorite: !this._point.isFavorite
       }));
     }
   }, {
     key: "_handleFormSubmit",
-    value: function _handleFormSubmit(tripPoint) {
-      this._changeData(tripPoint);
+    value: function _handleFormSubmit(point) {
+      this._changeData(point);
 
       this._replaceFormEditToPoint();
     }

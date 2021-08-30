@@ -30,7 +30,7 @@ const renderOffers = () => {
   return str;
 };
 
-const createTripPointTemplate = (point) => {
+const createPointTemplate = (point) => {
   const { tripType, сityDestination, price, date, time} = point;
   const dateEvent = dayjs(date).format('D MMM');
   const timeStartEvent = dayjs(time.timeStart).format('hh:mm');
@@ -88,7 +88,7 @@ const createTripPointTemplate = (point) => {
 </li>`;
 };
 
-export default class TripPoint extends AbstractView {
+export default class Point extends AbstractView {
   constructor(point) {
     super();
     this._point = point;
@@ -98,7 +98,7 @@ export default class TripPoint extends AbstractView {
   }
 
   getTemplate() {
-    return createTripPointTemplate(this._point);
+    return createPointTemplate(this._point);
   }
 
   _favoriteClickHandler(evt) {

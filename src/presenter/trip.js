@@ -1,89 +1,89 @@
 import SortFormView from '../view/sort.js'; //Сортировка
-import ListTripPointView from '../view/list-trip-points'; // контейнер для точек маршрута
-import TripPointView from '../view/trip-point.js'; // Точки маршрута
-import NoTripPointView from '../view/no-trip-point.js';
-import TripPointEditView from '../view/edit-trip-point.js'; //Форма редактирования
+import ListPointView from '../view/list-points'; // контейнер для точек маршрута
+import PointView from '../view/point.js'; // Точки маршрута
+import NoPointView from '../view/no-point.js';
+import PointEditView from '../view/edit-point.js'; //Форма редактирования
 import PointPresenter from './point.js';
 import {render, RenderPosition} from '../utils/render.js';
 import {updateItem} from '../utils/common.js';
 
-const TRIP_POINT_COUNT = 3;
+const POINT_COUNT = 3;
 
 export default class Trip {
   //инициализируем
-  constructor(tripPointsContainer) {
-    this._tripPointsContainer = tripPointsContainer;
-    this._renderedTripPointCount = TRIP_POINT_COUNT;
-    this._tripPointPresenter = new Map();
+  constructor(pointsContainer) {
+    this._pointsContainer = pointsContainer;
+    this._renderedPointCount = POINT_COUNT;
+    this._pointPresenter = new Map();
 
-    this._listTripPointComponent = new ListTripPointView();
+    this._listPointComponent = new ListPointView();
     this._sortFormComponent = new SortFormView();
-    this._tripPointComponent = new TripPointView();
-    this._noTripPointComponent = new NoTripPointView();
-    this._noTripPointEditComponent = new TripPointEditView();
+    this._pointComponent = new PointView();
+    this._noPointComponent = new NoPointView();
+    this._noPointEditComponent = new PointEditView();
 
-    this._handleTripPointChange = this._handleTripPointChange.bind(this);
+    this._handlePointChange = this._handlePointChange.bind(this);
   }
 
   //рендер
-  init(tripPoints) {
-    this._tripPoints = tripPoints.slice(); //копия всех точек
+  init(points) {
+    this._points = points.slice(); //копия всех точек
     // Метод для инициализации (начала работы) модуля
 
     this._renderTrip();
   }
 
   //список
-  _renderTripPointsList() {
-    render(this._tripPointsContainer, this._listTripPointComponent, RenderPosition.BEFOREEND);
-    this._renderTripPoints();
+  _renderPointsList() {
+    render(this._pointsContainer, this._listPointComponent, RenderPosition.BEFOREEND);
+    this._renderPoints();
   }
 
   //метод, реалирующий на изменения в точке маршрута
-  _handleTripPointChange(updatedTripPoint) {
-    this._tripPoints = updateItem(this._tripPoints, updatedTripPoint); //обновляем данные
-    this._tripPointPresenter.get(updatedTripPoint.id).init(updatedTripPoint); //находим нужную точку по id и вызываем метод init(перерисовываем)
+  _handlePointChange(updatedPoint) {
+    this._points = updateItem(this._points, updatedPoint); //обновляем данные
+    this._pointPresenter.get(updatedPoint.id).init(updatedPoint); //находим нужную точку по id и вызываем метод init(перерисовываем)
   }
 
   // сортировка
   _renderSort() {
-    render(this._tripPointsContainer, this._sortFormComponent, RenderPosition.AFTERBEGIN);
+    render(this._pointsContainer, this._sortFormComponent, RenderPosition.AFTERBEGIN);
   }
 
   //точка маршрута
-  _renderTripPoint(tripPoint) {
-    const tripPointPresenter = new PointPresenter(this._listTripPointComponent, this._handleTaskChange);
-    tripPointPresenter.init(tripPoint);
-    this._tripPointPresenter.set(tripPoint.id, tripPointPresenter); //запоминает id
+  _renderPoint(point) {
+    const pointPresenter = new PointPresenter(this._listPointComponent, this._handleTaskChange);
+    pointPresenter.init(point);
+    this._pointPresenter.set(point.id, pointPresenter); //запоминает id
   }
 
   //все точки
-  _renderTripPoints() {
-    this._tripPoints
+  _renderPoints() {
+    this._points
       .slice() //копируем
-      .forEach((point) => this._renderTripPoint(point));
+      .forEach((point) => this._renderPoint(point));
   }
 
   //если нет точек маршрута
-  _renderNoTripPoints() {
-    render(this._tripPointContainer, this._noTripPointComponent, RenderPosition.BEFOREEND);
+  _renderNoPoints() {
+    render(this._pointContainer, this._noPointComponent, RenderPosition.BEFOREEND);
   }
 
-  _clearTripPoinList() {
-    this._tripPointPresenter.forEach((presenter) => presenter.destroy()); //вызывает метод destroy у всех точек
-    this._tripPointPresenter.clear(); //очищает
-    this._renderedTripPointCount = TRIP_POINT_COUNT;
+  _clearPointList() {
+    this._pointPresenter.forEach((presenter) => presenter.destroy()); //вызывает метод destroy у всех точек
+    this._pointPresenter.clear(); //очищает
+    this._renderedPointCount = POINT_COUNT;
   }
 
   // отрисовка всех методов
   _renderTrip() {
-    if (this._tripPoints.every((tripPoint) => tripPoint.isArchive)) {
-      this._renderNoTripPoints();
+    if (this._points.every((point) => point.isArchive)) {
+      this._renderNoPoints();
       return;
     }
 
     this._renderSort();
-    this._renderTripPointsList();
+    this._renderPointsList();
 
   }
 }

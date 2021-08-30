@@ -6,12 +6,14 @@ import TripPointEditView from '../view/form-edit-and-add.js'; //Форма ре�
 import PointPresenter from './point.js';
 import {render, RenderPosition} from '../utils/render.js';
 
-// const TRIP_POINT_COUNT = 3;
+const TRIP_POINT_COUNT = 3;
 
 export default class Trip {
   //инициализируем
-  constructor(tripPointContainer) {
-    this._tripPointContainer = tripPointContainer;
+  constructor(tripPointsContainer) {
+    this._tripPointsContainer = tripPointsContainer;
+    this._renderedTripPointCount = TRIP_POINT_COUNT;
+    this._tripPointPresenter = new Map();
 
     this._listTripPointComponent = new ListTripPointView();
     this._sortFormComponent = new SortFormView();
@@ -30,19 +32,20 @@ export default class Trip {
 
   //список
   _renderTripPointsList() {
-    render(this._tripPointContainer, this._listTripPointComponent, RenderPosition.BEFOREEND);
+    render(this._tripPointsContainer, this._listTripPointComponent, RenderPosition.BEFOREEND);
     this._renderTripPoints();
   }
 
   // сортировка
   _renderSort() {
-    render(this._tripPointContainer, this._sortFormComponent, RenderPosition.AFTERBEGIN);
+    render(this._tripPointsContainer, this._sortFormComponent, RenderPosition.AFTERBEGIN);
   }
 
   //точка маршрута
   _renderTripPoint(point) {
-    const pointPresenter = new PointPresenter(this._listTripPointComponent);
-    pointPresenter.init(point);
+    const tripPointPresenter = new PointPresenter(this._listTripPointComponent);
+    tripPointPresenter.init(point);
+    this._tripPointPresenter.set(point.id, tripPointPresenter); //запоминает id
   }
 
   //все точки
@@ -55,6 +58,12 @@ export default class Trip {
   //если нет точек маршрута
   _renderNoTripPoints() {
     render(this._tripPointContainer, this._noTripPointComponent, RenderPosition.BEFOREEND);
+  }
+
+  _clearTripPoinList() {
+    this._tripPointPresenter.forEach((presenter) => presenter.destroy()); //вызывает метод destroy у всех точек
+    this._tripPointPresenter.clear(); //очищает
+    this._renderedTripPointCount = TRIP_POINT_COUNT;
   }
 
   // отрисовка всех методов

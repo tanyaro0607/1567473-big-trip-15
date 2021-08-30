@@ -30,8 +30,8 @@ var points = new Array(TEST_POINT_COUNT).fill().map(_tripPointMock.generateTripP
 var siteMainElement = document.querySelector('.trip-main');
 var siteMainNavigationElement = document.querySelector('.trip-controls__navigation');
 var siteFilterElement = document.querySelector('.trip-controls__filters');
-var tripPointContainer = document.querySelector('.trip-events');
-var tripPresenter = new _trip["default"](tripPointContainer);
+var tripPointsContainer = document.querySelector('.trip-events');
+var tripPresenter = new _trip["default"](tripPointsContainer);
 var tripInfoSectionComponent = new _tripInfoSection["default"](); //контейнер для маршрута и стоимости
 
 (0, _render.render)(siteMainNavigationElement, new _siteMenu["default"](), _render.RenderPosition.BEFOREEND); //отриосвка Меню

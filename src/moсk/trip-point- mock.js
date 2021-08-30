@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import {DESCRIPTIONS, OFFERS, TYPES_OF_TRIP, DESTINATIONS} from '../const.js';
 import {getRandomInteger, getBoolean} from '../utils/common.js';
+import {nanoid} from 'nanoid'; //присваиваем id для каждой задачи
 
 //находим одно рандомное описание
 const generateDescription = () => {
@@ -53,7 +54,7 @@ const generatePhoto = () => {
 //создаем массив фото
 const photos = new Array(getRandomInteger(0,5)).fill().map(generatePhoto);
 
-const generateTripPoint = () => ({
+export const generateTripPoint = () => ({
   tripType: generateTripType(), //тип точки маршрута
   сityDestination: generateCityDestination(), //Пункт назначения (город
   date: generateDateStart(), //дата события
@@ -68,6 +69,7 @@ const generateTripPoint = () => ({
     photos, //фото
   },
   isFavorite: getBoolean(),
+  id: nanoid(), //присваиваем id для каждой задачи
 });
 
-export {generateTripPoint};
+console.log(generateTripPoint());

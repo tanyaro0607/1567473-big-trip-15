@@ -14,8 +14,8 @@ const points = new Array(TEST_POINT_COUNT).fill().map(generateTripPoint);
 const siteMainElement = document.querySelector('.trip-main');
 const siteMainNavigationElement = document.querySelector('.trip-controls__navigation');
 const siteFilterElement = document.querySelector('.trip-controls__filters');
-const tripPointContainer = document.querySelector('.trip-events');
-const tripPresenter = new TripPresenter(tripPointContainer);
+const tripPointsContainer = document.querySelector('.trip-events');
+const tripPresenter = new TripPresenter(tripPointsContainer);
 const tripInfoSectionComponent = new TripInfoSectionView(); //контейнер для маршрута и стоимости
 
 render(siteMainNavigationElement, new SiteMenuView(), RenderPosition.BEFOREEND); //отриосвка Меню

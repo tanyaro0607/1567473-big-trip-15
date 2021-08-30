@@ -27,15 +27,18 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-// const TRIP_POINT_COUNT = 3;
+var TRIP_POINT_COUNT = 3;
+
 var Trip =
 /*#__PURE__*/
 function () {
   //инициализируем
-  function Trip(tripPointContainer) {
+  function Trip(tripPointsContainer) {
     _classCallCheck(this, Trip);
 
-    this._tripPointContainer = tripPointContainer;
+    this._tripPointsContainer = tripPointsContainer;
+    this._renderedTripPointCount = TRIP_POINT_COUNT;
+    this._tripPointPresenter = new Map();
     this._listTripPointComponent = new _formListTripPoints["default"]();
     this._sortFormComponent = new _formSort["default"]();
     this._tripPointComponent = new _formTripPoint["default"]();
@@ -56,7 +59,7 @@ function () {
   }, {
     key: "_renderTripPointsList",
     value: function _renderTripPointsList() {
-      (0, _render.render)(this._tripPointContainer, this._listTripPointComponent, _render.RenderPosition.BEFOREEND);
+      (0, _render.render)(this._tripPointsContainer, this._listTripPointComponent, _render.RenderPosition.BEFOREEND);
 
       this._renderTripPoints();
     } // сортировка
@@ -64,14 +67,17 @@ function () {
   }, {
     key: "_renderSort",
     value: function _renderSort() {
-      (0, _render.render)(this._tripPointContainer, this._sortFormComponent, _render.RenderPosition.AFTERBEGIN);
+      (0, _render.render)(this._tripPointsContainer, this._sortFormComponent, _render.RenderPosition.AFTERBEGIN);
     } //точка маршрута
 
   }, {
     key: "_renderTripPoint",
     value: function _renderTripPoint(point) {
-      var pointPresenter = new _point["default"](this._listTripPointComponent);
-      pointPresenter.init(point);
+      var tripPointPresenter = new _point["default"](this._listTripPointComponent);
+      tripPointPresenter.init(point);
+
+      this._tripPointPresenter.set(point.id, tripPointPresenter); //запоминает id
+
     } //все точки
 
   }, {
@@ -89,6 +95,19 @@ function () {
     key: "_renderNoTripPoints",
     value: function _renderNoTripPoints() {
       (0, _render.render)(this._tripPointContainer, this._noTripPointComponent, _render.RenderPosition.BEFOREEND);
+    }
+  }, {
+    key: "_clearTripPoinList",
+    value: function _clearTripPoinList() {
+      this._tripPointPresenter.forEach(function (presenter) {
+        return presenter.destroy();
+      }); //вызывает метод destroy у всех точек
+
+
+      this._tripPointPresenter.clear(); //очищает
+
+
+      this._renderedTripPointCount = TRIP_POINT_COUNT;
     } // отрисовка всех методов
 
   }, {

@@ -2,14 +2,21 @@ import PointView from '../view/point.js'; // Точки маршрута
 import PointEditView from '../view/edit-point.js'; //Форма редактирования
 import {render, RenderPosition, replace, remove} from '../utils/render.js';
 
+const Mode = {
+  DEFAULT: 'DEFAULT', //состояние по умолчанию
+  EDITING: 'EDITING', //в режиме редактирования
+};
+
 export default class Point {
 
-  constructor(pointListContainer, changeData) {
+  constructor(pointListContainer, changeData, changeMode) {
     this._pointListContainer = pointListContainer;
     this._changeData = changeData;
+    this._changeMode = changeMode; //для перехода карточек в стандартный режим, если открыто более 1 на ред-е
 
     this._pointComponent = null;
     this._pointEditComponent = null;
+    this._mode = Mode.DEFAULT;
 
     this._handleEditClick = this._handleEditClick.bind(this);
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
@@ -40,11 +47,11 @@ export default class Point {
     }
 
     // иначе
-    if (this._pointListContainer.getElement().contains(prevPointComponent.getElement())) {
+    if (this._mode === Mode.DEFAULT) {
       replace(this._pointComponent, prevPointComponent); //замена существующего на новое
     }
 
-    if (this._pointListContainer.getElement().contains(prevPointEditComponent.getElement())) {
+    if (this._mode === Mode.EDITING) {
       replace(this._pointEditComponent, prevPointEditComponent); //замена существующего на новое
     }
 
@@ -59,16 +66,26 @@ export default class Point {
     remove(this._pointEditComponent);
   }
 
+  //сбрасывает точки на состояние по умолчанию
+  resetView() {
+    if (this._mode !== Mode.DEFAULT) {
+      this._replaceFormEditToPoint();
+    }
+  }
+
   //замена точки маршрута на форму редактирвоания
   _replacePointToFormEdit() {
     replace(this._pointEditComponent, this._pointComponent);
     document.addEventListener('keydown', this._escKeyDownHandler);
+    this._changeMode(); //обновить карточку
+    this._mode = Mode.EDITING; //на режим ред-я
   }
 
   //замена формы редактирвоания на точку маршрута
   _replaceFormEditToPoint() {
     replace(this._pointComponent, this._pointEditComponent);
     document.removeEventListener('keydown', this._escKeyDownHandler);
+    this._mode = Mode.DEFAULT; //карточка в режиме по умолчанию
   }
 
   //закрытие при нажатии esc

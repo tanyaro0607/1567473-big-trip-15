@@ -19,16 +19,26 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+var Mode = {
+  DEFAULT: 'DEFAULT',
+  //состояние по умолчанию
+  EDITING: 'EDITING' //в режиме редактирования
+
+};
+
 var Point =
 /*#__PURE__*/
 function () {
-  function Point(pointListContainer, changeData) {
+  function Point(pointListContainer, changeData, changeMode) {
     _classCallCheck(this, Point);
 
     this._pointListContainer = pointListContainer;
     this._changeData = changeData;
+    this._changeMode = changeMode; //для перехода карточек в стандартный режим, если открыто более 1 на ред-е
+
     this._pointComponent = null;
     this._pointEditComponent = null;
+    this._mode = Mode.DEFAULT;
     this._handleEditClick = this._handleEditClick.bind(this);
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
@@ -61,11 +71,11 @@ function () {
       } // иначе
 
 
-      if (this._pointListContainer.getElement().contains(prevPointComponent.getElement())) {
+      if (this._mode === Mode.DEFAULT) {
         (0, _render.replace)(this._pointComponent, prevPointComponent); //замена существующего на новое
       }
 
-      if (this._pointListContainer.getElement().contains(prevPointEditComponent.getElement())) {
+      if (this._mode === Mode.EDITING) {
         (0, _render.replace)(this._pointEditComponent, prevPointEditComponent); //замена существующего на новое
       } //и удалить старое
 
@@ -79,6 +89,14 @@ function () {
     value: function destroy() {
       (0, _render.remove)(this._pointComponent);
       (0, _render.remove)(this._pointEditComponent);
+    } //сбрасывает точки на состояние по умолчанию
+
+  }, {
+    key: "resetView",
+    value: function resetView() {
+      if (this._mode !== Mode.DEFAULT) {
+        this._replaceFormEditToPoint();
+      }
     } //замена точки маршрута на форму редактирвоания
 
   }, {
@@ -86,6 +104,11 @@ function () {
     value: function _replacePointToFormEdit() {
       (0, _render.replace)(this._pointEditComponent, this._pointComponent);
       document.addEventListener('keydown', this._escKeyDownHandler);
+
+      this._changeMode(); //обновить карточку
+
+
+      this._mode = Mode.EDITING; //на режим ред-я
     } //замена формы редактирвоания на точку маршрута
 
   }, {
@@ -93,6 +116,7 @@ function () {
     value: function _replaceFormEditToPoint() {
       (0, _render.replace)(this._pointComponent, this._pointEditComponent);
       document.removeEventListener('keydown', this._escKeyDownHandler);
+      this._mode = Mode.DEFAULT; //карточка в режиме по умолчанию
     } //закрытие при нажатии esc
 
   }, {

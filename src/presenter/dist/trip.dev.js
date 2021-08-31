@@ -47,6 +47,7 @@ function () {
     this._noPointComponent = new _noPoint["default"]();
     this._noPointEditComponent = new _editPoint["default"]();
     this._handlePointChange = this._handlePointChange.bind(this);
+    this._handleModeChange = this._handleModeChange.bind(this);
   } //рендер
 
 
@@ -57,6 +58,13 @@ function () {
       // Метод для инициализации (начала работы) модуля
 
       this._renderTrip();
+    }
+  }, {
+    key: "_handleModeChange",
+    value: function _handleModeChange() {
+      this._pointPresenter.forEach(function (presenter) {
+        return presenter.resetView();
+      });
     } //список
 
   }, {
@@ -85,7 +93,7 @@ function () {
   }, {
     key: "_renderPoint",
     value: function _renderPoint(point) {
-      var pointPresenter = new _point2["default"](this._listPointComponent, this._handleTaskChange);
+      var pointPresenter = new _point2["default"](this._listPointComponent, this._handlePointChange, this._handleModeChange);
       pointPresenter.init(point);
 
       this._pointPresenter.set(point.id, pointPresenter); //запоминает id
@@ -126,7 +134,7 @@ function () {
     key: "_renderTrip",
     value: function _renderTrip() {
       if (this._points.every(function (point) {
-        return point.isArchive;
+        return point.isNoPoints;
       })) {
         this._renderNoPoints();
 

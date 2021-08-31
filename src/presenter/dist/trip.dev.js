@@ -21,6 +21,10 @@ var _render = require("../utils/render.js");
 
 var _common = require("../utils/common.js");
 
+var _point3 = require("../utils/point.js");
+
+var _const = require("../const.js");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -41,6 +45,7 @@ function () {
     this._pointsContainer = pointsContainer;
     this._renderedPointCount = POINT_COUNT;
     this._pointPresenter = new Map();
+    this._currentSortType = _const.SortType.DAY;
     this._listPointComponent = new _listPoints["default"]();
     this._sortFormComponent = new _sort["default"]();
     this._pointComponent = new _point["default"]();
@@ -48,6 +53,7 @@ function () {
     this._noPointEditComponent = new _editPoint["default"]();
     this._handlePointChange = this._handlePointChange.bind(this);
     this._handleModeChange = this._handleModeChange.bind(this);
+    this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
   } //рендер
 
 
@@ -56,6 +62,8 @@ function () {
     value: function init(points) {
       this._points = points.slice(); //копия всех точек
       // Метод для инициализации (начала работы) модуля
+
+      this._sourcedPoints = points.slice();
 
       this._renderTrip();
     }
@@ -80,7 +88,47 @@ function () {
     value: function _handlePointChange(updatedPoint) {
       this._points = (0, _common.updateItem)(this._points, updatedPoint); //обновляем данные
 
+      this._sourcedPoints = (0, _common.updateItem)(this._sourcedPoints, updatedPoint);
+
       this._pointPresenter.get(updatedPoint.id).init(updatedPoint); //находим нужную точку по id и вызываем метод init(перерисовываем)
+
+    }
+  }, {
+    key: "_sortPoints",
+    value: function _sortPoints(sortType) {
+      switch (sortType) {
+        case _const.SortType.TIME:
+          this._points.sort(_point3.sortByTime);
+
+          break;
+
+        case _const.SortType.PRICE:
+          this._points.sort(_point3.sortByPrice);
+
+          break;
+
+        default:
+          this._points.sort(_point3.sortByDay);
+
+      }
+
+      this._currentSortType = sortType;
+    } //
+
+  }, {
+    key: "_handleSortTypeChange",
+    value: function _handleSortTypeChange(sortType) {
+      if (this._currentSortType === sortType) {
+        return;
+      }
+
+      this._sortPoints(sortType); // - Сортируем задачи
+
+
+      this._clearPointList(); // - Очищаем список
+
+
+      this._renderPointsList(); // - Рендерим список заново
 
     } // сортировка
 
@@ -88,6 +136,8 @@ function () {
     key: "_renderSort",
     value: function _renderSort() {
       (0, _render.render)(this._pointsContainer, this._sortFormComponent, _render.RenderPosition.AFTERBEGIN);
+
+      this._sortFormComponent.setSortTypeChangeHandler(this._handleSortTypeChange);
     } //точка маршрута
 
   }, {
@@ -141,9 +191,11 @@ function () {
         return;
       }
 
-      this._renderSort();
+      this._renderSort(); // - Очищаем список
 
-      this._renderPointsList();
+
+      this._renderPointsList(); // - Рендерим список заново
+
     }
   }]);
 

@@ -1,5 +1,6 @@
 //массив с описаниями
-const DESCRIPTIONS = [
+
+export const DESCRIPTIONS = [
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
   'Cras aliquet varius magna, non porta ligula feugiat eget.',
   'Fusce tristique felis at fermentum pharetra.',
@@ -14,7 +15,7 @@ const DESCRIPTIONS = [
 ];
 
 //создаем массив объектов доп услуг
-const OFFERS = [
+export const OFFERS = [
   {text:'Order Uber',price: 20},
   {text:'Add luggage',price: 50},
   {text:'Switch to comfort',price: 80},
@@ -25,10 +26,10 @@ const OFFERS = [
 ];
 
 //создаем массив городов
-const DESTINATIONS = [ 'Amsterdam', 'Geneva', 'Rome', 'Barselona', 'Paris', 'New-York', 'Prague', 'Tokio'];
+export const DESTINATIONS = [ 'Amsterdam', 'Geneva', 'Rome', 'Barselona', 'Paris', 'New-York', 'Prague', 'Tokio'];
 
 //тип поездки
-const TYPES_OF_TRIP = [
+export const TYPES_OF_TRIP = [
   {type:'Taxi', icon: 'taxi'},
   {type:'Train', icon: 'train'},
   {type:'Ship', icon: 'ship'},
@@ -39,6 +40,10 @@ const TYPES_OF_TRIP = [
   {type:'Restaurant', icon: 'restaurant'},
 ];
 
-const TRIP_SORT = ['Day', 'Event', 'Time', 'Price', 'Offers'];
+export const TRIP_SORT = ['Day', 'Event', 'Time', 'Price', 'Offers'];
 
-export {DESCRIPTIONS, OFFERS, TYPES_OF_TRIP, DESTINATIONS, TRIP_SORT};
+export const SortType = {
+  DAY: 'day',
+  TIME: 'time',
+  PRICE: 'price',
+};

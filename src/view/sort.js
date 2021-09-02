@@ -5,20 +5,10 @@ import AbstractView from './abstract.js';
 const renderListSort = () => {
   let str = '';
   for (let i = 0; i < TRIP_SORT.length; i++) {
-    const sortData = () => {
-      if (TRIP_SORT[i].toLowerCase() === SortType.DAY) {
-        const dataSortType = SortType.DAY;
-        return dataSortType;
-      } if (TRIP_SORT[i].toLowerCase() === SortType.TIME) {
-        const dataSortType = SortType.TIME;
-        return dataSortType;
-      } if (TRIP_SORT[i].toLowerCase() === SortType.PRICE) {
-        const dataSortType = SortType.PRICE;
-        return dataSortType;
-      }
-    };
+    const sort = TRIP_SORT[i];
+    const sortData = SortType[sort] || '';
 
-    str += `<div class="trip-sort__item  trip-sort__item--${TRIP_SORT[i].toLowerCase()} data-sort-type="${sortData()}">
+    str += `<div class="trip-sort__item  trip-sort__item--${TRIP_SORT[i].toLowerCase()} data-sort-type="${sortData}">
     <input id="sort-${TRIP_SORT[i].toLowerCase()}" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-${TRIP_SORT[i].toLowerCase()}">
     <label class="trip-sort__btn" for="sort-${TRIP_SORT[i].toLowerCase()}">${TRIP_SORT[i]}</label>
   </div>`;

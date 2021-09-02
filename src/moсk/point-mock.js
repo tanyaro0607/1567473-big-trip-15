@@ -13,13 +13,17 @@ const generateDescription = () => {
 const descriptionText = new Array(getRandomInteger(0, OFFERS.length)).fill().map(generateDescription);
 
 //находим рандомную доп услугу
-const generateOffers = () => {
+const generateOffer = () => {
   const randomIndex = getRandomInteger(0, OFFERS.length - 1);
   return OFFERS[randomIndex];
 };
 
+const generateOffersArray = () => {
+  const offersArray = new Array(getRandomInteger(0, OFFERS.length)).fill().map(generateOffer);
+  return offersArray;
+};
+
 //создаем массив из несколькоих доп услуг от 0 до длины массива
-const offersArray = new Array(getRandomInteger(0, OFFERS.length)).fill().map(generateOffers);
 
 //генерируем рандомный тип поездки
 const generateTripType = () => {
@@ -63,7 +67,7 @@ export const generatePoint = () => ({
     timeEnd: generateDateEnd(),
   },
   price: getRandomInteger(120,800),
-  offersArray,
+  offersArray: generateOffersArray(),
   placeDestination: {
     descriptionText, //описание
     photos, //фото

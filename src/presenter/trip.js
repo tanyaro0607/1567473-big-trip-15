@@ -7,7 +7,7 @@ import PointPresenter from './point.js';
 import {render, RenderPosition} from '../utils/render.js';
 import {updateItem} from '../utils/common.js';
 import {sortByDay, sortByPrice, sortByTime} from '../utils/point.js';
-import {SortType} from '../const.js';
+import {SortType, SortHeaders} from '../const.js';
 
 const POINT_COUNT = 3;
 
@@ -58,11 +58,13 @@ export default class Trip {
   }
 
   _sortPoints(sortType) {
+
+
     switch (sortType) {
-      case SortType.TIME:
+      case SortHeaders.TIME:
         this._points.sort(sortByTime);
         break;
-      case SortType.PRICE:
+      case SortHeaders.PRICE:
         this._points.sort(sortByPrice);
         break;
       default:

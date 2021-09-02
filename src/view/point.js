@@ -1,24 +1,8 @@
 import dayjs from 'dayjs';
-import {OFFERS} from '../const.js';
-import {getRandomInteger} from '../utils/common.js';
 import AbstractView from './abstract.js';
 
-const getStart = () => {
-  const isFavorite = Boolean(getRandomInteger(0, 1));
-  return isFavorite;
-};
-
-const generateOffers = () => {
-
-  const randomIndex = getRandomInteger(0, OFFERS.length - 1);
-
-  return OFFERS[randomIndex];
-};
-
 //передаем в шаблон
-const renderOffers = () => {
-  const offersArray = new Array(getRandomInteger(0, OFFERS.length)).fill().map(generateOffers);
-
+const renderOffers = (offersArray) => {
   let str = '';
   for (let i = 0; i < offersArray.length; i++) {
     str += ` <li class="event__offer">
@@ -31,7 +15,7 @@ const renderOffers = () => {
 };
 
 const createPointTemplate = (point) => {
-  const { tripType, сityDestination, price, date, time} = point;
+  const { tripType, сityDestination, price, date, time, offersArray, isFavorite} = point;
   const dateEvent = dayjs(date).format('D MMM');
   const timeStartEvent = dayjs(time.timeStart).format('hh:mm');
   const timeEndEvent = dayjs(time.timeEnd).format('hh:mm');
@@ -47,7 +31,7 @@ const createPointTemplate = (point) => {
     return time1;
   };
 
-  const favoriteClassName = getStart()
+  const favoriteClassName = isFavorite
     ? 'event__favorite-btn--active'
     : '';
 
@@ -72,7 +56,7 @@ const createPointTemplate = (point) => {
   <h4 class="visually-hidden">Offers:</h4>
   <ul class="event__selected-offers">
 
-  ${renderOffers()}
+  ${renderOffers(offersArray)}
 
   </ul>
   <button class="event__favorite-btn ${favoriteClassName}" type="button">

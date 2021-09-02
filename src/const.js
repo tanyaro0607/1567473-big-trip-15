@@ -40,10 +40,12 @@ export const TYPES_OF_TRIP = [
   {type:'Restaurant', icon: 'restaurant'},
 ];
 
-export const TRIP_SORT = ['Day', 'Event', 'Time', 'Price', 'Offers'];
-
-export const SortType = {
-  DAY: 'day',
-  TIME: 'time',
-  PRICE: 'price',
+export const SortHeaders = {
+  DAY:'day',
+  EVENT:'event',
+  TIME:'time',
+  PRICE:'price',
+  OFFERS:'offers',
 };
+
+export const SortType = [SortHeaders.DAY, SortHeaders.TIME, SortHeaders.PRICE];

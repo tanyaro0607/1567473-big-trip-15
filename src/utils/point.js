@@ -5,12 +5,13 @@ import dayjs from 'dayjs';
 export const sortByPrice = (pointA, pointB) => pointB.price - pointA.price;
 
 //вернуться к исходникам
-export const sortByDay = (pointA, pointB) => dayjs(pointA.timeEnd).diff(dayjs(pointB.timeEnd));
+export const sortByDay = (pointA, pointB) => dayjs(pointA.time.timeEnd).diff(dayjs(pointB.time.timeEnd));
+
 
 // Time - по времени, от max к min
 // export const sortByTime = (pointA, pointB) => (pointB.end - pointB.start) - (pointA.end - pointA.start);
 export const sortByTime = (pointA, pointB) => {
-  const pointADuration = dayjs(pointA.timeEnd).diff(dayjs(pointA.timeStart));
-  const pointBDuration = dayjs(pointB.timeEnd).diff(dayjs(pointB.timeStart));
-  return pointADuration - pointBDuration;
+  const pointADuration = dayjs(pointA.time.timeEnd).diff(dayjs(pointA.time.timeStart));
+  const pointBDuration = dayjs(pointB.time.timeEnd).diff(dayjs(pointB.time.timeStart));
+  return pointBDuration - pointADuration;
 };

@@ -127,7 +127,7 @@ const createEditFormTemplate = (point = {}) => {
                   </div>
 
                   <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-                  <button class="event__reset-btn" type="reset">Cancel</button>
+                  <button class="event__reset-btn" type="reset">Delete</button>
                   <button class="event__rollup-btn" type="button">
                     <span class="visually-hidden">Open event</span>
                   </button>
@@ -159,7 +159,7 @@ const createEditFormTemplate = (point = {}) => {
 </li>`;
 };
 
-export default class TripPointEdit extends AbstractView {
+export default class PointEdit extends AbstractView {
   constructor(point = BLANK_POINT) {
     super();
     this._point = point;
@@ -174,7 +174,7 @@ export default class TripPointEdit extends AbstractView {
 
   _formSubmitHandler(evt) {
     evt.preventDefault();
-    this._callback.formSubmit();
+    this._callback.formSubmit(this._point);
   }
 
   setFormSubmitHandler(callback) {

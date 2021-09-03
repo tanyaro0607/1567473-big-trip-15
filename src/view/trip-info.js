@@ -8,7 +8,8 @@ const renderCostValue = () => {
 };
 
 //Маршрут и стоимость
-const createTripInfoTemplate = (point) => {
+const createTripInfoTemplate = (point = {}) => {
+
   const timeStartEvent = dayjs(point[0].time.timeStart).format('MMM D');
   const timeEndEvent = dayjs(point[point.length-1].time.timeEnd).format('D');
 

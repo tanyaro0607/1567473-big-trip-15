@@ -37,15 +37,15 @@ const renderListTypesOfTrip = () => {
 };
 
 //генерируем шаблон доп услуг
-const renderOffers = () => {
+const renderOffers = (offersArray) => {
   let str = '';
-  for (let i = 0; i < OFFERS.length; i++) {
+  for (let i = 0; i < offersArray.length; i++) {
     str += ` <div class="event__offer-selector">
     <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="${addChecked}" name="event-offer-luggage" ${addChecked}>
     <label class="event__offer-label" for="event-offer-luggage-1">
-      <span class="event__offer-title">${OFFERS[i].text}</span>
+      <span class="event__offer-title">${offersArray[i].text}</span>
       &plus;&euro;&nbsp;
-      <span class="event__offer-price">${OFFERS[i].price}</span>
+      <span class="event__offer-price">${offersArray[i].price}</span>
     </label>
   </div> `;
   }
@@ -68,10 +68,41 @@ const renderPhotos = () => {
   return str;
 };
 
+const createPhotosTemplate = (photos) => (
+  `<div class="event__photos-container">
+    <div class="event__photos-tape">
+      ${renderPhotos(photos)}
+    </div>
+  </div>`
+);
 
-const createEditFormTemplate = (point = {}) => {
+//исправить
+const createParagraphTemplate = (descriptionText) => {
+  // `<p class="event__destination-description">${placeDestination.descriptionText}</p>`
+  let str = '';
+  for (let i = 0; i < descriptionText.length; i++) {
+    str += `${descriptionText[i]}`;
+  }
+  return `<p class="event__destination-description"> ${str} </p>`;
+};
 
-  const {tripType, price, placeDestination, time, сityDestination} = point;
+const createDestinationInfoTemplate = (descriptionText, photos) => {
+  if (descriptionText || (photos && photos.length > 0) ) {
+    return `<section class="event__section  event__section--destination">
+    <h3 class="event__section-title  event__section-title--destination">Destination</h3>
+
+    ${(descriptionText) ? createParagraphTemplate(descriptionText) : ''}
+    ${(photos) ? createPhotosTemplate(photos) : ''}
+
+  </section>`;
+  } else {
+    return '';
+  }
+};
+
+const createEditFormTemplate = (data = {}) => {
+
+  const {tripType, price, time, сityDestination, placeDestination} = data;
 
   const timeStartEvent = dayjs(time.timeStart).format('DD/MM/YY HH:mm');
   const timeEndEvent = dayjs(time.timeEnd).format('DD/MM/YY HH:mm');
@@ -105,7 +136,7 @@ const createEditFormTemplate = (point = {}) => {
                     <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${сityDestination}" list="destination-list-1">
                     <datalist id="destination-list-1">
 
-                      ${renderListDestinations(DESTINATIONS)}
+                      ${renderListDestinations()}
 
                     </datalist>
                   </div>
@@ -142,18 +173,8 @@ const createEditFormTemplate = (point = {}) => {
                     </div>
                   </section>
 
-                  <section class="event__section  event__section--destination">
-                  <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-                  <p class="event__destination-description">${placeDestination.descriptionText}</p>
+                  ${createDestinationInfoTemplate(placeDestination.descriptionText, placeDestination.photos )}
 
-                  <div class="event__photos-container">
-                    <div class="event__photos-tape">
-
-                    ${renderPhotos()}
-
-                    </div>
-                  </div>
-                </section>
               </section>
             </form>
 </li>`;
@@ -162,19 +183,45 @@ const createEditFormTemplate = (point = {}) => {
 export default class PointEdit extends AbstractView {
   constructor(point = BLANK_POINT) {
     super();
-    this._point = point;
+    this._data = PointEdit.parsePointToData(point);
 
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
     this._editClickHandler = this._editClickHandler.bind(this);
   }
 
   getTemplate() {
-    return createEditFormTemplate(this._point);
+    return createEditFormTemplate(this._data);
+  }
+
+  // метод, который будет обновлять данные в свойстве _data, а потом вызывать обновление шаблона
+  updateData(update) {
+    if (!update) {
+      return;
+    }
+
+    this._data = Object.assign(
+      {},
+      this._data,
+      update,
+    );
+
+    this.updateElement();
+  }
+
+  // задача метода - удалить старый DOM элемент, вызвать генерацию нового и заменить один на другой
+  updateElement() {
+    const prevElement = this.getElement();
+    const parent = prevElement.parentElement;
+    this.removeElement();
+
+    const newElement = this.getElement();
+
+    parent.replaceChild(newElement, prevElement);
   }
 
   _formSubmitHandler(evt) {
     evt.preventDefault();
-    this._callback.formSubmit(this._point);
+    this._callback.formSubmit(PointEdit.parseDataToPoint(this._data));
   }
 
   setFormSubmitHandler(callback) {
@@ -190,6 +237,22 @@ export default class PointEdit extends AbstractView {
   setEditClickHandler(callback) {
     this._callback.editClick = callback;
     this.getElement().querySelector('.event__rollup-btn').addEventListener('click', this._editClickHandler);
+  }
+
+  //статичные методы
+  //берет информацию и переводит в состояние
+  static parsePointToData(point) {
+    return Object.assign(
+      {},
+      point,
+    );
+  }
+
+  // берет состояние формы и переводит в инф-ю
+  static parseDataToPoint(data) {
+    data = Object.assign({}, data);
+
+    return data;
   }
 
 }

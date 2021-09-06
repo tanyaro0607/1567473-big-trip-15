@@ -10,7 +10,7 @@ const generateDescription = () => {
 };
 
 //и создаем массив из предложений от 1 до 5
-const descriptionText = new Array(getRandomInteger(0, OFFERS.length)).fill().map(generateDescription);
+const descriptionTextArray = new Array(getRandomInteger(0, OFFERS.length)).fill().map(generateDescription);
 
 //находим рандомную доп услугу
 const generateOffer = () => {
@@ -56,7 +56,7 @@ const generatePhoto = () => {
 };
 
 //создаем массив фото
-const photos = new Array(getRandomInteger(0,5)).fill().map(generatePhoto);
+const photosArray = new Array(getRandomInteger(0,5)).fill().map(generatePhoto);
 
 export const generatePoint = () => ({
   tripType: generateTripType(), //тип точки маршрута
@@ -69,8 +69,8 @@ export const generatePoint = () => ({
   price: getRandomInteger(120,800),
   offersArray: generateOffersArray(),
   placeDestination: {
-    descriptionText, //описание
-    photos, //фото
+    descriptionTextArray, //описание
+    photosArray, //фото
   },
   isFavorite: getBoolean(),
   id: nanoid(), //присваиваем id для каждой задачи

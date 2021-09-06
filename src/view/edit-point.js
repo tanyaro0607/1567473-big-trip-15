@@ -1,12 +1,12 @@
 import dayjs from 'dayjs';
 import {OFFERS, TYPES_OF_TRIP, DESTINATIONS} from '../const.js';
-import {getRandomInteger, getBoolean} from '../utils/common.js';
+import {getBoolean} from '../utils/common.js';
 import AbstractView from './abstract.js';
 
 const BLANK_POINT = {
   tripType: {icon:'taxi', type: 'Taxi'},
   price: '0',
-  placeDestination: {descriptionText: '', photos: ''},
+  placeDestination: {descriptionTextArray: '', photosArray: ''},
   time: dayjs().toDate(),
   сityDestination: ''};
 
@@ -52,52 +52,63 @@ const renderOffers = (offersArray) => {
   return str;
 };
 
-//генерируем рандомное фото
-const generatePhoto = () => {
-  const photo = `http://picsum.photos/248/152?r=${getRandomInteger(1,100)}`;
-  return photo;
-};
+// //генерируем шаблон доп услуг
+// const renderOffers = (offersArray) => {
+//   if (!offersArray.length > 0) {
+//     return '';
+//   } else {
+//   let str = '';
+//   for (let i = 0; i < offersArray.length; i++) {
+//     str += ` <div class="event__offer-selector">
+//     <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="${addChecked}" name="event-offer-luggage" ${addChecked}>
+//     <label class="event__offer-label" for="event-offer-luggage-1">
+//       <span class="event__offer-title">${offersArray[i].text}</span>
+//       &plus;&euro;&nbsp;
+//       <span class="event__offer-price">${offersArray[i].price}</span>
+//     </label>
+//   </div> `};
+//   return str;
+// };
 
 //генерируем шаблон фото
-const renderPhotos = () => {
-  const photos = new Array(getRandomInteger(0, 5)).fill().map(generatePhoto);
+const renderPhotos = (photosArray) => {
   let str = '';
-  for (let i = 0; i < photos.length; i++) {
-    str += ` <img class="event__photo" src="${photos[i]}" alt="Event photo"> `;
+  for (let i = 0; i < photosArray.length; i++) {
+    str += ` <img class="event__photo" src="${photosArray[i]}" alt="Event photo"> `;
   }
   return str;
 };
 
-const createPhotosTemplate = (photos) => (
+//фото
+const createPhotosTemplate = (photosArray) => (
   `<div class="event__photos-container">
     <div class="event__photos-tape">
-      ${renderPhotos(photos)}
+      ${renderPhotos(photosArray)}
     </div>
   </div>`
 );
 
-//исправить
-const createParagraphTemplate = (descriptionText) => {
+//описание
+const createParagraphTemplate = (descriptionTextArray) => {
   // `<p class="event__destination-description">${placeDestination.descriptionText}</p>`
   let str = '';
-  for (let i = 0; i < descriptionText.length; i++) {
-    str += `${descriptionText[i]}`;
+  for (let i = 0; i < descriptionTextArray.length; i++) {
+    str += `${descriptionTextArray[i]}`;
   }
   return `<p class="event__destination-description"> ${str} </p>`;
 };
 
-const createDestinationInfoTemplate = (descriptionText, photos) => {
-  if (descriptionText || (photos && photos.length > 0) ) {
-    return `<section class="event__section  event__section--destination">
-    <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-
-    ${(descriptionText) ? createParagraphTemplate(descriptionText) : ''}
-    ${(photos) ? createPhotosTemplate(photos) : ''}
-
-  </section>`;
-  } else {
+const createDestinationInfoTemplate = (descriptionTextArray, photosArray) => {
+  if (!descriptionTextArray || (!photosArray && !photosArray.length > 0) ) {
     return '';
   }
+  return `<section class="event__section  event__section--destination">
+  <h3 class="event__section-title  event__section-title--destination">Destination</h3>
+
+    ${(descriptionTextArray) ? createParagraphTemplate(descriptionTextArray) : ''}
+    ${(photosArray) ? createPhotosTemplate(photosArray) : ''}
+
+  </section>`;
 };
 
 const createEditFormTemplate = (data = {}) => {
@@ -173,7 +184,7 @@ const createEditFormTemplate = (data = {}) => {
                     </div>
                   </section>
 
-                  ${createDestinationInfoTemplate(placeDestination.descriptionText, placeDestination.photos )}
+                  ${createDestinationInfoTemplate(placeDestination.descriptionTextArray, placeDestination.photosArray )}
 
               </section>
             </form>

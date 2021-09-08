@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import {OFFERS, TYPES_OF_TRIP, DESTINATIONS} from '../const.js';
 import {getBoolean} from '../utils/common.js';
-import AbstractView from './abstract.js';
+import SmartView from './smart.js';
 
 const BLANK_POINT = {
   tripType: {icon:'taxi', type: 'Taxi'},
@@ -190,7 +190,7 @@ const createEditFormTemplate = (data = {}) => {
 </li>`;
 };
 
-export default class PointEdit extends AbstractView {
+export default class PointEdit extends SmartView {
   constructor(point = BLANK_POINT) {
     super();
     this._data = PointEdit.parsePointToData(point);
@@ -207,44 +207,14 @@ export default class PointEdit extends AbstractView {
     return createEditFormTemplate(this._data);
   }
 
-  // обновление состояния - принимает объект с обнолвениями
-  // метод, который будет обновлять данные в свойстве _data, а потом вызывать обновление шаблона
-  updateData(update) {
-    // если изменения не было, вернуть как было
-    if (!update) {
-      return;
-    }
-
-    // если изменение было
-    this._data = Object.assign(
-      {},
-      this._data,
-      update,
-    );
-
-    this.updateElement();
-  }
-
-  // обновдение элемента
-  // задача метода - удалить старый DOM элемент, вызвать генерацию нового и заменить один на другой
-  updateElement() {
-    const prevElement = this.getElement();
-    const parent = prevElement.parentElement;
-    this.removeElement();
-
-    const newElement = this.getElement();
-
-    parent.replaceChild(newElement, prevElement);
-
-    this.restoreHandlers();
-  }
-
+  // восстановление внутрен
   restoreHandlers() {
     this._setInnerHandlers();
     this.setFormSubmitHandler(this._callback.formSubmit);
   }
 
-  restoreHandlers() {
+  // установка внутренних обр-в
+  _setInnerHandlers() {
     this.getElement()
       .querySelector('.event__input--destination')
       .addEventListener('change', this._cityChangeHandler);

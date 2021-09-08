@@ -90,7 +90,6 @@ const createPhotosTemplate = (photosArray) => (
 
 //описание
 const createParagraphTemplate = (descriptionTextArray) => {
-  // `<p class="event__destination-description">${placeDestination.descriptionText}</p>`
   let str = '';
   for (let i = 0; i < descriptionTextArray.length; i++) {
     str += `${descriptionTextArray[i]}`;
@@ -198,18 +197,30 @@ export default class PointEdit extends AbstractView {
 
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
     this._editClickHandler = this._editClickHandler.bind(this);
+    this._cityChangeHandler = this._cityChangeHandler.bind(this);
+    this._typeChangeHandler = this._typeChangeHandler.bind(this);
+
+    this.getElement()
+      .querySelector('.event__input--destination')
+      .addEventListener('change', this._cityChangeHandler);
+    this.getElement()
+      .querySelector('.event__type-group')
+      .addEventListener('change', this._typeChangeHandler);
   }
 
   getTemplate() {
     return createEditFormTemplate(this._data);
   }
 
+  // обновление состояния - принимает объект с обнолвениями
   // метод, который будет обновлять данные в свойстве _data, а потом вызывать обновление шаблона
   updateData(update) {
+    // если изменения не было, вернуть как было
     if (!update) {
       return;
     }
 
+    // если изменение было
     this._data = Object.assign(
       {},
       this._data,
@@ -219,6 +230,7 @@ export default class PointEdit extends AbstractView {
     this.updateElement();
   }
 
+  // обновдение элемента
   // задача метода - удалить старый DOM элемент, вызвать генерацию нового и заменить один на другой
   updateElement() {
     const prevElement = this.getElement();
@@ -228,6 +240,29 @@ export default class PointEdit extends AbstractView {
     const newElement = this.getElement();
 
     parent.replaceChild(newElement, prevElement);
+  }
+
+  // обработчик - клик по городу
+  _cityChangeHandler(evt) {
+    evt.preventDefault();
+    this.updateData(
+      {
+        сityDestination: evt.target.value,
+        placeDestination: {
+          descriptionTextArray: createParagraphTemplate(), //описание
+          photosArray: createPhotosTemplate(), //фото
+        },
+      });
+  }
+
+  // обработчик - клик по типу маршрута
+  _typeChangeHandler(evt) {
+    evt.preventDefault();
+    this.updateData(
+      {
+        tripType: evt.target.value,
+        offersArray: renderOffers(OFFERS),
+      });
   }
 
   _formSubmitHandler(evt) {

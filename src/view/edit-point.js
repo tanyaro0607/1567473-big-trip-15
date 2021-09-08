@@ -203,6 +203,12 @@ export default class PointEdit extends SmartView {
     this._setInnerHandlers();
   }
 
+  reset(point) {
+    this.updateData(
+      PointEdit.parsePointToData(point),
+    );
+  }
+
   getTemplate() {
     return createEditFormTemplate(this._data);
   }

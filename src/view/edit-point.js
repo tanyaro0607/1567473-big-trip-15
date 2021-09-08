@@ -200,12 +200,7 @@ export default class PointEdit extends AbstractView {
     this._cityChangeHandler = this._cityChangeHandler.bind(this);
     this._typeChangeHandler = this._typeChangeHandler.bind(this);
 
-    this.getElement()
-      .querySelector('.event__input--destination')
-      .addEventListener('change', this._cityChangeHandler);
-    this.getElement()
-      .querySelector('.event__type-group')
-      .addEventListener('change', this._typeChangeHandler);
+    this._setInnerHandlers();
   }
 
   getTemplate() {
@@ -240,6 +235,22 @@ export default class PointEdit extends AbstractView {
     const newElement = this.getElement();
 
     parent.replaceChild(newElement, prevElement);
+
+    this.restoreHandlers();
+  }
+
+  restoreHandlers() {
+    this._setInnerHandlers();
+    this.setFormSubmitHandler(this._callback.formSubmit);
+  }
+
+  restoreHandlers() {
+    this.getElement()
+      .querySelector('.event__input--destination')
+      .addEventListener('change', this._cityChangeHandler);
+    this.getElement()
+      .querySelector('.event__type-group')
+      .addEventListener('change', this._typeChangeHandler);
   }
 
   // обработчик - клик по городу

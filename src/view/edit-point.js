@@ -40,6 +40,9 @@ const renderListTypesOfTrip = () => {
 
 //генерируем шаблон доп услуг
 const renderOffers = (offersArray) => {
+  if (!offersArray || !offersArray.length) {
+    return '';
+  }
   let str = '';
   for (let i = 0; i < offersArray.length; i++) {
     str += ` <div class="event__offer-selector">
@@ -53,24 +56,6 @@ const renderOffers = (offersArray) => {
   }
   return str;
 };
-
-// //генерируем шаблон доп услуг
-// const renderOffers = (offersArray) => {
-//   if (!offersArray.length > 0) {
-//     return '';
-//   } else {
-//   let str = '';
-//   for (let i = 0; i < offersArray.length; i++) {
-//     str += ` <div class="event__offer-selector">
-//     <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="${addChecked}" name="event-offer-luggage" ${addChecked}>
-//     <label class="event__offer-label" for="event-offer-luggage-1">
-//       <span class="event__offer-title">${offersArray[i].text}</span>
-//       &plus;&euro;&nbsp;
-//       <span class="event__offer-price">${offersArray[i].price}</span>
-//     </label>
-//   </div> `};
-//   return str;
-// };
 
 //генерируем шаблон фото
 const renderPhotos = (photosArray) => {
@@ -289,6 +274,7 @@ export default class PointEdit extends SmartView {
 
   // обработчик - клик по типу маршрута
   _typeChangeHandler(evt) {
+    // console.log(evt.target.value);
     evt.preventDefault();
     this.updateData(
       {

@@ -10,7 +10,7 @@ const generateDescription = () => {
 };
 
 //и создаем массив из предложений от 1 до 5
-const descriptionTextArray = new Array(getRandomInteger(0, OFFERS.length)).fill().map(generateDescription);
+const descriptionTextArray = new Array(getRandomInteger(0, 5)).fill().map(generateDescription);
 
 //находим рандомную доп услугу
 const generateOffer = () => {

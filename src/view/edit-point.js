@@ -1,9 +1,11 @@
 import dayjs from 'dayjs';
-import {OFFERS, TYPES_OF_TRIP, DESTINATIONS} from '../const.js';
+import {OFFERS, TYPES_OF_TRIP, DESTINATIONS, DESCRIPTIONS} from '../const.js';
 import {getBoolean} from '../utils/common.js';
 import SmartView from './smart.js';
 // import flatpickr from 'flatpickr';
 // import '../../node_modules/flatpickr/dist/flatpickr.min.css';
+import {getRandomInteger} from '../utils/common.js';
+
 
 const BLANK_POINT = {
   tripType: {icon:'taxi', type: 'Taxi'},
@@ -38,23 +40,42 @@ const renderListTypesOfTrip = () => {
   return str;
 };
 
+//находим рандомную доп услугу
+const generateOffer = () => {
+  const randomIndex = getRandomInteger(0, OFFERS.length - 1);
+  return OFFERS[randomIndex];
+};
+
+const generateOffersArray = () => {
+  const offersArray = new Array(getRandomInteger(0, OFFERS.length)).fill().map(generateOffer);
+  return offersArray;
+};
+
 //генерируем шаблон доп услуг
-const renderOffers = (offersArray) => {
-  if (!offersArray || !offersArray.length) {
+const renderOffers = () => {
+  const randomOffersArray = new Array(getRandomInteger(0, OFFERS.length)).fill().map(generateOffer);
+  if (!randomOffersArray || !randomOffersArray.length) {
     return '';
   }
   let str = '';
-  for (let i = 0; i < offersArray.length; i++) {
+  for (let i = 0; i < randomOffersArray.length; i++) {
     str += ` <div class="event__offer-selector">
-    <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="${addChecked}" name="event-offer-luggage" ${addChecked}>
+    <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" ${addChecked}>
     <label class="event__offer-label" for="event-offer-luggage-1">
-      <span class="event__offer-title">${offersArray[i].text}</span>
+      <span class="event__offer-title">${randomOffersArray[i].text}</span>
       &plus;&euro;&nbsp;
-      <span class="event__offer-price">${offersArray[i].price}</span>
+      <span class="event__offer-price">${randomOffersArray[i].price}</span>
     </label>
   </div> `;
   }
-  return str;
+  return `<section class="event__section  event__section--offers">
+  <h3 class="event__section-title  event__section-title--offers">Offers</h3>
+  <div class="event__available-offers">
+
+  ${str}
+
+  </div>
+</section>`;
 };
 
 //генерируем шаблон фото
@@ -64,6 +85,17 @@ const renderPhotos = (photosArray) => {
     str += ` <img class="event__photo" src="${photosArray[i]}" alt="Event photo"> `;
   }
   return str;
+};
+
+//генерируем рандомное фото
+const generatePhoto = () => {
+  const photo = `http://picsum.photos/248/152?r=${getRandomInteger(1,100)}`;
+  return photo;
+};
+
+const generatePhotosArray = () => {
+  const photosArray = new Array(getRandomInteger(0,5)).fill().map(generatePhoto);
+  return photosArray;
 };
 
 //фото
@@ -95,6 +127,17 @@ const createDestinationInfoTemplate = (descriptionTextArray, photosArray) => {
     ${(photosArray) ? createPhotosTemplate(photosArray) : ''}
 
   </section>`;
+};
+
+//находим одно рандомное описание
+const generateDescription = () => {
+  const randomIndex = getRandomInteger(0, 5);
+  return DESCRIPTIONS[randomIndex];
+};
+
+const generateDescriptionTextArray = () => {
+  const descriptionTextArray = new Array(getRandomInteger(0, OFFERS.length)).fill().map(generateDescription);
+  return descriptionTextArray;
 };
 
 const createEditFormTemplate = (data = {}) => {
@@ -161,14 +204,8 @@ const createEditFormTemplate = (data = {}) => {
                   </button>
                 </header>
                 <section class="event__details">
-                  <section class="event__section  event__section--offers">
-                    <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-                    <div class="event__available-offers">
 
-                    ${renderOffers(OFFERS)}
-
-                    </div>
-                  </section>
+                  ${renderOffers()}
 
                   ${createDestinationInfoTemplate(placeDestination.descriptionTextArray, placeDestination.photosArray )}
 
@@ -266,20 +303,19 @@ export default class PointEdit extends SmartView {
       {
         сityDestination: evt.target.value,
         placeDestination: {
-          descriptionTextArray: createParagraphTemplate(), //описание
-          photosArray: createPhotosTemplate(), //фото
+          descriptionTextArray: generateDescriptionTextArray(), //описание
+          photosArray: generatePhotosArray(), //фото
         },
       });
   }
 
   // обработчик - клик по типу маршрута
   _typeChangeHandler(evt) {
-    // console.log(evt.target.value);
     evt.preventDefault();
     this.updateData(
       {
         tripType: evt.target.value,
-        offersArray: renderOffers(OFFERS),
+        offersArray: generateOffersArray(),
       });
   }
 

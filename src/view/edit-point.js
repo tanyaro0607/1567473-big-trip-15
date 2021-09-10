@@ -144,7 +144,6 @@ const generateDescriptionTextArray = () => {
 const createEditFormTemplate = (data = {}) => {
 
   const {tripType, price, time, сityDestination, placeDestination} = data;
-  console.log(tripType);
 
   const timeStartEvent = dayjs(time.timeStart).format('DD/MM/YY HH:mm');
   const timeEndEvent = dayjs(time.timeEnd).format('DD/MM/YY HH:mm');
@@ -225,6 +224,7 @@ export default class PointEdit extends SmartView {
     this._editClickHandler = this._editClickHandler.bind(this);
     this._cityChangeHandler = this._cityChangeHandler.bind(this);
     this._typeChangeHandler = this._typeChangeHandler.bind(this);
+    this._changeOffersHandler = this._changeOffersHandler.bind(this);
 
     this._setInnerHandlers();
   }
@@ -253,6 +253,9 @@ export default class PointEdit extends SmartView {
     this.getElement()
       .querySelector('.event__type-group')
       .addEventListener('change', this._typeChangeHandler);
+    this.getElement()
+      .querySelector('.event__section--offers')
+      .addEventListener('change', this._changeOffersHandler);
   }
 
   // обработчик - клик по городу
@@ -286,6 +289,14 @@ export default class PointEdit extends SmartView {
         },
         offersArray: generateOffersArray(),
       });
+  }
+
+  _changeOffersHandler(evt) {
+    evt.preventDefault();
+    // console.log(evt);
+    // this.updateState({
+    //дописать
+    // });
   }
 
   _formSubmitHandler(evt) {

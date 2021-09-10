@@ -3,9 +3,9 @@ import {OFFERS, TYPES_OF_TRIP, DESTINATIONS, DESCRIPTIONS} from '../const.js';
 import {getBoolean} from '../utils/common.js';
 import SmartView from './smart.js';
 import {getRandomInteger} from '../utils/common.js';
-// import flatpickr from 'flatpickr';
+import flatpickr from 'flatpickr';
 
-// import '../../node_modules/flatpickr/dist/flatpickr.min.css';
+import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 
 
 const BLANK_POINT = {
@@ -224,7 +224,7 @@ export default class PointEdit extends SmartView {
     this._editClickHandler = this._editClickHandler.bind(this);
     this._cityChangeHandler = this._cityChangeHandler.bind(this);
     this._typeChangeHandler = this._typeChangeHandler.bind(this);
-    this._changeOffersHandler = this._changeOffersHandler.bind(this);
+    this._offerChangeHandler = this._offerChangeHandler.bind(this);
 
     this._setInnerHandlers();
   }
@@ -255,7 +255,7 @@ export default class PointEdit extends SmartView {
       .addEventListener('change', this._typeChangeHandler);
     this.getElement()
       .querySelector('.event__section--offers')
-      .addEventListener('change', this._changeOffersHandler);
+      .addEventListener('change', this._offerChangeHandler);
   }
 
   // обработчик - клик по городу
@@ -291,7 +291,7 @@ export default class PointEdit extends SmartView {
       });
   }
 
-  _changeOffersHandler(evt) {
+  _offerChangeHandler(evt) {
     evt.preventDefault();
     // console.log(evt);
     // this.updateState({

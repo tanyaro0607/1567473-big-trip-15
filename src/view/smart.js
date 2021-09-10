@@ -13,7 +13,6 @@ export default class Smart extends Abstract {
     if (!update) {
       return;
     }
-
     // если изменение было
     this._data = Object.assign(
       {},

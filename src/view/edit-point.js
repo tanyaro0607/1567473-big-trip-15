@@ -2,9 +2,10 @@ import dayjs from 'dayjs';
 import {OFFERS, TYPES_OF_TRIP, DESTINATIONS, DESCRIPTIONS} from '../const.js';
 import {getBoolean} from '../utils/common.js';
 import SmartView from './smart.js';
-// import flatpickr from 'flatpickr';
-// import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 import {getRandomInteger} from '../utils/common.js';
+// import flatpickr from 'flatpickr';
+
+// import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 
 
 const BLANK_POINT = {
@@ -143,6 +144,7 @@ const generateDescriptionTextArray = () => {
 const createEditFormTemplate = (data = {}) => {
 
   const {tripType, price, time, сityDestination, placeDestination} = data;
+  console.log(tripType);
 
   const timeStartEvent = dayjs(time.timeStart).format('DD/MM/YY HH:mm');
   const timeEndEvent = dayjs(time.timeEnd).format('DD/MM/YY HH:mm');
@@ -218,20 +220,13 @@ export default class PointEdit extends SmartView {
   constructor(point = BLANK_POINT) {
     super();
     this._data = PointEdit.parsePointToData(point);
-    // this._datepicker1 = null;
-    // this._datepicker2 = null;
 
     this._formSubmitHandler = this._formSubmitHandler.bind(this);
     this._editClickHandler = this._editClickHandler.bind(this);
     this._cityChangeHandler = this._cityChangeHandler.bind(this);
     this._typeChangeHandler = this._typeChangeHandler.bind(this);
 
-    // this._timeStartHandler = this._timeStartHandler.bind(this);
-    // this._timeEndHandler = this._timeEndHandler.bind(this);
-    // this._setDatePicker = this._setDatePicker.bind(this);
-
     this._setInnerHandlers();
-    // this._setDatePicker();
   }
 
   reset(point) {
@@ -249,42 +244,6 @@ export default class PointEdit extends SmartView {
     this._setInnerHandlers();
     this.setFormSubmitHandler(this._callback.formSubmit);
   }
-
-  // _setDatepicker() {
-  //   if (this._datepicker1) {
-  //     // В случае обновления компонента удаляем вспомогательные DOM-элементы,
-  //     // которые создает flatpickr при инициализации
-  //     this._datepicker1.destroy();
-  //     this._datepicker1 = null;
-  //   }
-
-  //   if (this._datepicker2) {
-  //     this._datepicker2.destroy();
-  //     this._datepicker2 = null;
-  //   }
-
-  //   // flatpickr есть смысл инициализировать только в случае,
-  //   // если поле выбора даты доступно для заполнения
-  //   this._datepicker1 = flatpickr(
-  //     this.getElement().querySelector('[name = "event-start-time"]'),
-  //     {
-  //       dateFormat: 'd/m/y H:i',
-  //       enableTime: true,
-  //       'time_24hr': true,
-  //       onChange: this._timeStartHandler, // На событие flatpickr передаём наш колбэк
-  //     },
-  //   ),
-  //   this._datepicker2 = flatpickr(
-  //     this.getElement().querySelector('[name = "event-end-time"]'),
-  //     {
-  //       dateFormat: 'd/m/y H:i',
-  //       enableTime: true,
-  //       minDate: this._datepicker1.input.value,
-  //       'time_24hr': true,
-  //       onChange: this._timeEndHandler, // На событие flatpickr передаём наш колбэк
-  //     },
-  //   );
-  // }
 
   // установка внутренних обр-в
   _setInnerHandlers() {
@@ -312,9 +271,19 @@ export default class PointEdit extends SmartView {
   // обработчик - клик по типу маршрута
   _typeChangeHandler(evt) {
     evt.preventDefault();
+    const  icon = evt.target.value;
+    function isType(item) {
+      return item.icon === icon;
+    }
+
+    const type = TYPES_OF_TRIP.find(isType).type;
+
     this.updateData(
       {
-        tripType: evt.target.value,
+        tripType: {
+          icon,
+          type,
+        },
         offersArray: generateOffersArray(),
       });
   }
@@ -333,17 +302,6 @@ export default class PointEdit extends SmartView {
     evt.preventDefault();
     this._callback.editClick();
   }
-
-  // _timeStartHandler([userDate]) {
-  //   this.updateData({
-  //     timeStart: userDate,
-  //   });
-  // }
-
-  // _timeEndHandler([userDate]) {
-  //   this.updateData({
-  //     timeEnd: userDate,
-  //   });
 
   setEditClickHandler(callback) {
     this._callback.editClick = callback;

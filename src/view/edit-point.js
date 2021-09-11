@@ -232,6 +232,7 @@ export default class PointEdit extends SmartView {
     this._timeEndChangeHandler = this._timeEndChangeHandler.bind(this);// обработчик, который реагирует на изменение даты
 
     this._setInnerHandlers();
+    this._setDatepicker();
   }
 
   _setDatepicker() {
@@ -251,7 +252,7 @@ export default class PointEdit extends SmartView {
       this.getElement().querySelector('[name = "event-start-time"]'), //поле, куда нужно прикрепить календарь
       {
         dateFormat: 'd/m/y H:i',
-        defaultDate: this._data.time.timeStart,
+        defaultDate: this._data.time.timeStart, // значение по умолчанию
         onChange: this._timeStartChangeHandler, // что делаем, если пользователь ткнул в календарь
       },
     );
@@ -259,7 +260,7 @@ export default class PointEdit extends SmartView {
       this.getElement().querySelector('[name = "event-end-time"]'), //поле, куда нужно прикрепить календарь
       {
         dateFormat: 'd/m/y H:i',
-        defaultDate: this._data.time.timeEnd,
+        defaultDate: this._data.time.timeEnd, // значение по умолчанию
         onChange: this._timeEndChangeHandler, // что делаем, если пользователь ткнул в календарь
       },
     );
@@ -279,6 +280,7 @@ export default class PointEdit extends SmartView {
   restoreHandlers() {
     this._setInnerHandlers();
     this.setFormSubmitHandler(this._callback.formSubmit);
+    this._setDatepicker();
   }
 
   // установка внутренних обр-в
@@ -295,18 +297,21 @@ export default class PointEdit extends SmartView {
   }
 
   // получает дату и переводит ее в состояние
-  _timeStartChangeHandler([userDate]) {
-    // console.log(userDate);
+  _timeStartChangeHandler([userDateStart]) {
     this.updateData({
-      timeStart: userDate,
+      time: {
+        timeStart: userDateStart,
+      },
     });
   }
 
   // получает дату и переводит ее в состояние
-  _timeEndChangeHandler([userDate]) {
+  _timeEndChangeHandler([userDateEnd]) {
     // console.log(userDate);
     this.updateData({
-      timeEnd: userDate,
+      time: {
+        timeEnd: userDateEnd,
+      },
     });
   }
 

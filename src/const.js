@@ -55,9 +55,9 @@ export const UserAction = {
 };
 
 export const UpdateType = {
-  PATCH: 'PATCH',
-  MINOR: 'MINOR',
-  MAJOR: 'MAJOR',
+  PATCH: 'PATCH', // маленькое изменение - не меняет глобально и ничего не ломает
+  MINOR: 'MINOR', // среднее, привносит новое, но не ломает старое - список точек маршута
+  MAJOR: 'MAJOR', // глобальное, изменение, требует перерисовки страницы (добавление, удаление)
 };
 
 export const SortType = [SortHeaders.DAY, SortHeaders.TIME, SortHeaders.PRICE];

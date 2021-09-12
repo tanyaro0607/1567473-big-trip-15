@@ -13,7 +13,8 @@ const POINT_COUNT = 3;
 
 export default class Trip {
   //инициализируем
-  constructor(pointsContainer) {
+  constructor(pointsContainer, pointsModel) {
+    this._pointsModel = pointsModel;
     this._pointsContainer = pointsContainer;
     this._renderedPointCount = POINT_COUNT;
     this._pointPresenter = new Map();
@@ -38,6 +39,10 @@ export default class Trip {
     this._sourcedPoints = points.slice();
 
     this._renderTrip();
+  }
+
+  _getTasks() {
+    return this._pointsModel.getPoints();
   }
 
   _handleModeChange() {

@@ -3,6 +3,7 @@ import TripInfoSectionView from './view/trip-info-section.js'; // контейн
 import TripInfoView from './view/trip-info.js'; //Маршрут
 import TripInfoCostView from './view/trip-info-cost.js'; //стоимость
 import FilterView from './view/filter.js'; //Фильтр
+import PointsModel from './model/points.js';
 import {generatePoint} from './moсk/point-mock.js'; //временные данные
 import {render, RenderPosition} from './utils/render.js';
 import TripPresenter from './presenter/trip.js';
@@ -11,11 +12,14 @@ import TripPresenter from './presenter/trip.js';
 const POINT_COUNT = 3;
 const points = new Array(POINT_COUNT).fill().map(generatePoint);
 
+const pointsModel = new PointsModel();
+pointsModel.setPoints(points);
+
 const siteMainElement = document.querySelector('.trip-main');
 const siteMainNavigationElement = document.querySelector('.trip-controls__navigation');
 const siteFilterElement = document.querySelector('.trip-controls__filters');
 const pointsContainer = document.querySelector('.trip-events');
-const tripPresenter = new TripPresenter(pointsContainer);
+const tripPresenter = new TripPresenter(pointsContainer, pointsModel);
 const tripInfoSectionComponent = new TripInfoSectionView(); //контейнер для маршрута и стоимости
 
 render(siteMainNavigationElement, new SiteMenuView(), RenderPosition.BEFOREEND); //отриосвка Меню

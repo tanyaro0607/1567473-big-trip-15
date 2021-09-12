@@ -42,5 +42,4 @@ render(siteFilterElement, new FilterView(), RenderPosition.BEFOREEND); //отр�
 //   //
 // });
 
-
-tripPresenter.init(points);
+tripPresenter.init();

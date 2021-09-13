@@ -4,7 +4,7 @@ import PointView from '../view/point.js'; // Точки маршрута
 import NoPointView from '../view/no-point.js';
 import PointEditView from '../view/edit-point.js'; //Форма редактирования
 import PointPresenter from './point.js';
-import {render, RenderPosition} from '../utils/render.js';
+import {render, remove, RenderPosition} from '../utils/render.js';
 import {sortByDay, sortByPrice, sortByTime} from '../utils/point.js';
 import {SortType, SortHeaders, UpdateType, UserAction} from '../const.js';
 
@@ -18,9 +18,9 @@ export default class Trip {
     this._renderedPointCount = POINT_COUNT;
     this._pointPresenter = new Map();
     this._currentSortType = SortType.DAY;
+    this._sortComponent = null;
 
     this._listPointComponent = new ListPointView();
-    this._sortFormComponent = new SortFormView();
     this._pointComponent = new PointView();
     this._noPointComponent = new NoPointView();
     this._noPointEditComponent = new PointEditView();
@@ -85,9 +85,13 @@ export default class Trip {
         break;
       case UpdateType.MINOR:
         // - обновить список
+        this._clearTrip();
+        this._renderTrip();
         break;
       case UpdateType.MAJOR:
         // - обновить всю доску (например, при переключении фильтра)
+        this._clearTrip()({resetSortType: true});
+        this._renderTrip();
         break;
     }
   }
@@ -98,14 +102,20 @@ export default class Trip {
     }
 
     this._currentSortType = sortType;
-    this._clearPointList(); // - Очищаем список
-    this._renderPointsList(); // - Рендерим список заново
+    this._clearTrip(); // - Очищаем список
+    this._renderTrip(); // - Рендерим список заново
   }
 
   // сортировка
   _renderSort() {
-    render(this._pointsContainer, this._sortFormComponent, RenderPosition.AFTERBEGIN);
+    if (this._sortFormComponent !== null) {
+      this._sortFormComponent = null;
+    }
+
+    this._sortFormComponent = new SortFormView(this._currentSortType);
     this._sortFormComponent.setSortTypeChangeHandler(this._handleSortTypeChange);
+
+    render(this._pointsContainer, this._sortFormComponent, RenderPosition.AFTERBEGIN);
   }
 
   //точка маршрута
@@ -131,15 +141,34 @@ export default class Trip {
     this._renderedPointCount = POINT_COUNT;
   }
 
+  _clearTrip({resetSortType = false} = {}) {
+    // const pointCount = this._getPoints().length; //кол-во точек всего
+    this._pointPresenter.forEach((presenter) => presenter.destroy());
+    this._pointPresenter.clear();
+
+    remove(this._sortFormComponent); // удаляем сортировку
+    if (this._noPointComponent) {
+      remove(this._noPointComponent);
+    }
+    if (resetSortType) {
+      this._currentSortType = SortType.DEFAULT;
+    }
+  }
+
   // отрисовка всех методов
   _renderTrip() {
-    if (this._getPoints().every((point) => point.isNoPoints)) {
+    const points = this._getPoints();
+    const pointCount = points.length;
+
+    // если точек нет, рисуем заглушку
+    if (pointCount === 0) {
       this._renderNoPoints();
       return;
     }
 
-    this._renderSort();   // - Очищаем список
-    this._renderPointsList();     // - Рендерим список заново
+    // если точки есть, то
+    this._renderSort();   // рисуем сортировку
+    this._renderPointsList();     // и список точек
 
   }
 }

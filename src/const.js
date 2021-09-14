@@ -60,4 +60,10 @@ export const UpdateType = {
   MAJOR: 'MAJOR', // глобальное, изменение, требует перерисовки страницы (добавление, удаление)
 };
 
+export const FilterType = {
+  EVERYTHING: 'everything',
+  FUTURE: 'future',
+  PAST: 'past',
+};
+
 export const SortType = [SortHeaders.DAY, SortHeaders.TIME, SortHeaders.PRICE];

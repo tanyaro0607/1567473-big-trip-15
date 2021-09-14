@@ -7,6 +7,7 @@ import PointsModel from './model/points.js';
 import {generatePoint} from './moсk/point-mock.js'; //временные данные
 import {render, RenderPosition} from './utils/render.js';
 import TripPresenter from './presenter/trip.js';
+import FilterModel from './model/filter.js';
 
 //создаем массив объектов описывающих 20 точек маршрута
 const POINT_COUNT = 3;
@@ -14,6 +15,7 @@ const points = new Array(POINT_COUNT).fill().map(generatePoint);
 
 const pointsModel = new PointsModel();
 pointsModel.setPoints(points);
+const filterModel = new FilterModel();
 
 const siteMainElement = document.querySelector('.trip-main');
 const siteMainNavigationElement = document.querySelector('.trip-controls__navigation');

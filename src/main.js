@@ -2,12 +2,13 @@ import SiteMenuView from './view/site-menu.js'; //Меню
 import TripInfoSectionView from './view/trip-info-section.js'; // контейнер для маршрута и стоимости
 import TripInfoView from './view/trip-info.js'; //Маршрут
 import TripInfoCostView from './view/trip-info-cost.js'; //стоимость
-import FilterView from './view/filter.js'; //Фильтр
+// import FilterView from './view/filter.js'; //Фильтр
 import PointsModel from './model/points.js';
 import {generatePoint} from './moсk/point-mock.js'; //временные данные
 import {render, RenderPosition} from './utils/render.js';
 import TripPresenter from './presenter/trip.js';
 import FilterModel from './model/filter.js';
+import FilterPresenter from './presenter/filter.js';
 
 //создаем массив объектов описывающих 20 точек маршрута
 const POINT_COUNT = 3;
@@ -17,25 +18,18 @@ const pointsModel = new PointsModel();
 pointsModel.setPoints(points);
 const filterModel = new FilterModel();
 
-// const filters = [
-//   {
-//     type: 'everything',
-//     name: 'EVERYTHING',
-//   },
-// ];
-
 const siteMainElement = document.querySelector('.trip-main');
 const siteMainNavigationElement = document.querySelector('.trip-controls__navigation');
 const siteFilterElement = document.querySelector('.trip-controls__filters');
 const pointsContainer = document.querySelector('.trip-events');
 const tripPresenter = new TripPresenter(pointsContainer, pointsModel);
+const filterPresenter = new FilterPresenter(siteFilterElement, filterModel, pointsModel);
 const tripInfoSectionComponent = new TripInfoSectionView(); //контейнер для маршрута и стоимости
 
 render(siteMainNavigationElement, new SiteMenuView(), RenderPosition.BEFOREEND); //отриосвка Меню
 render(siteMainElement, tripInfoSectionComponent, RenderPosition.AFTERBEGIN); //отриосвка контейнера для маршрута и стоимости
 render(tripInfoSectionComponent, new TripInfoView(points), RenderPosition.AFTERBEGIN); //отриосвка Маршрута
 render(tripInfoSectionComponent, new TripInfoCostView(), RenderPosition.BEFOREEND); //отриосвка стоимости
-render(siteFilterElement, new FilterView(), RenderPosition.BEFOREEND); //отриосвка Фильтра
 
 // const renderAddPoint = () => {
 //   //действия при клике на кнопку New Event
@@ -50,5 +44,5 @@ render(siteFilterElement, new FilterView(), RenderPosition.BEFOREEND); //отр�
 // document.querySelectorAll('.event__offer-label').addEventListener('click', () => {
 //   //
 // });
-
+filterPresenter.init();
 tripPresenter.init();

@@ -17,6 +17,13 @@ const pointsModel = new PointsModel();
 pointsModel.setPoints(points);
 const filterModel = new FilterModel();
 
+// const filters = [
+//   {
+//     type: 'everything',
+//     name: 'EVERYTHING',
+//   },
+// ];
+
 const siteMainElement = document.querySelector('.trip-main');
 const siteMainNavigationElement = document.querySelector('.trip-controls__navigation');
 const siteFilterElement = document.querySelector('.trip-controls__filters');

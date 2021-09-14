@@ -135,12 +135,6 @@ export default class Trip {
     render(this._pointContainer, this._noPointComponent, RenderPosition.BEFOREEND);
   }
 
-  _clearPointList() {
-    this._pointPresenter.forEach((presenter) => presenter.destroy()); //вызывает метод destroy у всех точек
-    this._pointPresenter.clear(); //очищает
-    this._renderedPointCount = POINT_COUNT;
-  }
-
   _clearTrip({resetSortType = false} = {}) {
     // const pointCount = this._getPoints().length; //кол-во точек всего
     this._pointPresenter.forEach((presenter) => presenter.destroy());

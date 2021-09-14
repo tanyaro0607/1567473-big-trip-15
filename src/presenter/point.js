@@ -22,6 +22,7 @@ export default class Point {
     this._handleEditClick = this._handleEditClick.bind(this);
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
+    this._handleDeleteClick = this._handleDeleteClick.bind(this);
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
     this._handlePointClick = this._handlePointClick.bind(this);
   }
@@ -39,6 +40,7 @@ export default class Point {
     this._pointComponent.setFavoriteClickHandler(this._handleFavoriteClick);
     this._pointEditComponent.setFormSubmitHandler(this._handleFormSubmit);
     this._pointEditComponent.setEditClickHandler(this._handlePointClick);
+    this._pointEditComponent.setDeleteClickHandler(this._handleDeleteClick);
 
     //если точки отрисовываются и редактируются в первый раз
     if (prevPointComponent === null || prevPointEditComponent === null) {
@@ -123,11 +125,26 @@ export default class Point {
     );
   }
 
-  _handleFormSubmit(point) {
+  _handleDeleteClick(point) {
+    this._changeData(
+      UserAction.DELETE_POINT,
+      UpdateType.MINOR,
+      point,
+    );
+  }
+
+  _handleFormSubmit(update) {
+    // Проверяем, поменялись ли в задаче данные, которые попадают под фильтрацию,
+    // а значит требуют перерисовки списка - если таких нет, это PATCH-обновление
+    // дописать условие
+    // console.log(update.time.timeStart);
+    // if ((!update.price) || (!update.time.timeStart) || (!update.time.timeEnd)) {
+    //   return;
+    // }
     this._changeData(
       UserAction.UPDATE_POINT,
       UpdateType.MINOR,
-      point,
+      update,
     );
     this._replaceFormEditToPoint();
   }

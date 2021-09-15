@@ -40,13 +40,13 @@ export default class PointNew {
     document.removeEventListener('keydown', this._escKeyDownHandler);
   }
 
-  _handleFormSubmit(point) {
+  _handleFormSubmit(newPoint) {
     this._changeData(
       UserAction.ADD_POINT,
       UpdateType.MINOR,
       // Пока у нас нет сервера, который бы после сохранения
       // выдывал честный id задачи, нам нужно позаботиться об этом самим
-      Object.assign({id: nanoid()}, point),
+      Object.assign({id: nanoid()}, newPoint),
     );
     this.destroy();
   }

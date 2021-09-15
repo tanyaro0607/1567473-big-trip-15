@@ -7,7 +7,7 @@ import PointPresenter from './point.js';
 import {render, remove, RenderPosition} from '../utils/render.js';
 import {sortByDay, sortByPrice, sortByTime} from '../utils/point.js';
 import {filter} from '../utils/filter.js';
-import {SortType, SortHeaders, UpdateType, UserAction} from '../const.js';
+import {SortType, SortHeaders, UpdateType, UserAction, FilterType} from '../const.js';
 
 const POINT_COUNT = 3;
 
@@ -19,12 +19,13 @@ export default class Trip {
     this._filterModel = filterModel;
     this._renderedPointCount = POINT_COUNT;
     this._pointPresenter = new Map();
+    this._filterType = FilterType.EVERYTHING;
     this._currentSortType = SortType.DAY;
     this._sortComponent = null;
+    this._noPointComponent = null;
 
     this._listPointComponent = new ListPointView();
     this._pointComponent = new PointView();
-    this._noPointComponent = new NoPointView();
     this._noPointEditComponent = new PointEditView();
 
     this._handleViewAction = this._handleViewAction.bind(this);
@@ -41,9 +42,9 @@ export default class Trip {
   }
 
   _getPoints() {
-    const filterType = this._filterModel.getFilter();
+    this._filterType = this._filterModel.getFilter();
     const points = this._pointsModel.getPoints();
-    const filtredPoints = filter[filterType](points); //фильтруем
+    const filtredPoints = filter[this._filterType](points); //фильтруем
     // сортируем результат
     switch (this._currentSortType) {
       case SortHeaders.TIME:
@@ -97,7 +98,7 @@ export default class Trip {
         break;
       case UpdateType.MAJOR:
         // - обновить всю доску (например, при переключении фильтра)
-        this._clearTrip()({resetSortType: true});
+        this._clearTrip({resetSortType: true});
         this._renderTrip();
         break;
     }
@@ -139,11 +140,11 @@ export default class Trip {
 
   //если нет точек маршрута
   _renderNoPoints() {
-    render(this._pointContainer, this._noPointComponent, RenderPosition.BEFOREEND);
+    this._noPointComponent = new NoPointView(this._filterType);
+    render(this._pointsContainer, this._noPointComponent, RenderPosition.BEFOREEND);
   }
 
   _clearTrip({resetSortType = false} = {}) {
-    // const pointCount = this._getPoints().length; //кол-во точек всего
     this._pointPresenter.forEach((presenter) => presenter.destroy());
     this._pointPresenter.clear();
 

@@ -4,6 +4,7 @@ import PointView from '../view/point.js'; // Точки маршрута
 import NoPointView from '../view/no-point.js';
 import PointEditView from '../view/edit-point.js'; //Форма редактирования
 import PointPresenter from './point.js';
+import PointNewPresenter from './point-new.js';
 import {render, remove, RenderPosition} from '../utils/render.js';
 import {sortByDay, sortByPrice, sortByTime} from '../utils/point.js';
 import {filter} from '../utils/filter.js';
@@ -35,10 +36,17 @@ export default class Trip {
 
     this._pointsModel.addObserver(this._handleModelEvent);
     this._filterModel.addObserver(this._handleModelEvent);
+    this._pointNewPresenter = new PointNewPresenter(this._listPointComponent, this._handleViewAction);
   }
 
   init() {
     this._renderTrip();
+  }
+
+  createPoint() {
+    this._currentSortType = SortType.DAY;
+    this._filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
+    this._pointNewPresenter.init();
   }
 
   _getPoints() {
@@ -56,6 +64,7 @@ export default class Trip {
   }
 
   _handleModeChange() {
+    this._pointNewPresenter.destroy();
     this._pointPresenter.forEach((presenter) => presenter.resetView());
   }
 

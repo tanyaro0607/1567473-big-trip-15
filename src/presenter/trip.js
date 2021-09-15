@@ -6,15 +6,17 @@ import PointEditView from '../view/edit-point.js'; //Форма редактир
 import PointPresenter from './point.js';
 import {render, remove, RenderPosition} from '../utils/render.js';
 import {sortByDay, sortByPrice, sortByTime} from '../utils/point.js';
+import {filter} from '../utils/filter.js';
 import {SortType, SortHeaders, UpdateType, UserAction} from '../const.js';
 
 const POINT_COUNT = 3;
 
 export default class Trip {
   //инициализируем
-  constructor(pointsContainer, pointsModel) {
+  constructor(pointsContainer, pointsModel, filterModel) {
     this._pointsModel = pointsModel;
     this._pointsContainer = pointsContainer;
+    this._filterModel = filterModel;
     this._renderedPointCount = POINT_COUNT;
     this._pointPresenter = new Map();
     this._currentSortType = SortType.DAY;
@@ -31,6 +33,7 @@ export default class Trip {
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
 
     this._pointsModel.addObserver(this._handleModelEvent);
+    this._filterModel.addObserver(this._handleModelEvent);
   }
 
   init() {
@@ -38,13 +41,17 @@ export default class Trip {
   }
 
   _getPoints() {
+    const filterType = this._filterModel.getFilter();
+    const points = this._pointsModel.getPoints();
+    const filtredPoints = filter[filterType](points); //фильтруем
+    // сортируем результат
     switch (this._currentSortType) {
       case SortHeaders.TIME:
-        return this._pointsModel.getPoints().slice().sort(sortByTime);
+        return filtredPoints.sort(sortByTime);
       case SortHeaders.PRICE:
-        return this._pointsModel.getPoints().slice().sort(sortByPrice);
+        return filtredPoints.sort(sortByPrice);
     }
-    return this._pointsModel.getPoints().slice().sort(sortByDay);
+    return filtredPoints.sort(sortByDay);
   }
 
   _handleModeChange() {

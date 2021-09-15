@@ -2,7 +2,6 @@ import SiteMenuView from './view/site-menu.js'; //Меню
 import TripInfoSectionView from './view/trip-info-section.js'; // контейнер для маршрута и стоимости
 import TripInfoView from './view/trip-info.js'; //Маршрут
 import TripInfoCostView from './view/trip-info-cost.js'; //стоимость
-// import FilterView from './view/filter.js'; //Фильтр
 import PointsModel from './model/points.js';
 import {generatePoint} from './moсk/point-mock.js'; //временные данные
 import {render, RenderPosition} from './utils/render.js';
@@ -22,7 +21,7 @@ const siteMainElement = document.querySelector('.trip-main');
 const siteMainNavigationElement = document.querySelector('.trip-controls__navigation');
 const siteFilterElement = document.querySelector('.trip-controls__filters');
 const pointsContainer = document.querySelector('.trip-events');
-const tripPresenter = new TripPresenter(pointsContainer, pointsModel);
+const tripPresenter = new TripPresenter(pointsContainer, pointsModel, filterModel);
 const filterPresenter = new FilterPresenter(siteFilterElement, filterModel, pointsModel);
 const tripInfoSectionComponent = new TripInfoSectionView(); //контейнер для маршрута и стоимости
 

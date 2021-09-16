@@ -44,8 +44,8 @@ export default class Trip {
   }
 
   createPoint() {
-    this._currentSortType = SortType.DAY;
-    this._filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
+    this._currentSortType = SortType.DAY; //сброс сортровки на DAY
+    this._filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING); //сброс фильтра на EVERYTHING
     this._pointNewPresenter.init();
   }
 

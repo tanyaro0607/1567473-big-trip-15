@@ -8,6 +8,7 @@ import {render, RenderPosition} from './utils/render.js';
 import TripPresenter from './presenter/trip.js';
 import FilterModel from './model/filter.js';
 import FilterPresenter from './presenter/filter.js';
+import {MenuItem} from './const.js';
 
 //создаем массив объектов описывающих 20 точек маршрута
 const POINT_COUNT = 3;
@@ -18,6 +19,7 @@ pointsModel.setPoints(points);
 const filterModel = new FilterModel();
 
 const siteMainElement = document.querySelector('.trip-main');
+const siteMenuComponent = new SiteMenuView();
 const siteMainNavigationElement = document.querySelector('.trip-controls__navigation');
 const siteFilterElement = document.querySelector('.trip-controls__filters');
 const pointsContainer = document.querySelector('.trip-events');
@@ -25,10 +27,25 @@ const tripPresenter = new TripPresenter(pointsContainer, pointsModel, filterMode
 const filterPresenter = new FilterPresenter(siteFilterElement, filterModel, pointsModel);
 const tripInfoSectionComponent = new TripInfoSectionView(); //контейнер для маршрута и стоимости
 
-render(siteMainNavigationElement, new SiteMenuView(), RenderPosition.BEFOREEND); //отриосвка Меню
+render(siteMainNavigationElement, siteMenuComponent, RenderPosition.BEFOREEND); //отриосвка Меню
 render(siteMainElement, tripInfoSectionComponent, RenderPosition.AFTERBEGIN); //отриосвка контейнера для маршрута и стоимости
 render(tripInfoSectionComponent, new TripInfoView(points), RenderPosition.AFTERBEGIN); //отриосвка Маршрута
 render(tripInfoSectionComponent, new TripInfoCostView(), RenderPosition.BEFOREEND); //отриосвка стоимости
+
+const handleSiteMenuClick = (menuItem) => {
+  switch (menuItem) {
+    case MenuItem.TABLE:
+      // Показать доску
+      // Скрыть статистику
+      break;
+    case MenuItem.STATS:
+      // Скрыть доску
+      // Показать статистику
+      break;
+  }
+};
+
+siteMenuComponent.setMenuClickHandler(handleSiteMenuClick);
 
 // const renderAddPoint = () => {
 //   //действия при клике на кнопку New Event

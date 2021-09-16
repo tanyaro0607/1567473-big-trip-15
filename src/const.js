@@ -66,4 +66,10 @@ export const FilterType = {
   PAST: 'past',
 };
 
+export const MenuItem = {
+  // ADD_NEW_POINT: 'NEW_EVENT',
+  TABLE: 'TABLE',
+  STATS: 'STATS',
+};
+
 export const SortType = [SortHeaders.DAY, SortHeaders.TIME, SortHeaders.PRICE];

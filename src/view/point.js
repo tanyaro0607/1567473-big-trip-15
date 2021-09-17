@@ -1,17 +1,18 @@
 import dayjs from 'dayjs';
 import AbstractView from './abstract.js';
+import {OFFERS} from '../const.js';
 
 //передаем в шаблон
 const renderOffers = (offersArray) => {
   let str = '';
   for (let i = 0; i < offersArray.length; i++) {
-    str += ` <li class="event__offer">
+    str += `<li class="event__offer">
     <span class="event__offer-title">${offersArray[i].text}</span>
     &plus;&euro;&nbsp;
     <span class="event__offer-price">${offersArray[i].price}</span>
     </li>`;
   }
-  return str;
+  return `<ul class="event__selected-offers"> ${str} </ul>`;
 };
 
 const createPointTemplate = (point) => {
@@ -54,11 +55,9 @@ const createPointTemplate = (point) => {
     &euro;&nbsp;<span class="event__price-value">${price}</span>
   </p>
   <h4 class="visually-hidden">Offers:</h4>
-  <ul class="event__selected-offers">
 
   ${renderOffers(offersArray)}
 
-  </ul>
   <button class="event__favorite-btn ${favoriteClassName}" type="button">
     <span class="visually-hidden">Add to favorite</span>
     <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">

@@ -4,10 +4,11 @@ import TripInfoView from './view/trip-info.js'; //Маршрут
 import TripInfoCostView from './view/trip-info-cost.js'; //стоимость
 import PointsModel from './model/points.js';
 import {generatePoint} from './moсk/point-mock.js'; //временные данные
-import {render, RenderPosition} from './utils/render.js';
+import {render, RenderPosition, remove} from './utils/render.js';
 import TripPresenter from './presenter/trip.js';
 import FilterModel from './model/filter.js';
 import FilterPresenter from './presenter/filter.js';
+import StatsView from './view/stats.js';
 import {MenuItem} from './const.js';
 
 //создаем массив объектов описывающих 20 точек маршрута
@@ -31,39 +32,51 @@ render(siteMainNavigationElement, siteMenuComponent, RenderPosition.BEFOREEND); 
 render(siteMainElement, tripInfoSectionComponent, RenderPosition.AFTERBEGIN); //отриосвка контейнера для маршрута и стоимости
 render(tripInfoSectionComponent, new TripInfoView(points), RenderPosition.AFTERBEGIN); //отриосвка Маршрута
 render(tripInfoSectionComponent, new TripInfoCostView(), RenderPosition.BEFOREEND); //отриосвка стоимости
+let statsComponent = null;
 
 const handleSiteMenuClick = (menuItem) => {
   switch (menuItem) {
     case MenuItem.TABLE:
-      // Показать доску
-      // Скрыть статистику
+      tripPresenter.init();
+      remove(statsComponent);
       break;
     case MenuItem.STATS:
-      // Скрыть доску
-      // Показать статистику
+      tripPresenter.destroy(); // Скрыть доску
+      remove(statsComponent);
+      statsComponent = new StatsView(pointsModel.getPoints());
+      render(siteMainElement, statsComponent, RenderPosition.BEFOREEND);
       break;
   }
 };
 
+// document.querySelector('[data-name="TABLE"]').addEventListener('click', (evt) => {
+//   evt.preventDefault();
+//   tripPresenter.init();
+// });
+
+// document.querySelector('[data-name="STATS"]').addEventListener('click', (evt) => {
+//   evt.preventDefault();
+//   render(siteMainElement, new StatsView(pointsModel.getPoints()), RenderPosition.BEFOREEND);
+//   tripPresenter.destroy();
+// });
+
 siteMenuComponent.setMenuClickHandler(handleSiteMenuClick);
 
-// const renderAddPoint = () => {
-//   //действия при клике на кнопку New Event
-//   document.querySelector('.trip-main__event-add-btn').addEventListener('click', () => {
-//     render(listPointComponent,new PointEditView(), RenderPosition.AFTERBEGIN); //отриосвка формы Редактирования
-//   });
-// };
-
-// renderAddPoint();
-
-// //действия при клике на доп услуги
-// document.querySelectorAll('.event__offer-label').addEventListener('click', () => {
-//   //
-// });
 filterPresenter.init();
 tripPresenter.init();
+// рендер stats для отладки
+// render(siteMainElement, new StatsView(pointsModel.getPoints()), RenderPosition.BEFOREEND);
 
-document.querySelector('.trip-main__event-add-btn').addEventListener('click', (evt) => {
+const addPointButton = document.querySelector('.trip-main__event-add-btn');
+
+const handleNewPointFormClose = () => {
+  addPointButton.disabled = false;
+  siteMenuComponent.setMenuItem(MenuItem.POINTS);
+};
+
+addPointButton.addEventListener('click', (evt) => {
   evt.preventDefault();
-  tripPresenter.createPoint();
+  addPointButton.disabled = true;
+  tripPresenter.createPoint(handleNewPointFormClose);
 });
+

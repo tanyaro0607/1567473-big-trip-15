@@ -67,9 +67,14 @@ export const FilterType = {
 };
 
 export const MenuItem = {
-  // ADD_NEW_POINT: 'NEW_EVENT',
   TABLE: 'TABLE',
   STATS: 'STATS',
+};
+
+export const ChartType = {
+  MONEY: 'MONEY',
+  TIME_SPEND: 'TIME-SPEND',
+  TYPE: 'TYPE',
 };
 
 export const SortType = [SortHeaders.DAY, SortHeaders.TIME, SortHeaders.PRICE];

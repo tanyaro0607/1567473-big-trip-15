@@ -34,19 +34,30 @@ export default class Trip {
     this._handleModeChange = this._handleModeChange.bind(this);
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
 
-    this._pointsModel.addObserver(this._handleModelEvent);
-    this._filterModel.addObserver(this._handleModelEvent);
     this._pointNewPresenter = new PointNewPresenter(this._listPointComponent, this._handleViewAction);
   }
 
   init() {
+    this._pointsModel.addObserver(this._handleModelEvent);
+    this._filterModel.addObserver(this._handleModelEvent);
+
     this._renderTrip();
   }
 
-  createPoint() {
+  destroy() {
+    this._clearTrip({resetSortType: true});
+
+    remove(this._listPointComponent);
+    remove(this._pointsContainer);
+
+    this._pointsModel.removeObserver(this._handleModelEvent); // отписываем от модели
+    this._filterModel.removeObserver(this._handleModelEvent);
+  }
+
+  createPoint(callback) {
     this._currentSortType = SortType.DAY; //сброс сортровки на DAY
     this._filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING); //сброс фильтра на EVERYTHING
-    this._pointNewPresenter.init();
+    this._pointNewPresenter.init(callback);
   }
 
   _getPoints() {

@@ -141,6 +141,7 @@ export default class Point {
     // if ((!update.price) || (!update.time.timeStart) || (!update.time.timeEnd)) {
     //   return;
     // }
+    // console.log(update);
     this._changeData(
       UserAction.UPDATE_POINT,
       UpdateType.MINOR,

@@ -9,16 +9,19 @@ export default class PointNew {
     this._changeData = changeData;
 
     this._pointEditComponent = null;
+    this._destroyCallback = null;
 
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
     this._handleDeleteClick = this._handleDeleteClick.bind(this);
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
   }
 
-  init() {
+  init(callback) {
     if (this._pointEditComponent !== null) {
       return;
     }
+
+    this._destroyCallback = callback;
 
     this._pointEditComponent = new PointEditView();
     this._pointEditComponent.setFormSubmitHandler(this._handleFormSubmit);
@@ -34,18 +37,22 @@ export default class PointNew {
       return;
     }
 
+    if (this._destroyCallback !== null) {
+      this._destroyCallback();
+    }
+
     remove(this._pointEditComponent);
     this._pointEditComponent = null;
 
     document.removeEventListener('keydown', this._escKeyDownHandler);
+    document.querySelector('.trip-main__event-add-btn').disabled = false;
   }
 
   _handleFormSubmit(newPoint) {
+    console.log(newPoint);
     this._changeData(
       UserAction.ADD_POINT,
       UpdateType.MINOR,
-      // Пока у нас нет сервера, который бы после сохранения
-      // выдывал честный id задачи, нам нужно позаботиться об этом самим
       Object.assign({id: nanoid()}, newPoint),
     );
     this.destroy();

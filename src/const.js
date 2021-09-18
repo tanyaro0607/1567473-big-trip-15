@@ -16,13 +16,13 @@ export const DESCRIPTIONS = [
 
 //создаем массив объектов доп услуг
 export const OFFERS = [
-  {text:'Order Uber',price: 20},
-  {text:'Add luggage',price: 50},
-  {text:'Switch to comfort',price: 80},
-  {text:'Rent a car',price: 200},
-  {text:'Add breakfast',price: 50},
-  {text:'Book tickets',price: 40},
-  {text:'Lunch in city',price: 30},
+  {text:'Order Uber',price: 20, isSelected: false},
+  {text:'Add luggage',price: 50, isSelected: false},
+  {text:'Switch to comfort',price: 80, isSelected: false},
+  {text:'Rent a car',price: 200, isSelected: false},
+  {text:'Add breakfast',price: 50, isSelected: false},
+  {text:'Book tickets',price: 40, isSelected: false},
+  {text:'Lunch in city',price: 30, isSelected: false},
 ];
 
 //создаем массив городов

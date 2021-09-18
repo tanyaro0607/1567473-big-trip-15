@@ -1,6 +1,5 @@
 import dayjs from 'dayjs';
 import {OFFERS, TYPES_OF_TRIP, DESTINATIONS, DESCRIPTIONS} from '../const.js';
-import {getBoolean} from '../utils/common.js';
 import SmartView from './smart.js';
 import {getRandomInteger} from '../utils/common.js';
 import flatpickr from 'flatpickr';
@@ -14,11 +13,6 @@ const BLANK_POINT = {
   placeDestination: {descriptionTextArray: '', photosArray: ''},
   time: dayjs().toDate(),
   сityDestination: ''};
-
-
-const addChecked = getBoolean()
-  ? 'checked'
-  : '';
 
 //генерируем список городов
 const renderListDestinations = () => {
@@ -60,6 +54,9 @@ const renderOffers = () => {
   }
   let str = '';
   for (let i = 0; i < randomOffersArray.length; i++) {
+    const addChecked = randomOffersArray[i].isSelected
+    ? 'checked'
+    : '';
     str += ` <div class="event__offer-selector">
     <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" ${addChecked}>
     <label class="event__offer-label" for="event-offer-luggage-1">
@@ -227,8 +224,9 @@ export default class PointEdit extends SmartView {
     this._formDeleteClickHandler = this._formDeleteClickHandler.bind(this);
     this._editClickHandler = this._editClickHandler.bind(this);
     this._cityChangeHandler = this._cityChangeHandler.bind(this);
+    this._priceChangeHandler = this._priceChangeHandler.bind(this);
     this._typeChangeHandler = this._typeChangeHandler.bind(this);
-    // this._offerChangeHandler = this._offerChangeHandler.bind(this);
+    this._offerChangeHandler = this._offerChangeHandler.bind(this);
     this._timeStartChangeHandler = this._timeStartChangeHandler.bind(this);// обработчик, который реагирует на изменение даты
     this._timeEndChangeHandler = this._timeEndChangeHandler.bind(this);// обработчик, который реагирует на изменение даты
 
@@ -304,9 +302,13 @@ export default class PointEdit extends SmartView {
     this.getElement()
       .querySelector('.event__type-group')
       .addEventListener('change', this._typeChangeHandler);
-    // this.getElement()
-    //   .querySelector('.event__offer-label')
-    //   .addEventListener('change', this._offerChangeHandler);
+    this.getElement()
+      .querySelector('#event-price-1')
+      .addEventListener('change', this._priceChangeHandler);
+    this.getElement()
+      .querySelectorAll('.event__offer-label').forEach((element) => {
+        element.addEventListener('click', this._offerChangeHandler);
+      });
   }
 
   // получает дату и переводит ее в состояние
@@ -341,6 +343,14 @@ export default class PointEdit extends SmartView {
       });
   }
 
+  _priceChangeHandler(evt) {
+    evt.preventDefault();
+    this.updateData(
+      {
+        price: evt.target.value,
+      });
+  }
+
   // обработчик - клик по типу маршрута
   _typeChangeHandler(evt) {
     evt.preventDefault();
@@ -361,13 +371,28 @@ export default class PointEdit extends SmartView {
       });
   }
 
-  // _offerChangeHandler(evt) {
-  //   evt.preventDefault();
-  //   // console.log(evt);
-  //   // this.updateState({
-  //   //дописать
-  //   // });
-  // }
+  _offerChangeHandler(evt) {
+    evt.preventDefault();
+    // console.log(evt.target.innerText);
+    const offersRandom = this._data.offersArray;
+    const offerIndex = offersRandom.findIndex((item) => item.text === evt.target.innerText);
+    const updateOffer = offersRandom[offerIndex];
+    // console.log(evt.target.innerText);
+    console.log(updateOffer);
+
+    // if (offerIndex === -1) {
+    //   return;
+    // }
+
+    // this.updateData({
+    //   offersArray: [
+    //     ...offersRandom.slice(0, offerIndex),
+    //     updateOffer,
+    //     ...offersRandom.slice(offerIndex + 1),
+    //   ],
+    // });
+  }
+
 
   _formSubmitHandler(evt) {
     evt.preventDefault();

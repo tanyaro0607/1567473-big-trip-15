@@ -71,7 +71,7 @@ const addPointButton = document.querySelector('.trip-main__event-add-btn');
 
 const handleNewPointFormClose = () => {
   addPointButton.disabled = false;
-  siteMenuComponent.setMenuItem(MenuItem.POINTS);
+  siteMenuComponent.setMenuItem(MenuItem.TABLE);
 };
 
 addPointButton.addEventListener('click', (evt) => {

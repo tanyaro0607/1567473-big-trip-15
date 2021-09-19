@@ -1,4 +1,6 @@
-import Smart from './smart.js';
+import SmartView from './smart.js';
+// import dayjs from 'dayjs';
+// import flatpickr from 'flatpickr';
 // import Chart from 'chart.js';
 // import ChartDataLabels from 'chartjs-plugin-datalabels';
 
@@ -20,7 +22,7 @@ const createStatsTemplate = () => (
 </section>`
 );
 
-export default class Stats extends Smart {
+export default class Stats extends SmartView {
   constructor(points) {
     super();
     this._points = points;

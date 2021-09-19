@@ -1,6 +1,5 @@
 import dayjs from 'dayjs';
 import AbstractView from './abstract.js';
-import {OFFERS} from '../const.js';
 
 //передаем в шаблон
 const renderOffers = (offersArray) => {

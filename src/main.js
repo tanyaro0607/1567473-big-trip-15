@@ -9,7 +9,7 @@ import TripPresenter from './presenter/trip.js';
 import FilterModel from './model/filter.js';
 import FilterPresenter from './presenter/filter.js';
 import StatsView from './view/stats.js';
-import {MenuItem} from './const.js';
+import {MenuItem, UpdateType, FilterType} from './const.js';
 
 //создаем массив объектов описывающих 20 точек маршрута
 const POINT_COUNT = 12;
@@ -41,18 +41,19 @@ const handleSiteMenuClick = (menuItem) => {
       remove(statsComponent);
       tripPresenter.init();
       statsComponent = null;
-      siteMenuComponent.addClassItem(MenuItem.TABLE);
-      siteMenuComponent.removeClassItem(MenuItem.STATS);
+      // siteMenuComponent.addClassItem(MenuItem.TABLE);
+      // siteMenuComponent.removeClassItem(MenuItem.STATS);
+      filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
       document.querySelector('.trip-main__event-add-btn').disabled = false;
       break;
     case MenuItem.STATS:
       tripPresenter.destroy();
       statsComponent = new StatsView(pointsModel.getPoints());
-      render(statsContainer, statsComponent, RenderPosition.AFTERBEGIN);
       document.querySelector('.trip-main__event-add-btn').disabled = true;
-      siteMenuComponent.addClassItem(MenuItem.STATS);
-      siteMenuComponent.removeClassItem(MenuItem.TABLE);
+      // siteMenuComponent.addClassItem(MenuItem.STATS);
+      // siteMenuComponent.removeClassItem(MenuItem.TABLE);
       document.querySelectorAll('.trip-filters__filter-input').forEach((it) => it.disabled = true);
+      render(statsContainer, statsComponent, RenderPosition.AFTERBEGIN);
       break;
   }
 };

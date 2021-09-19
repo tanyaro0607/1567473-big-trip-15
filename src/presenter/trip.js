@@ -103,11 +103,6 @@ export default class Trip {
       case UserAction.DELETE_POINT:
         this._pointsModel.deletePoint(updateType, update);
         break;
-      case UpdateType.INIT:
-        this._isLoading = false;
-        remove(this._loadingComponent);
-        this._renderTrip();
-        break;
     }
   }
 
@@ -127,6 +122,11 @@ export default class Trip {
       case UpdateType.MAJOR:
         // - обновить всю доску (например, при переключении фильтра)
         this._clearTrip({resetSortType: true});
+        this._renderTrip();
+        break;
+      case UpdateType.INIT:
+        this._isLoading = false;
+        remove(this._loadingComponent);
         this._renderTrip();
         break;
     }

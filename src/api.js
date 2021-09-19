@@ -1,3 +1,5 @@
+import PointsModel from './model/points.js';
+
 const Method = {
   GET: 'GET',
   PUT: 'PUT',
@@ -14,7 +16,8 @@ export default class Api {
   //отправляет запрос на получение списка точек маршрута
   getPoints() {
     return this._load({url: 'points'})
-      .then(Api.toJSON);
+      .then(Api.toJSON)
+      .then((points) => points.map(PointsModel.adaptToClient));
   }
 
   //обновление точки
@@ -22,10 +25,11 @@ export default class Api {
     return this._load({
       url: `points/${point.id}`,
       method: Method.PUT,
-      body: JSON.stringify(point),
+      body: JSON.stringify(PointsModel.adaptToServer(point)),
       headers: new Headers({'Content-Type': 'application/json'}),
     })
-      .then(Api.toJSON);
+      .then(Api.toJSON)
+      .then(PointsModel.adaptToClient);
   }
 
   //приватный метод, принимает аргументом объект с настройками

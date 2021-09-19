@@ -1,4 +1,5 @@
 import AbstractObserver from '../utils/abstract-observer.js';
+import dayjs from 'dayjs';
 
 export default class Points extends AbstractObserver {
   constructor() {
@@ -54,5 +55,78 @@ export default class Points extends AbstractObserver {
     ];
 
     this._notify(updateType);
+  }
+
+  //адапртирует данные для клиента
+  static adaptToClient(point) {
+    const adaptedPoint = Object.assign(
+      {},
+      point,
+      {
+        tripType: point.type, //тип точки маршрута
+        сityDestination:  point.destination.name, //Пункт назначения (город
+        date: dayjs(new Date(point.date_from)), //дата события
+        time: {
+          timeStart: dayjs(new Date(point.date_from)),
+          timeEnd: dayjs(new Date(point.date_to)),
+        },
+        price: point['base_price'],
+        offersArray: point.offers,
+        placeDestination: {
+          descriptionTextArray: point.destination.description, //описание
+          photosArray: point.destination.pictures, //фото
+        },
+        isFavorite: point['is_favorite'],
+        id: point.id, //присваиваем id для каждой задачи
+      },
+    );
+
+    // Ненужные ключи мы удаляем
+    delete adaptedPoint['type'];
+    delete adaptedPoint['offers'];
+    delete adaptedPoint['base_price'];
+    delete adaptedPoint['date_from'];
+    delete adaptedPoint['date_to'];
+    delete adaptedPoint['is_favorite'];
+    delete adaptedPoint['destination'];
+    delete adaptedPoint['id'];
+
+    return adaptedPoint;
+  }
+
+  //адапртирует данные для сервера
+  static adaptToServer(point) {
+    const adaptedPoint = Object.assign(
+      {},
+      point,
+      {
+        'base_price': point.price,
+        'date_from': point.time.timeStart,
+        'date_to': point.time.timeEnd,
+        destination: {
+          name: point.сityDestination,
+          description: point.placeDestination.descriptionTextArray,
+          pictures: point.placeDestination.photosArray,
+        },
+        id: point.id,
+        'is_favorite': point.isFavorite,
+        offers: point.offersArray,
+        type: point.tripType,
+      },
+    );
+
+    // Ненужные ключи мы удаляем
+    delete adaptedPoint.price;
+    delete adaptedPoint.time.timeStart,
+    delete adaptedPoint.time.timeEnd;
+    delete adaptedPoint.сityDestination;
+    delete adaptedPoint.descriptionTextArray;
+    delete adaptedPoint.photosArray;
+    delete adaptedPoint.id;
+    delete adaptedPoint.isFavorite;
+    delete adaptedPoint.offersArray;
+    delete adaptedPoint.tripType;
+
+    return adaptedPoint;
   }
 }

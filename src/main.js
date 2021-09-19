@@ -26,7 +26,7 @@ const siteMenuComponent = new SiteMenuView();
 const tripInfoSectionComponent = new TripInfoSectionView(); //контейнер для маршрута и стоимости
 const siteFilterElement = document.querySelector('.trip-controls__filters');
 const pointsContainer = document.querySelector('.trip-events');
-const tripPresenter = new TripPresenter(pointsContainer, pointsModel, filterModel);
+const tripPresenter = new TripPresenter(pointsContainer, pointsModel, filterModel, api);
 const filterPresenter = new FilterPresenter(siteFilterElement, filterModel, pointsModel);
 
 render(siteMainElement, tripInfoSectionComponent, RenderPosition.AFTERBEGIN); //отриосвка контейнера для маршрута и стоимости
@@ -81,10 +81,8 @@ addPointButton.addEventListener('click', (evt) => {
 //   render(statsContainer, new StatsView(pointsModel.getPoints()), RenderPosition.BEFOREEND);
 //   tripPresenter.destroy();
 // });
-
-siteMenuComponent.setMenuClickHandler(handleSiteMenuClick);
-
 render(siteMainNavigationElement, siteMenuComponent, RenderPosition.BEFOREEND); //отриосвка Меню
+siteMenuComponent.setMenuClickHandler(handleSiteMenuClick);
 filterPresenter.init();
 tripPresenter.init();
 // рендер stats для отладки

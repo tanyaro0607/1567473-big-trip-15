@@ -15,7 +15,7 @@ const POINT_COUNT = 3;
 
 export default class Trip {
   //инициализируем
-  constructor(pointsContainer, pointsModel, filterModel) {
+  constructor(pointsContainer, pointsModel, filterModel, api) {
     this._pointsModel = pointsModel;
     this._pointsContainer = pointsContainer;
     this._filterModel = filterModel;
@@ -26,6 +26,7 @@ export default class Trip {
     this._sortComponent = null;
     this._noPointComponent = null;
     this._isLoading = true;
+    this._api = api;
 
     this._listPointComponent = new ListPointView();
     this._pointComponent = new PointView();
@@ -93,7 +94,9 @@ export default class Trip {
     switch (actionType) {
       // если пользователь решил обновить точку, то вызываем метод updatePoint
       case UserAction.UPDATE_POINT:
-        this._pointsModel.updatePoint(updateType, update);
+        this._api.updatePoint(update).then((response) => {
+          this._pointsModel.updatePoint(updateType, response);
+        });
         break;
       // если пользователь решил добавить точку, то вызываем метод addPoint
       case UserAction.ADD_POINT:

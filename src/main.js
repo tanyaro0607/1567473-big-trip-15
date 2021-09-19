@@ -32,7 +32,7 @@ render(siteMainNavigationElement, siteMenuComponent, RenderPosition.BEFOREEND); 
 render(siteMainElement, tripInfoSectionComponent, RenderPosition.AFTERBEGIN); //отриосвка контейнера для маршрута и стоимости
 render(tripInfoSectionComponent, new TripInfoView(points), RenderPosition.AFTERBEGIN); //отриосвка Маршрута
 render(tripInfoSectionComponent, new TripInfoCostView(), RenderPosition.BEFOREEND); //отриосвка стоимости
-const statsContainer = document.querySelector('main.page-body__page-main .page-body__container');
+const statsContainer = document.querySelector('page-body__stats-container');
 let statsComponent = null;
 
 const handleSiteMenuClick = (menuItem) => {

@@ -8,8 +8,10 @@ export default class Points extends AbstractObserver {
   }
 
   // метод, записывает в модель данные
-  setPoints(points) {
+  setPoints(updateType, points) {
     this._points = points.slice();
+
+    this._notify(updateType);
   }
 
   // метод, возврашает значение приватного св-ва _points

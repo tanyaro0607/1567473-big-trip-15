@@ -90,6 +90,11 @@ tripPresenter.init();
 // рендер stats для отладки
 // render(statsContainer, new StatsView(pointsModel.getPoints()), RenderPosition.AFTERBEGIN);
 
-api.getPoints().then((points) => {
-  pointsModel.setPoints(points);
-});
+api.getPoints()
+  .then((points) => {
+    pointsModel.setPoints(UpdateType.INIT, points);
+  })
+  .catch(() => {
+    pointsModel.setPoints(UpdateType.INIT, []);
+  });
+

@@ -5,6 +5,7 @@ import NoPointView from '../view/no-point.js';
 import PointEditView from '../view/edit-point.js'; //Форма редактирования
 import PointPresenter from './point.js';
 import PointNewPresenter from './point-new.js';
+import LoadingView from '../view/loading.js';
 import {render, remove, RenderPosition} from '../utils/render.js';
 import {sortByDay, sortByPrice, sortByTime} from '../utils/point.js';
 import {filter} from '../utils/filter.js';
@@ -24,10 +25,12 @@ export default class Trip {
     this._currentSortType = SortType.DAY;
     this._sortComponent = null;
     this._noPointComponent = null;
+    this._isLoading = true;
 
     this._listPointComponent = new ListPointView();
     this._pointComponent = new PointView();
     this._noPointEditComponent = new PointEditView();
+    this._loadingComponent = new LoadingView();
 
     this._handleViewAction = this._handleViewAction.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
@@ -100,6 +103,11 @@ export default class Trip {
       case UserAction.DELETE_POINT:
         this._pointsModel.deletePoint(updateType, update);
         break;
+      case UpdateType.INIT:
+        this._isLoading = false;
+        remove(this._loadingComponent);
+        this._renderTrip();
+        break;
     }
   }
 
@@ -158,6 +166,10 @@ export default class Trip {
     this._getPoints().slice().forEach((point) => this._renderPoint(point));
   }
 
+  _renderLoading() {
+    render(this._pointsContainer, this._loadingComponent, RenderPosition.BEFOREEND);
+  }
+
   //если нет точек маршрута
   _renderNoPoints() {
     this._noPointComponent = new NoPointView(this._filterType);
@@ -168,6 +180,7 @@ export default class Trip {
     this._pointPresenter.forEach((presenter) => presenter.destroy());
     this._pointPresenter.clear();
 
+    remove(this._loadingComponent);
     remove(this._sortFormComponent); // удаляем сортировку
     if (this._noPointComponent) {
       remove(this._noPointComponent);
@@ -181,6 +194,11 @@ export default class Trip {
   _renderTrip() {
     const points = this._getPoints();
     const pointCount = points.length;
+
+    if (this._isLoading) {
+      this._renderLoading();
+      return;
+    }
 
     // если точек нет, рисуем заглушку
     if (pointCount === 0) {

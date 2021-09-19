@@ -1,4 +1,4 @@
-import AbstractView from './abstract';
+import AbstractView from './abstract.js';
 import {FilterType} from '../const.js';
 
 const renderFilterItemList = (currentFilterType) => {

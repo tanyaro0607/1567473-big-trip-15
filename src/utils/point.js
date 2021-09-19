@@ -29,4 +29,3 @@ export const durationFormat = (durationValue) => {
     return `${minutes}M`;
   }
 };
-

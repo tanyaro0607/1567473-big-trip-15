@@ -12,7 +12,7 @@ import StatsView from './view/stats.js';
 import {MenuItem} from './const.js';
 
 //создаем массив объектов описывающих 20 точек маршрута
-const POINT_COUNT = 3;
+const POINT_COUNT = 12;
 const points = new Array(POINT_COUNT).fill().map(generatePoint);
 
 const pointsModel = new PointsModel();
@@ -38,29 +38,37 @@ let statsComponent = null;
 const handleSiteMenuClick = (menuItem) => {
   switch (menuItem) {
     case MenuItem.TABLE:
-      tripPresenter.destroy();
-      tripPresenter.init();
       remove(statsComponent);
+      tripPresenter.init();
       statsComponent = null;
-      siteMenuComponent.addClassItem(menuItem.TABLE);
-      siteMenuComponent.removeClassItem(menuItem.STATS);
+      siteMenuComponent.addClassItem(MenuItem.TABLE);
+      siteMenuComponent.removeClassItem(MenuItem.STATS);
       document.querySelector('.trip-main__event-add-btn').disabled = false;
-      document.querySelectorAll('.trip-filters__filter-input').forEach((it) => it.disabled = false);
       break;
     case MenuItem.STATS:
-      if (statsComponent !== null) {
-        return;
-      }
       tripPresenter.destroy();
       statsComponent = new StatsView(pointsModel.getPoints());
       render(statsContainer, statsComponent, RenderPosition.AFTERBEGIN);
-      siteMenuComponent.addClassItem(menuItem.STATS);
-      siteMenuComponent.removeClassItem(menuItem.TABLE);
       document.querySelector('.trip-main__event-add-btn').disabled = true;
+      siteMenuComponent.addClassItem(MenuItem.STATS);
+      siteMenuComponent.removeClassItem(MenuItem.TABLE);
       document.querySelectorAll('.trip-filters__filter-input').forEach((it) => it.disabled = true);
       break;
   }
 };
+
+const addPointButton = document.querySelector('.trip-main__event-add-btn');
+
+const handleNewPointFormClose = () => {
+  addPointButton.disabled = false;
+  siteMenuComponent.setMenuItem(MenuItem.TABLE);
+};
+
+addPointButton.addEventListener('click', (evt) => {
+  evt.preventDefault();
+  addPointButton.disabled = true;
+  tripPresenter.createPoint(handleNewPointFormClose);
+});
 
 // document.querySelector('[data-name="TABLE"]').addEventListener('click', (evt) => {
 //   evt.preventDefault();
@@ -78,18 +86,5 @@ siteMenuComponent.setMenuClickHandler(handleSiteMenuClick);
 filterPresenter.init();
 tripPresenter.init();
 // рендер stats для отладки
-render(statsContainer, new StatsView(pointsModel.getPoints()), RenderPosition.AFTERBEGIN);
-
-const addPointButton = document.querySelector('.trip-main__event-add-btn');
-
-const handleNewPointFormClose = () => {
-  addPointButton.disabled = false;
-  siteMenuComponent.setMenuItem(MenuItem.TABLE);
-};
-
-addPointButton.addEventListener('click', (evt) => {
-  evt.preventDefault();
-  addPointButton.disabled = true;
-  tripPresenter.createPoint(handleNewPointFormClose);
-});
+// render(statsContainer, new StatsView(pointsModel.getPoints()), RenderPosition.AFTERBEGIN);
 

@@ -42,21 +42,21 @@ const generateOffer = () => {
 };
 
 const generateOffersArray = () => {
-  const offersArray = new Array(getRandomInteger(0, OFFERS.length)).fill().map(generateOffer);
+  const offersArray = new Array(0, 0, OFFERS.length - 1).fill().map(generateOffer);
   return offersArray;
 };
 
 //генерируем шаблон доп услуг
-const renderOffers = () => {
-  const randomOffersArray = new Array(getRandomInteger(0, OFFERS.length)).fill().map(generateOffer);
+const renderOffers = (randomOffersArray) => {
   if (!randomOffersArray || !randomOffersArray.length) {
     return '';
   }
   let str = '';
   for (let i = 0; i < randomOffersArray.length; i++) {
+    // console.log(randomOffersArray[i]);
     const addChecked = randomOffersArray[i].isSelected
-    ? 'checked'
-    : '';
+      ? 'checked'
+      : '';
     str += ` <div class="event__offer-selector">
     <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" ${addChecked}>
     <label class="event__offer-label" for="event-offer-luggage-1">
@@ -140,7 +140,7 @@ const generateDescriptionTextArray = () => {
 
 const createEditFormTemplate = (data = {}) => {
 
-  const {tripType, price, time, сityDestination, placeDestination} = data;
+  const {tripType, price, time, сityDestination, placeDestination, offersArray} = data;
 
   const timeStartEvent = dayjs(time.timeStart).format('DD/MM/YY HH:mm');
   const timeEndEvent = dayjs(time.timeEnd).format('DD/MM/YY HH:mm');
@@ -203,7 +203,7 @@ const createEditFormTemplate = (data = {}) => {
                 </header>
                 <section class="event__details">
 
-                  ${renderOffers()}
+                  ${renderOffers(offersArray)}
 
                   ${createDestinationInfoTemplate(placeDestination.descriptionTextArray, placeDestination.photosArray )}
 
@@ -384,13 +384,13 @@ export default class PointEdit extends SmartView {
     //   return;
     // }
 
-    // this.updateData({
-    //   offersArray: [
-    //     ...offersRandom.slice(0, offerIndex),
-    //     updateOffer,
-    //     ...offersRandom.slice(offerIndex + 1),
-    //   ],
-    // });
+    this.updateData({
+      offersArray: [
+        ...offersRandom.slice(0, offerIndex),
+        updateOffer,
+        ...offersRandom.slice(offerIndex + 1),
+      ],
+    });
   }
 
 

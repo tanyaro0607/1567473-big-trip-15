@@ -73,7 +73,7 @@ export const MenuItem = {
 
 export const ChartType = {
   MONEY: 'MONEY',
-  TIME_SPEND: 'TIME-SPEND',
+  TIME_SPEND: 'TIME_SPEND',
   TYPE: 'TYPE',
 };
 

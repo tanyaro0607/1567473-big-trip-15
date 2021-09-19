@@ -19,7 +19,7 @@ const generateOffer = () => {
 };
 
 const generateOffersArray = () => {
-  const offersArray = new Array(getRandomInteger(0, OFFERS.length)).fill().map(generateOffer);
+  const offersArray = new Array(getRandomInteger(0, OFFERS.length - 1)).fill().map(generateOffer);
   return offersArray;
 };
 

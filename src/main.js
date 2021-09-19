@@ -10,10 +10,23 @@ import FilterModel from './model/filter.js';
 import FilterPresenter from './presenter/filter.js';
 import StatsView from './view/stats.js';
 import {MenuItem, UpdateType, FilterType} from './const.js';
+import Api from './api.js';
 
 //создаем массив объектов описывающих 20 точек маршрута
 const POINT_COUNT = 12;
+const AUTHORIZATION = 'Basic taNYa6d7Sk1l1g15f';
+const END_POINT = 'https://15.ecmascript.pages.academy/big-trip';
+
 const points = new Array(POINT_COUNT).fill().map(generatePoint);
+const api = new Api(END_POINT, AUTHORIZATION);
+
+api.getPoints().then((points) => {
+  console.log(points);
+  // Есть проблема: cтруктура объекта похожа, но некоторые ключи называются иначе,
+  // а ещё на сервере используется snake_case, а у нас camelCase.
+  // Можно, конечно, переписать часть нашего клиентского приложения, но зачем?
+  // Есть вариант получше - паттерн "Адаптер"
+});
 
 const pointsModel = new PointsModel();
 pointsModel.setPoints(points);

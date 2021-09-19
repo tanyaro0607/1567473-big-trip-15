@@ -47,6 +47,7 @@ export default class Api {
   }
 
   //проверка на взаимод с сервером
+  //response - ответ от сервера
   static checkStatus(response) {
     if (!response.ok) {
       throw new Error(`${response.status}: ${response.statusText}`);

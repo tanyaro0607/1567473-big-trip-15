@@ -3,7 +3,7 @@ import ListPointView from '../view/list-points'; // контейнер для т
 import PointView from '../view/point.js'; // Точки маршрута
 import NoPointView from '../view/no-point.js';
 import PointEditView from '../view/edit-point.js'; //Форма редактирования
-import PointPresenter from './point.js';
+import PointPresenter, {State as PointPresenterViewState} from './point.js';
 import PointNewPresenter from './point-new.js';
 import LoadingView from '../view/loading.js';
 import {render, remove, RenderPosition} from '../utils/render.js';
@@ -94,18 +94,21 @@ export default class Trip {
     switch (actionType) {
       // если пользователь решил обновить точку, то вызываем метод updatePoint
       case UserAction.UPDATE_POINT:
+        this._pointPresenter.get(update.id).setViewState(PointPresenterViewState.SAVING);
         this._api.updatePoint(update).then((response) => {
           this._pointsModel.updatePoint(updateType, response);
         });
         break;
       // если пользователь решил добавить точку, то вызываем метод addPoint
       case UserAction.ADD_POINT:
+        this._pointNewPresenter.setSaving();
         this._api.addPoint(update).then((response) => {
           this._pointsModel.addPoint(updateType, response);
         });
         break;
       // если пользователь решил удалить точку, то вызываем метод deletePoint
       case UserAction.DELETE_POINT:
+        this._pointPresenter.get(update.id).setViewState(PointPresenterViewState.DELETING);
         this._api.deletePoint(update).then(() => {
           // Обратите внимание, метод удаления задачи на сервере
           // ничего не возвращает. Это и верно,

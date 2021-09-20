@@ -24,11 +24,11 @@ const renderListDestinations = () => {
 };
 
 //генерируем шаблон спискатипов поездки
-const renderListTypesOfTrip = () => {
+const renderListTypesOfTrip = (isDisabled) => {
   let str = '';
   for (let i = 0; i < TYPES_OF_TRIP.length; i++) {
     str += ` <div class="event__type-item">
-                        <input id="event-type-${TYPES_OF_TRIP[i].type.toLowerCase()}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${TYPES_OF_TRIP[i].type.toLowerCase()}">
+                        <input id="event-type-${TYPES_OF_TRIP[i].type.toLowerCase()}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" ${isDisabled ? 'disabled' : ''} value="${TYPES_OF_TRIP[i].type.toLowerCase()}">
                         <label class="event__type-label  event__type-label--${TYPES_OF_TRIP[i].type.toLowerCase()}" for="event-type-${TYPES_OF_TRIP[i].type.toLowerCase()}-1">${TYPES_OF_TRIP[i].type}</label>
                       </div>`;
   }
@@ -140,7 +140,7 @@ const generateDescriptionTextArray = () => {
 
 const createEditFormTemplate = (data = {}) => {
 
-  const {tripType, price, time, сityDestination, placeDestination, offersArray} = data;
+  const {tripType, price, time, сityDestination, placeDestination, offersArray, isDisabled, isSaving, isDeleting} = data;
 
   const timeStartEvent = dayjs(time.timeStart).format('DD/MM/YY HH:mm');
   const timeEndEvent = dayjs(time.timeEnd).format('DD/MM/YY HH:mm');
@@ -171,7 +171,7 @@ const createEditFormTemplate = (data = {}) => {
                       ${tripType.type}
 
                     </label>
-                    <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" onkeyup="this.value = this.value.replace(/[^]/g,'');" value="${сityDestination}" list="destination-list-1">
+                    <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" ${isDisabled ? 'disabled' : ''} onkeyup="this.value = this.value.replace(/[^]/g,'');" value="${сityDestination}" list="destination-list-1">
                     <datalist id="destination-list-1">
 
                       ${renderListDestinations()}
@@ -181,10 +181,10 @@ const createEditFormTemplate = (data = {}) => {
 
                   <div class="event__field-group  event__field-group--time">
                     <label class="visually-hidden" for="event-start-time-1">From</label>
-                    <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${timeStartEvent}">
+                    <input class="event__input  event__input--time" id="event-start-time-1" type="text" ${isDisabled ? 'disabled' : ''} name="event-start-time" value="${timeStartEvent}">
                     &mdash;
                     <label class="visually-hidden" for="event-end-time-1">To</label>
-                    <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${timeEndEvent}">
+                    <input class="event__input  event__input--time" id="event-end-time-1" type="text" ${isDisabled ? 'disabled' : ''} name="event-end-time" value="${timeEndEvent}">
                   </div>
 
                   <div class="event__field-group  event__field-group--price">
@@ -192,11 +192,11 @@ const createEditFormTemplate = (data = {}) => {
                       <span class="visually-hidden">Price</span>
                       &euro;
                     </label>
-                    <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" onkeyup="this.value = this.value.replace(/[^0-9]/g,'');" value="${price}">
+                    <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" ${isDisabled ? 'disabled' : ''} onkeyup="this.value = this.value.replace(/[^0-9]/g,'');" value="${price}">
                   </div>
 
-                  <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-                  <button class="event__reset-btn" type="reset">Delete</button>
+                  <button class="event__save-btn  btn  btn--blue" type="submit">${isSaving ? 'Saving...' : 'Save'}</button>
+                  <button class="event__reset-btn" type="reset">${isDeleting ? 'Deleting...' : 'Delete'}</button>
                   <button class="event__rollup-btn" type="button">
                     <span class="visually-hidden">Open event</span>
                   </button>
@@ -420,7 +420,11 @@ export default class PointEdit extends SmartView {
     return Object.assign(
       {},
       point,
-    );
+      {
+        isDisabled: false,
+        isSaving: false,
+        isDeleting: false,
+      });
   }
 
   _formDeleteClickHandler(evt) {
@@ -436,6 +440,10 @@ export default class PointEdit extends SmartView {
   // берет состояние формы и переводит в инф-ю
   static parseDataToPoint(data) {
     data = Object.assign({}, data);
+
+    delete data.isDisabled;
+    delete data.isSaving;
+    delete data.isDeleting;
 
     return data;
   }

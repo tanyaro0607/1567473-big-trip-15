@@ -8,6 +8,11 @@ const Mode = {
   EDITING: 'EDITING', //в режиме редактирования
 };
 
+export const State = {
+  SAVING: 'SAVING',
+  DELETING: 'DELETING',
+};
+
 export default class Point {
 
   constructor(pointListContainer, changeData, changeMode) {
@@ -55,7 +60,8 @@ export default class Point {
     }
 
     if (this._mode === Mode.EDITING) {
-      replace(this._pointEditComponent, prevPointEditComponent); //замена существующего на новое
+      replace(this._pointComponent, prevPointEditComponent);
+      this._mode = Mode.DEFAULT;
     }
 
     //и удалить старое
@@ -73,6 +79,27 @@ export default class Point {
   resetView() {
     if (this._mode !== Mode.DEFAULT) {
       this._replaceFormEditToPoint();
+    }
+  }
+
+  setViewState(state) {
+    if (this._mode === Mode.DEFAULT) {
+      return;
+    }
+
+    switch (state) {
+      case State.SAVING:
+        this._pointEditComponent.updateData({
+          isDisabled: true,
+          isSaving: true,
+        });
+        break;
+      case State.DELETING:
+        this._pointEditComponent.updateData({
+          isDisabled: true,
+          isDeleting: true,
+        });
+        break;
     }
   }
 
@@ -147,7 +174,6 @@ export default class Point {
       UpdateType.MINOR,
       update,
     );
-    this._replaceFormEditToPoint();
   }
 }
 

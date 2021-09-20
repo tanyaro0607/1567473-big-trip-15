@@ -47,6 +47,13 @@ export default class PointNew {
     document.querySelector('.trip-main__event-add-btn').disabled = false;
   }
 
+  setSaving() {
+    this._pointEditComponent.updateData({
+      isDisabled: true,
+      isSaving: true,
+    });
+  }
+
   _handleFormSubmit(newPoint) {
     this._changeData(
       UserAction.ADD_POINT,

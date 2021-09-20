@@ -1,5 +1,4 @@
 import PointEditView from '../view/edit-point.js';
-import {nanoid} from 'nanoid';
 import {remove, render, RenderPosition} from '../utils/render.js';
 import {UserAction, UpdateType} from '../const.js';
 
@@ -49,11 +48,10 @@ export default class PointNew {
   }
 
   _handleFormSubmit(newPoint) {
-    console.log(newPoint);
     this._changeData(
       UserAction.ADD_POINT,
       UpdateType.MINOR,
-      Object.assign({id: nanoid()}, newPoint),
+      newPoint,
     );
     this.destroy();
   }

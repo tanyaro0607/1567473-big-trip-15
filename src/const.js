@@ -1,4 +1,4 @@
-//массив с описаниями
+// массив с описаниями
 
 export const DESCRIPTIONS = [
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',

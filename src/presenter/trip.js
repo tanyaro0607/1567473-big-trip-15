@@ -100,11 +100,19 @@ export default class Trip {
         break;
       // если пользователь решил добавить точку, то вызываем метод addPoint
       case UserAction.ADD_POINT:
-        this._pointsModel.addPoint(updateType, update);
+        this._api.addPoint(update).then((response) => {
+          this._pointsModel.addPoint(updateType, response);
+        });
         break;
       // если пользователь решил удалить точку, то вызываем метод deletePoint
       case UserAction.DELETE_POINT:
-        this._pointsModel.deletePoint(updateType, update);
+        this._api.deletePoint(update).then(() => {
+          // Обратите внимание, метод удаления задачи на сервере
+          // ничего не возвращает. Это и верно,
+          // ведь что можно вернуть при удалении задачи?
+          // Поэтому в модель мы всё также передаем update
+          this._pointsModel.deletePoint(updateType, update);
+        });
         break;
     }
   }

@@ -8,6 +8,8 @@ import TripPresenter from './presenter/trip.js';
 import FilterModel from './model/filter.js';
 import FilterPresenter from './presenter/filter.js';
 // import StatsView from './view/stats.js';
+import DestinationsModel from './model/destinations.js';
+import OffersModel from './model/offers.js';
 import {MenuItem, UpdateType, FilterType} from './const.js';
 import Api from './api.js';
 
@@ -19,6 +21,8 @@ const siteMainElement = document.querySelector('.trip-main');
 const siteMainNavigationElement = document.querySelector('.trip-controls__navigation');
 
 const api = new Api(END_POINT, AUTHORIZATION);
+const destinationsModel = new DestinationsModel();
+const offersModel = new OffersModel();
 
 const pointsModel = new PointsModel();
 const filterModel = new FilterModel();
@@ -89,10 +93,11 @@ tripPresenter.init();
 // render(statsContainer, new StatsView(pointsModel.getPoints()), RenderPosition.AFTERBEGIN);
 
 api.getPoints()
-  .then((points) => {
+  .then((points, offers, destinations) => {
     pointsModel.setPoints(UpdateType.INIT, points);
+    destinationsModel.setDestinations(destinations);
+    offersModel.setOffers(offers);
   })
   .catch(() => {
     pointsModel.setPoints(UpdateType.INIT, []);
   });
-

@@ -2,7 +2,7 @@ import SortFormView from '../view/sort.js'; //Сортировка
 import ListPointView from '../view/list-points'; // контейнер для точек маршрута
 import PointView from '../view/point.js'; // Точки маршрута
 import NoPointView from '../view/no-point.js';
-import PointEditView from '../view/edit-point.js'; //Форма редактирования
+// import PointEditView from '../view/edit-point.js'; //Форма редактирования
 import PointPresenter, {State as PointPresenterViewState} from './point.js';
 import PointNewPresenter from './point-new.js';
 import LoadingView from '../view/loading.js';
@@ -15,7 +15,7 @@ const POINT_COUNT = 3;
 
 export default class Trip {
   //инициализируем
-  constructor(pointsContainer, pointsModel, filterModel, api) {
+  constructor(pointsContainer, pointsModel, filterModel, api, offersModel, destinationsModel) {
     this._pointsModel = pointsModel;
     this._pointsContainer = pointsContainer;
     this._filterModel = filterModel;
@@ -24,13 +24,13 @@ export default class Trip {
     this._filterType = FilterType.EVERYTHING;
     this._currentSortType = SortType.DAY;
     this._sortComponent = null;
-    this._noPointComponent = null;
+    // this._noPointComponent = null;
     this._isLoading = true;
     this._api = api;
 
     this._listPointComponent = new ListPointView();
-    this._pointComponent = new PointView();
-    this._noPointEditComponent = new PointEditView();
+    this._pointComponent = new PointView(offersModel, destinationsModel);
+    this._noPointComponent = new NoPointView();
     this._loadingComponent = new LoadingView();
 
     this._handleViewAction = this._handleViewAction.bind(this);
@@ -38,7 +38,7 @@ export default class Trip {
     this._handleModeChange = this._handleModeChange.bind(this);
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
 
-    this._pointNewPresenter = new PointNewPresenter(this._listPointComponent, this._handleViewAction);
+    this._pointNewPresenter = new PointNewPresenter(this._listPointComponent, this._handleViewAction, offersModel, destinationsModel);
   }
 
   init() {
@@ -119,10 +119,6 @@ export default class Trip {
         this._pointPresenter.get(update.id).setViewState(PointPresenterViewState.DELETING);
         this._api.deletePoint(update)
           .then(() => {
-            // Обратите внимание, метод удаления задачи на сервере
-            // ничего не возвращает. Это и верно,
-            // ведь что можно вернуть при удалении задачи?
-            // Поэтому в модель мы всё также передаем update
             this._pointsModel.deletePoint(updateType, update);
           })
           .catch(() => {

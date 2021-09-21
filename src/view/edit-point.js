@@ -8,7 +8,7 @@ import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 
 
 const BLANK_POINT = {
-  tripType: {icon:'taxi', type: 'Taxi'},
+  tripType: 'taxi',
   price: '0',
   placeDestination: {descriptionTextArray: '', photosArray: ''},
   time: dayjs().toDate(),
@@ -60,7 +60,7 @@ const renderOffers = (randomOffersArray) => {
     str += ` <div class="event__offer-selector">
     <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" ${addChecked}>
     <label class="event__offer-label" for="event-offer-luggage-1">
-      <span class="event__offer-title">${randomOffersArray[i].text}</span>
+      <span class="event__offer-title">${randomOffersArray[i].title}</span>
       &plus;&euro;&nbsp;
       <span class="event__offer-price">${randomOffersArray[i].price}</span>
     </label>
@@ -80,7 +80,7 @@ const renderOffers = (randomOffersArray) => {
 const renderPhotos = (photosArray) => {
   let str = '';
   for (let i = 0; i < photosArray.length; i++) {
-    str += ` <img class="event__photo" src="${photosArray[i]}" alt="Event photo"> `;
+    str += ` <img class="event__photo" src="${photosArray[i].src}" alt="Event photo"> `;
   }
   return str;
 };
@@ -106,7 +106,7 @@ const createPhotosTemplate = (photosArray) => (
 );
 
 //описание
-const createParagraphTemplate = (descriptionTextArray) => {
+const createDescriptionTemplate = (descriptionTextArray) => {
   let str = '';
   for (let i = 0; i < descriptionTextArray.length; i++) {
     str += `${descriptionTextArray[i]}`;
@@ -121,7 +121,7 @@ const createDestinationInfoTemplate = (descriptionTextArray, photosArray) => {
   return `<section class="event__section  event__section--destination">
   <h3 class="event__section-title  event__section-title--destination">Destination</h3>
 
-    ${(descriptionTextArray) ? createParagraphTemplate(descriptionTextArray) : ''}
+    ${(descriptionTextArray) ? createDescriptionTemplate(descriptionTextArray) : ''}
     ${(photosArray) ? createPhotosTemplate(photosArray) : ''}
 
   </section>`;
@@ -140,10 +140,20 @@ const generateDescriptionTextArray = () => {
 
 const createEditFormTemplate = (data = {}) => {
 
-  const {tripType, price, time, сityDestination, placeDestination, offersArray, isDisabled, isSaving, isDeleting} = data;
+  const {tripType, price, time, сityDestination, placeDestination, offersArray, isDisabled, isSaving, isDeleting, isNewPoint} = data;
 
   const timeStartEvent = dayjs(time.timeStart).format('DD/MM/YY HH:mm');
   const timeEndEvent = dayjs(time.timeEnd).format('DD/MM/YY HH:mm');
+
+  //смена кнопки в форме
+  let buttonTitle;
+  if (isNewPoint) {
+    buttonTitle = 'Cancel';
+  } else if (isDeleting) {
+    buttonTitle = 'Deleting...';
+  } else {
+    buttonTitle = 'Delete';
+  }
 
   return `<li class="trip-events__item">
               <form class="event event--edit" action="#" method="post">
@@ -151,7 +161,7 @@ const createEditFormTemplate = (data = {}) => {
                   <div class="event__type-wrapper">
                     <label class="event__type  event__type-btn" for="event-type-toggle-1">
                       <span class="visually-hidden">Choose event type</span>
-                      <img class="event__type-icon" width="17" height="17" src="img/icons/${tripType.icon}.png" alt="Event type icon">
+                      <img class="event__type-icon" width="17" height="17" src="img/icons/${tripType}.png" alt="Event type icon">
                     </label>
                     <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
 
@@ -168,7 +178,7 @@ const createEditFormTemplate = (data = {}) => {
                   <div class="event__field-group  event__field-group--destination">
                     <label class="event__label  event__type-output" for="event-destination-1">
 
-                      ${tripType.type}
+                      ${tripType}
 
                     </label>
                     <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" ${isDisabled ? 'disabled' : ''} onkeyup="this.value = this.value.replace(/[^]/g,'');" value="${сityDestination}" list="destination-list-1">
@@ -196,7 +206,7 @@ const createEditFormTemplate = (data = {}) => {
                   </div>
 
                   <button class="event__save-btn  btn  btn--blue" type="submit">${isSaving ? 'Saving...' : 'Save'}</button>
-                  <button class="event__reset-btn" type="reset">${isDeleting ? 'Deleting...' : 'Delete'}</button>
+                  <button class="event__reset-btn" type="reset">${buttonTitle}</button>
                   <button class="event__rollup-btn" type="button">
                     <span class="visually-hidden">Open event</span>
                   </button>
@@ -351,22 +361,13 @@ export default class PointEdit extends SmartView {
       });
   }
 
-  // обработчик - клик по типу маршрута
+
   _typeChangeHandler(evt) {
     evt.preventDefault();
-    const  icon = evt.target.value;
-    function isType(item) {
-      return item.icon === icon;
-    }
-
-    const type = TYPES_OF_TRIP.find(isType).type;
-
+    const  tripType = evt.target.value;
     this.updateData(
       {
-        tripType: {
-          icon,
-          type,
-        },
+        tripType,
         offersArray: generateOffersArray(),
       });
   }
@@ -424,6 +425,7 @@ export default class PointEdit extends SmartView {
         isDisabled: false,
         isSaving: false,
         isDeleting: false,
+        isNewPoint: false,
       });
   }
 
@@ -444,6 +446,7 @@ export default class PointEdit extends SmartView {
     delete data.isDisabled;
     delete data.isSaving;
     delete data.isDeleting;
+    delete data.isNewPoint;
 
     return data;
   }

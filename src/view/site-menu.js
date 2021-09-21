@@ -17,9 +17,6 @@ export default class SiteMenu extends AbstractView {
     super();
 
     this._menuClickHandler = this._menuClickHandler.bind(this);
-
-    this._buttonMenuTable = this.getElement().querySelector('.trip-tabs__btn-table');
-    this._buttonMenuStats = this.getElement().querySelector('.trip-tabs__btn-stats');
   }
 
   getTemplate() {
@@ -37,14 +34,14 @@ export default class SiteMenu extends AbstractView {
     this.getElement().addEventListener('click', this._menuClickHandler);
   }
 
-  // setMenuItem(menuItem) {
-  //   const item = this.getElement().querySelector(`[data-name=${menuItem}]`);
+  setMenuItem(menuItem) {
+    const item = this.getElement().querySelector(`[data-name=${menuItem}]`);
 
-  //   if (item !== null) {
-  //     item.classList.add('trip-tabs__btn--active');
-  //   }
-  //   item.classList.remove('trip-tabs__btn--active');
-  // }
+    if (item !== null) {
+      item.classList.add('trip-tabs__btn--active');
+    }
+    item.classList.remove('trip-tabs__btn--active');
+  }
 
   // addClassItem(menuItem) {
   //   this.getElement().querySelector(`[data-name=${menuItem}]`).classList.add('trip-tabs__btn--active');
@@ -53,21 +50,5 @@ export default class SiteMenu extends AbstractView {
   // removeClassItem(menuItem) {
   //   this.getElement().querySelector(`[data-name=${menuItem}]`).classList.remove('trip-tabs__btn--active');
   // }
-
-  setMenuItem(menuItem) {
-
-    switch(menuItem) {
-      case MenuItem.TABLE:
-        this._buttonMenuTable.disabled = true;
-        this._buttonMenuTable.classList.add('trip-tabs__btn--active');
-        this._buttonMenuStats.classList.remove('trip-tabs__btn--active');
-        break;
-
-      case MenuItem.STATS:
-        this._buttonMenuTable.classList.remove('trip-tabs__btn--active');
-        this._buttonMenuStats.classList.add('trip-tabs__btn--active');
-        break;
-    }
-  }
 
 }

@@ -52,7 +52,7 @@ export default class Trip {
     this._clearTrip({resetSortType: true});
 
     remove(this._listPointComponent);
-    remove(this._pointsContainer);
+    // remove(this._pointsContainer);
 
     this._pointsModel.removeObserver(this._handleModelEvent); // отписываем от модели
     this._filterModel.removeObserver(this._handleModelEvent);

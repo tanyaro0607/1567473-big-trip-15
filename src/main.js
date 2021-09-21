@@ -35,22 +35,21 @@ const filterPresenter = new FilterPresenter(siteFilterElement, filterModel, poin
 // render(siteMainElement, tripInfoSectionComponent, RenderPosition.AFTERBEGIN); //отриосвка контейнера для маршрута и стоимости
 // render(tripInfoSectionComponent, new TripInfoView(), RenderPosition.AFTERBEGIN); //отриосвка Маршрута
 // render(tripInfoSectionComponent, new TripInfoCostView(), RenderPosition.BEFOREEND); //отриосвка стоимости
-const statsContainer = document.querySelector('page-body__stats-container');
+const statsContainer = document.querySelector('.page-body__stats-container');
 let statsComponent = null;
 
 const handleSiteMenuClick = (menuItem) => {
   switch (menuItem) {
     case MenuItem.TABLE:
-      remove(statsComponent);
       tripPresenter.init();
-      statsComponent = null;
+      remove(statsComponent);
       document.querySelector('.trip-main__event-add-btn').disabled = false;
       break;
     case MenuItem.STATS:
       tripPresenter.destroy();
+      siteMenuComponent.setMenuItem(MenuItem.TABLE);
       statsComponent = new StatsView(pointsModel.getPoints());
       document.querySelector('.trip-main__event-add-btn').disabled = true;
-      // statsComponent._setCharts();
       render(statsContainer, statsComponent, RenderPosition.AFTERBEGIN);
       break;
   }

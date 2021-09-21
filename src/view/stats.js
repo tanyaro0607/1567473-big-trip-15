@@ -2,155 +2,152 @@ import SmartView from './smart.js';
 import Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import {getTimeFormat, getSumPriceFromType, getSumTimeFromType, getQuantityType, getSortType} from '../utils/stats.js';
-import {generatePoint} from '../moсk/point-mock.js'; //временные данные
-
-
-const POINT_COUNT = 12;
-const point = new Array(POINT_COUNT).fill().map(generatePoint);
 
 // Рассчитаем высоту канваса в зависимости от того, сколько данных в него будет передаваться
 const BAR_HEIGHT = 55;
 
-const typesPrice = Object.keys(getSumPriceFromType(point));
-const typesTime = Object.keys(getSumTimeFromType(point));
-const sortType = getSortType(getQuantityType(point));
-
-const sumPriceFromType = Object.values(getSumPriceFromType(point));
-const sumTimeFromType = Object.values(getSumTimeFromType(point));
-const quantityType = Object.values(getQuantityType(point)).sort((a, b) => b - a);
-
-const generateMoneyChart = (moneyCtx) => (new Chart(moneyCtx, {
-  plugins: [ChartDataLabels],
-  type: 'horizontalBar',
-  data: {
-    labels: typesPrice,
-    datasets: [{
-      data: sumPriceFromType,
-      backgroundColor: '#ffffff',
-      hoverBackgroundColor: '#ffffff',
-      anchor: 'start',
-      minBarLength: 100,
-      barThickness: 30,
-    }],
-  },
-  options: {
-    plugins: {
-      datalabels: {
-        font: {
-          size: 13,
+const generateMoneyChart = (moneyCtx, points) => {
+  const typesPrice = Object.keys(getSumPriceFromType(points));
+  const sumPriceFromType = Object.values(getSumPriceFromType(points));
+  return new Chart(moneyCtx, {
+    plugins: [ChartDataLabels],
+    type: 'horizontalBar',
+    data: {
+      labels: typesPrice,
+      datasets: [{
+        data: sumPriceFromType,
+        backgroundColor: '#ffffff',
+        hoverBackgroundColor: '#ffffff',
+        anchor: 'start',
+        minBarLength: 100,
+        barThickness: 30,
+      }],
+    },
+    options: {
+      plugins: {
+        datalabels: {
+          font: {
+            size: 13,
+          },
+          color: '#000000',
+          anchor: 'end',
+          align: 'start',
+          formatter: (val) => `€ ${val}`,
         },
-        color: '#000000',
-        anchor: 'end',
-        align: 'start',
-        formatter: (val) => `€ ${val}`,
+      },
+      title: {
+        display: true,
+        text: 'MONEY',
+        fontColor: '#000000',
+        fontSize: 23,
+        position: 'left',
+      },
+      scales: {
+        yAxes: [{
+          ticks: {
+            fontColor: '#000000',
+            padding: 5,
+            fontSize: 13,
+          },
+          gridLines: {
+            display: false,
+            drawBorder: false,
+          },
+        }],
+        xAxes: [{
+          ticks: {
+            display: false,
+            beginAtZero: true,
+          },
+          gridLines: {
+            display: false,
+            drawBorder: false,
+          },
+        }],
+      },
+      legend: {
+        display: false,
+      },
+      tooltips: {
+        enabled: false,
       },
     },
-    title: {
-      display: true,
-      text: 'MONEY',
-      fontColor: '#000000',
-      fontSize: 23,
-      position: 'left',
-    },
-    scales: {
-      yAxes: [{
-        ticks: {
-          fontColor: '#000000',
-          padding: 5,
-          fontSize: 13,
-        },
-        gridLines: {
-          display: false,
-          drawBorder: false,
-        },
-      }],
-      xAxes: [{
-        ticks: {
-          display: false,
-          beginAtZero: true,
-        },
-        gridLines: {
-          display: false,
-          drawBorder: false,
-        },
-      }],
-    },
-    legend: {
-      display: false,
-    },
-    tooltips: {
-      enabled: false,
-    },
-  },
-}));
+  });
+};
 
-const generateTimeSpendChart = (timeCtx) => (new Chart(timeCtx, {
-  plugins: [ChartDataLabels],
-  type: 'horizontalBar',
-  data: {
-    labels: typesTime,
-    datasets: [{
-      data: sumTimeFromType,
-      backgroundColor: '#ffffff',
-      hoverBackgroundColor: '#ffffff',
-      anchor: 'start',
-      minBarLength: 100,
-      barThickness: 30,
-    }],
-  },
-  options: {
-    plugins: {
-      datalabels: {
-        font: {
-          size: 13,
+const generateTimeSpendChart = (timeCtx, points) => {
+  const typesTime = Object.keys(getSumTimeFromType(points));
+  const sumTimeFromType = Object.values(getSumTimeFromType(points));
+  return new Chart(timeCtx, {
+    plugins: [ChartDataLabels],
+    type: 'horizontalBar',
+    data: {
+      labels: typesTime,
+      datasets: [{
+        data: sumTimeFromType,
+        backgroundColor: '#ffffff',
+        hoverBackgroundColor: '#ffffff',
+        anchor: 'start',
+        minBarLength: 100,
+        barThickness: 30,
+      }],
+    },
+    options: {
+      plugins: {
+        datalabels: {
+          font: {
+            size: 13,
+          },
+          color: '#000000',
+          anchor: 'end',
+          align: 'start',
+          formatter: (val) => `${getTimeFormat(val)}`,
         },
-        color: '#000000',
-        anchor: 'end',
-        align: 'start',
-        formatter: (val) => `${getTimeFormat(val)}`,
+      },
+      title: {
+        display: true,
+        text: 'TIME-SPEND',
+        fontColor: '#000000',
+        fontSize: 23,
+        position: 'left',
+      },
+      scales: {
+        yAxes: [{
+          ticks: {
+            fontColor: '#000000',
+            padding: 5,
+            fontSize: 13,
+          },
+          gridLines: {
+            display: false,
+            drawBorder: false,
+          },
+        }],
+        xAxes: [{
+          ticks: {
+            display: false,
+            beginAtZero: true,
+          },
+          gridLines: {
+            display: false,
+            drawBorder: false,
+          },
+        }],
+      },
+      legend: {
+        display: false,
+      },
+      tooltips: {
+        enabled: false,
       },
     },
-    title: {
-      display: true,
-      text: 'TIME-SPEND',
-      fontColor: '#000000',
-      fontSize: 23,
-      position: 'left',
-    },
-    scales: {
-      yAxes: [{
-        ticks: {
-          fontColor: '#000000',
-          padding: 5,
-          fontSize: 13,
-        },
-        gridLines: {
-          display: false,
-          drawBorder: false,
-        },
-      }],
-      xAxes: [{
-        ticks: {
-          display: false,
-          beginAtZero: true,
-        },
-        gridLines: {
-          display: false,
-          drawBorder: false,
-        },
-      }],
-    },
-    legend: {
-      display: false,
-    },
-    tooltips: {
-      enabled: false,
-    },
-  },
-}));
+  });
+};
 
-const generateTypeChart = (typeCtx) => (
-  new Chart(typeCtx, {
+const generateTypeChart = (typeCtx, points) => {
+  const sortType = getSortType(getQuantityType(points));
+  const quantityType = Object.values(getQuantityType(points)).sort((a, b) => b - a);
+  return new Chart(typeCtx, {
     plugins: [ChartDataLabels],
     type: 'horizontalBar',
     data: {
@@ -213,8 +210,8 @@ const generateTypeChart = (typeCtx) => (
         enabled: false,
       },
     },
-  }));
-
+  });
+};
 
 const createTemplateStatistic = () => `<section class="statistics">
           <h2 class="visually-hidden">Trip statistics</h2>
@@ -230,9 +227,9 @@ const createTemplateStatistic = () => `<section class="statistics">
         </section>`;
 
 export default class Stats extends SmartView {
-  constructor() {
+  constructor(points) {
     super();
-    this._point = point;
+    this._data = points;
     this._moneyChart = null;
     this._typeChart = null;
     this._timeChart = null;
@@ -245,7 +242,7 @@ export default class Stats extends SmartView {
   }
 
   getTemplate() {
-    return createTemplateStatistic(this._point);
+    return createTemplateStatistic(this._data);
   }
 
   restoreHandlers() {
@@ -261,8 +258,8 @@ export default class Stats extends SmartView {
     typeCtx.height = BAR_HEIGHT * 5;
     timeCtx.height = BAR_HEIGHT * 5;
 
-    this._moneyChart = generateMoneyChart(moneyCtx, this._point);
-    this._timeChart = generateTypeChart(typeCtx, this._point);
-    this._typeChart = generateTimeSpendChart(timeCtx, this._point);
+    this._moneyChart = generateMoneyChart(moneyCtx, this._data);
+    this._timeChart = generateTypeChart(typeCtx, this._data);
+    this._typeChart = generateTimeSpendChart(timeCtx, this._data);
   }
 }

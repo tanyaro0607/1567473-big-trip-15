@@ -7,7 +7,7 @@ import {render, RenderPosition, remove} from './utils/render.js';
 import TripPresenter from './presenter/trip.js';
 import FilterModel from './model/filter.js';
 import FilterPresenter from './presenter/filter.js';
-// import StatsView from './view/stats.js';
+import StatsView from './view/stats.js';
 import DestinationsModel from './model/destinations.js';
 import OffersModel from './model/offers.js';
 import {MenuItem, UpdateType} from './const.js';

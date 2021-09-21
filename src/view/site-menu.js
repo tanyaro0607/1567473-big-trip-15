@@ -26,7 +26,6 @@ export default class SiteMenu extends AbstractView {
   _menuClickHandler(evt) {
     evt.preventDefault();
     this._callback.menuClick(evt.target.dataset.menuItem);
-    this.setMenuItem(evt.target.dataset.menuItem);
   }
 
   setMenuClickHandler(callback) {

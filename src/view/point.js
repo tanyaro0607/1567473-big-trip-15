@@ -16,7 +16,6 @@ const renderOffers = (offersArray) => {
 
 const createPointTemplate = (point) => {
   const { tripType, сityDestination, price, date, time, offersArray, isFavorite} = point;
-  console.log(point);
   const dateEvent = dayjs(date).format('D MMM');
   const timeStartEvent = dayjs(time.timeStart).format('hh:mm');
   const timeEndEvent = dayjs(time.timeEnd).format('hh:mm');

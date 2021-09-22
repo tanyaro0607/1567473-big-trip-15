@@ -1,7 +1,6 @@
 import dayjs from 'dayjs';
-import {OFFERS, TYPES_OF_TRIP, DESTINATIONS, DESCRIPTIONS} from '../const.js';
+import {TYPES_OF_TRIP, DESTINATIONS} from '../const.js';
 import SmartView from './smart.js';
-import {getRandomInteger} from '../utils/common.js';
 import flatpickr from 'flatpickr';
 
 import '../../node_modules/flatpickr/dist/flatpickr.min.css';
@@ -33,17 +32,6 @@ const renderListTypesOfTrip = (isDisabled) => {
                       </div>`;
   }
   return str;
-};
-
-//находим рандомную доп услугу
-const generateOffer = () => {
-  const randomIndex = getRandomInteger(0, OFFERS.length - 1);
-  return OFFERS[randomIndex];
-};
-
-const generateOffersArray = () => {
-  const tripOffers = new Array(0, 0, OFFERS.length - 1).fill().map(generateOffer);
-  return tripOffers;
 };
 
 //генерируем шаблон доп услуг
@@ -84,17 +72,6 @@ const renderPhotos = (photos) => {
   return str;
 };
 
-//генерируем рандомное фото
-const generatePhoto = () => {
-  const photo = `http://picsum.photos/248/152?r=${getRandomInteger(1,100)}`;
-  return photo;
-};
-
-const generatePhotosArray = () => {
-  const photos = new Array(getRandomInteger(0,5)).fill().map(generatePhoto);
-  return photos;
-};
-
 //фото
 const createPhotosTemplate = (photos) => (
   `<div class="event__photos-container">
@@ -124,17 +101,6 @@ const createDestinationInfoTemplate = (textDescriptions, photos) => {
     ${(photos) ? createPhotosTemplate(photos) : ''}
 
   </section>`;
-};
-
-//находим одно рандомное описание
-const generateDescription = () => {
-  const randomIndex = getRandomInteger(0, 5);
-  return DESCRIPTIONS[randomIndex];
-};
-
-const generateDescriptionTextArray = () => {
-  const textDescriptions = new Array(getRandomInteger(0, OFFERS.length)).fill().map(generateDescription);
-  return textDescriptions;
 };
 
 const createEditFormTemplate = (data = {}) => {
@@ -344,13 +310,28 @@ export default class PointEdit extends SmartView {
   // обработчик - клик по городу
   _cityChangeHandler(evt) {
     evt.preventDefault();
+    const сityDestination = evt.target.value;
+    const placeDestination = this._destinationsModel.getDestinations().find((destination) => destination.name === сityDestination);
+    const textDescriptions = placeDestination.description;
+    const photos = placeDestination.pictures;
     this.updateData(
       {
-        сityDestination: evt.target.value,
+        сityDestination,
         placeDestination: {
-          textDescriptions: generateDescriptionTextArray(), //описание
-          photos: generatePhotosArray(), //фото
+          textDescriptions,
+          photos,
         },
+      });
+  }
+
+  _typeChangeHandler(evt) {
+    evt.preventDefault();
+    const tripType = evt.target.value;
+    const tripOffers = this._offersModel.getOffers().find((offer) => offer.type === tripType).offers;
+    this.updateData(
+      {
+        tripType,
+        tripOffers,
       });
   }
 
@@ -362,32 +343,11 @@ export default class PointEdit extends SmartView {
       });
   }
 
-
-  _typeChangeHandler(evt) {
-    evt.preventDefault();
-    const  tripType = evt.target.value;
-    const tripOffers = this._offersModel.getOffers().find((offer) => offer.type === tripType).offers;
-    this.updateData(
-      {
-        tripType,
-        tripOffers,
-      });
-  }
-
   _offerChangeHandler(evt) {
-    // console.log(this._offersModel);
     evt.preventDefault();
-    // console.log(evt.target.innerText);
     const offersRandom = this._data.tripOffers;
     const offerIndex = offersRandom.findIndex((item) => item.text === evt.target.innerText);
     const updateOffer = offersRandom[offerIndex];
-    // console.log(evt.target.innerText);
-    console.log(updateOffer);
-
-    // if (offerIndex === -1) {
-    //   return;
-    // }
-
     this.updateData({
       tripOffers: [
         ...offersRandom.slice(0, offerIndex),

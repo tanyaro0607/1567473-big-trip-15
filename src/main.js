@@ -37,7 +37,6 @@ const filterPresenter = new FilterPresenter(siteFilterElement, filterModel, poin
 // render(tripInfoSectionComponent, new TripInfoCostView(), RenderPosition.BEFOREEND); //отриосвка стоимости
 const statsContainer = document.querySelector('.page-body__stats-container');
 let statsComponent = null;
-// const btn = document.querySelector('.trip-tabs__btn');
 
 const handleSiteMenuClick = (menuItem) => {
   switch (menuItem) {
@@ -72,22 +71,10 @@ addPointButton.addEventListener('click', (evt) => {
   tripPresenter.createPoint(handleNewPointFormClose);
 });
 
-// document.querySelector('[data-name="TABLE"]').addEventListener('click', (evt) => {
-//   evt.preventDefault();
-//   tripPresenter.init();
-// });
-
-// document.querySelector('[data-name="STATS"]').addEventListener('click', (evt) => {
-//   evt.preventDefault();
-//   render(statsContainer, new StatsView(pointsModel.getPoints()), RenderPosition.BEFOREEND);
-//   tripPresenter.destroy();
-// });
 render(siteMainNavigationElement, siteMenuComponent, RenderPosition.BEFOREEND); //отриосвка Меню
 siteMenuComponent.setMenuClickHandler(handleSiteMenuClick);
 filterPresenter.init();
 tripPresenter.init();
-// рендер stats для отладки
-// render(statsContainer, new StatsView(pointsModel.getPoints()), RenderPosition.AFTERBEGIN);
 
 api.getPoints()
   .then((points) => {

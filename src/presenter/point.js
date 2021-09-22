@@ -165,19 +165,19 @@ export default class Point {
     );
   }
 
-  _handleDeleteClick(point) {
-    this._changeData(
-      UserAction.DELETE_POINT,
-      UpdateType.MINOR,
-      point,
-    );
-  }
-
   _handleFormSubmit(update) {
     this._changeData(
       UserAction.UPDATE_POINT,
       UpdateType.MINOR,
       update,
+    );
+  }
+
+  _handleDeleteClick(point) {
+    this._changeData(
+      UserAction.DELETE_POINT,
+      UpdateType.MINOR,
+      point,
     );
   }
 }

@@ -56,6 +56,9 @@ export const replace = (newChild, oldChild) => {
 
 //метод remove - обёртка для вызова методов удаления
 export const remove = (component) => {
+  if (component === null) {
+    return;
+  }
   if (!(component instanceof Abstract)) {
     throw new Error('Can remove only components');
   }

@@ -1,4 +1,4 @@
-//массив с описаниями
+// массив с описаниями
 
 export const DESCRIPTIONS = [
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
@@ -16,13 +16,13 @@ export const DESCRIPTIONS = [
 
 //создаем массив объектов доп услуг
 export const OFFERS = [
-  {text:'Order Uber',price: 20},
-  {text:'Add luggage',price: 50},
-  {text:'Switch to comfort',price: 80},
-  {text:'Rent a car',price: 200},
-  {text:'Add breakfast',price: 50},
-  {text:'Book tickets',price: 40},
-  {text:'Lunch in city',price: 30},
+  {text:'Order Uber',price: 20, isSelected: false},
+  {text:'Add luggage',price: 50, isSelected: false},
+  {text:'Switch to comfort',price: 80, isSelected: false},
+  {text:'Rent a car',price: 200, isSelected: false},
+  {text:'Add breakfast',price: 50, isSelected: false},
+  {text:'Book tickets',price: 40, isSelected: false},
+  {text:'Lunch in city',price: 30, isSelected: false},
 ];
 
 //создаем массив городов
@@ -46,6 +46,36 @@ export const SortHeaders = {
   TIME:'time',
   PRICE:'price',
   OFFERS:'offers',
+};
+
+export const UserAction = {
+  UPDATE_POINT: 'UPDATE_POINT',
+  ADD_POINT: 'ADD_POINT',
+  DELETE_POINT: 'DELETE_POINT',
+};
+
+export const UpdateType = {
+  PATCH: 'PATCH', // маленькое изменение - не меняет глобально и ничего не ломает
+  MINOR: 'MINOR', // среднее, привносит новое, но не ломает старое - список точек маршута
+  MAJOR: 'MAJOR', // глобальное, изменение, требует перерисовки страницы (добавление, удаление)
+  INIT: 'INIT',
+};
+
+export const FilterType = {
+  EVERYTHING: 'everything',
+  FUTURE: 'future',
+  PAST: 'past',
+};
+
+export const MenuItem = {
+  TABLE: 'TABLE',
+  STATS: 'STATS',
+};
+
+export const ChartType = {
+  MONEY: 'MONEY',
+  TIME_SPEND: 'TIME-SPEND',
+  TYPE: 'TYPE',
 };
 
 export const SortType = [SortHeaders.DAY, SortHeaders.TIME, SortHeaders.PRICE];

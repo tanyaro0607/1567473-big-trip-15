@@ -2,34 +2,50 @@ import dayjs from 'dayjs';
 import AbstractView from './abstract.js';
 
 //передаем в шаблон
-const renderOffers = (offersArray) => {
+const renderOffers = (tripOffers) => {
   let str = '';
-  for (let i = 0; i < offersArray.length; i++) {
-    str += ` <li class="event__offer">
-    <span class="event__offer-title">${offersArray[i].text}</span>
+  for (let i = 0; i < tripOffers.length; i++) {
+    str += `<li class="event__offer">
+    <span class="event__offer-title">${tripOffers[i].title}</span>
     &plus;&euro;&nbsp;
-    <span class="event__offer-price">${offersArray[i].price}</span>
+    <span class="event__offer-price">${tripOffers[i].price}</span>
     </li>`;
   }
-  return str;
+  return `<ul class="event__selected-offers"> ${str} </ul>`;
 };
 
 const createPointTemplate = (point) => {
-  const { tripType, сityDestination, price, date, time, offersArray, isFavorite} = point;
+  const { tripType, сityDestination, price, date, time, tripOffers, isFavorite} = point;
   const dateEvent = dayjs(date).format('D MMM');
   const timeStartEvent = dayjs(time.timeStart).format('hh:mm');
   const timeEndEvent = dayjs(time.timeEnd).format('hh:mm');
 
-  const renderTimeDiff = () => {
-    const timeDiff = (dayjs(time.timeEnd)).diff(dayjs(time.timeStart), 'day');
-    let time1;
-    if (timeDiff > 0) {
-      time1 = `${timeDiff}D 00H 00M`;
+  const MINUTES_IN_A_DAY = 1440;
+  const MINUTES_IN_A_HOUR = 60;
+  const padNumberWithZeros = (number, padCount = 2) =>
+    Number(number).toString(10).padStart(padCount, '0');
+
+  const renderTimeDiff = (durationInMinutes) => {
+    let formattedDuration = '';
+    const daysNumber = Math.floor(durationInMinutes / MINUTES_IN_A_DAY);
+    const hoursNumber = Math.floor(durationInMinutes / MINUTES_IN_A_HOUR);
+    let leftMinutes;
+
+    if (daysNumber) {
+      const leftHours = Math.floor((durationInMinutes - daysNumber * MINUTES_IN_A_DAY) / MINUTES_IN_A_HOUR);
+      leftMinutes = durationInMinutes - daysNumber * MINUTES_IN_A_DAY - leftHours * MINUTES_IN_A_HOUR;
+      formattedDuration = `${padNumberWithZeros(daysNumber)}D ${padNumberWithZeros(leftHours)}H ${padNumberWithZeros(leftMinutes)}M`;
+    } else if (hoursNumber) {
+      leftMinutes = durationInMinutes - hoursNumber * MINUTES_IN_A_HOUR;
+      formattedDuration = `${padNumberWithZeros(hoursNumber)}H ${padNumberWithZeros(leftMinutes)}M`;
     } else {
-      time1 = `00D 00H ${timeDiff}M`;
+      formattedDuration = `${padNumberWithZeros(leftMinutes)}M`;
     }
-    return time1;
+
+    return formattedDuration;
   };
+
+  const timeDiff = renderTimeDiff(dayjs(time.timeEnd).diff(dayjs(time.timeStart), 'minute'));
 
   const favoriteClassName = isFavorite
     ? 'event__favorite-btn--active'
@@ -39,26 +55,24 @@ const createPointTemplate = (point) => {
   <div class="event">
   <time class="event__date" datetime="2019-03-18">${dateEvent}</time>
   <div class="event__type">
-    <img class="event__type-icon" width="42" height="42" src="img/icons/${tripType.icon}.png" alt="Event type icon">
+    <img class="event__type-icon" width="42" height="42" src="img/icons/${tripType}.png" alt="Event type icon">
   </div>
-  <h3 class="event__title">${tripType.type} ${сityDestination}</h3>
+  <h3 class="event__title">${tripType} ${сityDestination}</h3>
   <div class="event__schedule">
     <p class="event__time">
       <time class="event__start-time" datetime="${timeStartEvent}">${timeStartEvent}</time>
       &mdash;
       <time class="event__end-time" datetime="${timeEndEvent}">${timeEndEvent}</time>
     </p>
-    <p class="event__duration">${renderTimeDiff()}</p>
+    <p class="event__duration">${timeDiff}</p>
   </div>
   <p class="event__price">
     &euro;&nbsp;<span class="event__price-value">${price}</span>
   </p>
   <h4 class="visually-hidden">Offers:</h4>
-  <ul class="event__selected-offers">
 
-  ${renderOffers(offersArray)}
+  ${renderOffers(tripOffers)}
 
-  </ul>
   <button class="event__favorite-btn ${favoriteClassName}" type="button">
     <span class="visually-hidden">Add to favorite</span>
     <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">

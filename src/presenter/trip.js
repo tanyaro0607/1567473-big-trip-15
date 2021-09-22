@@ -11,26 +11,22 @@ import {sortByDay, sortByPrice, sortByTime} from '../utils/point.js';
 import {filter} from '../utils/filter.js';
 import {SortType, SortHeaders, UpdateType, UserAction, FilterType} from '../const.js';
 
-const POINT_COUNT = 3;
-
 export default class Trip {
   //инициализируем
   constructor(pointsContainer, pointsModel, filterModel, api, offersModel, destinationsModel) {
     this._pointsModel = pointsModel;
     this._pointsContainer = pointsContainer;
     this._filterModel = filterModel;
-    this._renderedPointCount = POINT_COUNT;
     this._pointPresenter = new Map();
     this._filterType = FilterType.EVERYTHING;
     this._currentSortType = SortType.DAY;
     this._sortComponent = null;
-    // this._noPointComponent = null;
     this._isLoading = true;
     this._api = api;
 
     this._listPointComponent = new ListPointView();
     this._pointComponent = new PointView(offersModel, destinationsModel);
-    this._noPointComponent = new NoPointView();
+    this._noPointComponent = null;
     this._loadingComponent = new LoadingView();
 
     this._handleViewAction = this._handleViewAction.bind(this);
@@ -52,7 +48,6 @@ export default class Trip {
     this._clearTrip({resetSortType: true});
 
     remove(this._listPointComponent);
-    // remove(this._pointsContainer);
 
     this._pointsModel.removeObserver(this._handleModelEvent); // отписываем от модели
     this._filterModel.removeObserver(this._handleModelEvent);
@@ -67,7 +62,7 @@ export default class Trip {
   _getPoints() {
     this._filterType = this._filterModel.getFilter();
     const points = this._pointsModel.getPoints();
-    const filtredPoints = filter[this._filterType](points); //фильтруем
+    const filtredPoints  = filter[this._filterType](points); //фильтруем
     // сортируем результат
     switch (this._currentSortType) {
       case SortHeaders.TIME:
@@ -166,14 +161,14 @@ export default class Trip {
 
   // сортировка
   _renderSort() {
-    if (this._sortFormComponent !== null) {
-      this._sortFormComponent = null;
+    if (this._sortComponent !== null) {
+      this._sortComponent = null;
     }
 
-    this._sortFormComponent = new SortFormView(this._currentSortType);
-    this._sortFormComponent.setSortTypeChangeHandler(this._handleSortTypeChange);
+    this._sortComponent = new SortFormView(this._currentSortType);
+    this._sortComponent.setSortTypeChangeHandler(this._handleSortTypeChange);
 
-    render(this._pointsContainer, this._sortFormComponent, RenderPosition.AFTERBEGIN);
+    render(this._pointsContainer, this._sortComponent, RenderPosition.AFTERBEGIN);
   }
 
   //точка маршрута
@@ -203,7 +198,7 @@ export default class Trip {
     this._pointPresenter.clear();
 
     remove(this._loadingComponent);
-    remove(this._sortFormComponent); // удаляем сортировку
+    remove(this._sortComponent); // удаляем сортировку
     if (this._noPointComponent) {
       remove(this._noPointComponent);
     }

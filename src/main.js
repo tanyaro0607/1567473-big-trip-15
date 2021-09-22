@@ -10,7 +10,7 @@ import FilterPresenter from './presenter/filter.js';
 import StatsView from './view/stats.js';
 import DestinationsModel from './model/destinations.js';
 import OffersModel from './model/offers.js';
-import {MenuItem, UpdateType} from './const.js';
+import {MenuItem, UpdateType, FilterType} from './const.js';
 import Api from './api.js';
 
 //создаем массив объектов описывающих 20 точек маршрута
@@ -37,20 +37,24 @@ const filterPresenter = new FilterPresenter(siteFilterElement, filterModel, poin
 // render(tripInfoSectionComponent, new TripInfoCostView(), RenderPosition.BEFOREEND); //отриосвка стоимости
 const statsContainer = document.querySelector('.page-body__stats-container');
 let statsComponent = null;
+// const btn = document.querySelector('.trip-tabs__btn');
 
 const handleSiteMenuClick = (menuItem) => {
   switch (menuItem) {
     case MenuItem.TABLE:
+      tripPresenter.destroy();
+      siteMenuComponent.setMenuItem(MenuItem.TABLE);
       tripPresenter.init();
       remove(statsComponent);
+      filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
       document.querySelector('.trip-main__event-add-btn').disabled = false;
       break;
     case MenuItem.STATS:
       tripPresenter.destroy();
-      siteMenuComponent.setMenuItem(MenuItem.TABLE);
+      siteMenuComponent.setMenuItem(MenuItem.STATS);
       statsComponent = new StatsView(pointsModel.getPoints());
-      document.querySelector('.trip-main__event-add-btn').disabled = true;
       render(statsContainer, statsComponent, RenderPosition.AFTERBEGIN);
+      document.querySelector('.trip-main__event-add-btn').disabled = true;
       break;
   }
 };

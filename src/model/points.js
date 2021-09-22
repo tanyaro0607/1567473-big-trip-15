@@ -76,7 +76,7 @@ export default class Points extends AbstractObserver {
         offersArray: point.offers,
         placeDestination: {
           textDescriptions: point.destination.description, //описание
-          photosArray: point.destination.pictures, //фото
+          photos: point.destination.pictures, //фото
         },
         isFavorite: point['is_favorite'],
         id: point.id, //присваиваем id для каждой задачи
@@ -108,7 +108,7 @@ export default class Points extends AbstractObserver {
         destination: {
           name: point.сityDestination,
           description: point.placeDestination.textDescriptions,
-          pictures: point.placeDestination.photosArray,
+          pictures: point.placeDestination.photos,
         },
         id: point.id,
         'is_favorite': point.isFavorite,
@@ -123,7 +123,7 @@ export default class Points extends AbstractObserver {
     delete adaptedPoint.time.timeEnd;
     delete adaptedPoint.сityDestination;
     delete adaptedPoint.textDescriptions;
-    delete adaptedPoint.photosArray;
+    delete adaptedPoint.photos;
     delete adaptedPoint.id;
     delete adaptedPoint.isFavorite;
     delete adaptedPoint.offersArray;

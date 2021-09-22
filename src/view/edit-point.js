@@ -10,7 +10,7 @@ import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 const BLANK_POINT = {
   tripType: 'taxi',
   price: '0',
-  placeDestination: {textDescriptions: '', photosArray: ''},
+  placeDestination: {textDescriptions: '', photos: ''},
   time: dayjs().toDate(),
   сityDestination: ''};
 
@@ -77,10 +77,10 @@ const renderOffers = (randomOffersArray) => {
 };
 
 //генерируем шаблон фото
-const renderPhotos = (photosArray) => {
+const renderPhotos = (photos) => {
   let str = '';
-  for (let i = 0; i < photosArray.length; i++) {
-    str += ` <img class="event__photo" src="${photosArray[i].src}" alt="Event photo"> `;
+  for (let i = 0; i < photos.length; i++) {
+    str += ` <img class="event__photo" src="${photos[i].src}" alt="Event photo"> `;
   }
   return str;
 };
@@ -92,15 +92,15 @@ const generatePhoto = () => {
 };
 
 const generatePhotosArray = () => {
-  const photosArray = new Array(getRandomInteger(0,5)).fill().map(generatePhoto);
-  return photosArray;
+  const photos = new Array(getRandomInteger(0,5)).fill().map(generatePhoto);
+  return photos;
 };
 
 //фото
-const createPhotosTemplate = (photosArray) => (
+const createPhotosTemplate = (photos) => (
   `<div class="event__photos-container">
     <div class="event__photos-tape">
-      ${renderPhotos(photosArray)}
+      ${renderPhotos(photos)}
     </div>
   </div>`
 );
@@ -114,15 +114,15 @@ const createDescriptionTemplate = (textDescriptions) => {
   return `<p class="event__destination-description"> ${str} </p>`;
 };
 
-const createDestinationInfoTemplate = (textDescriptions, photosArray) => {
-  if (!textDescriptions || (!photosArray && !photosArray.length > 0) ) {
+const createDestinationInfoTemplate = (textDescriptions, photos) => {
+  if (!textDescriptions || (!photos && !photos.length > 0) ) {
     return '';
   }
   return `<section class="event__section  event__section--destination">
   <h3 class="event__section-title  event__section-title--destination">Destination</h3>
 
     ${(textDescriptions) ? createDescriptionTemplate(textDescriptions) : ''}
-    ${(photosArray) ? createPhotosTemplate(photosArray) : ''}
+    ${(photos) ? createPhotosTemplate(photos) : ''}
 
   </section>`;
 };
@@ -215,7 +215,7 @@ const createEditFormTemplate = (data = {}) => {
 
                   ${renderOffers(offersArray)}
 
-                  ${createDestinationInfoTemplate(placeDestination.textDescriptions, placeDestination.photosArray )}
+                  ${createDestinationInfoTemplate(placeDestination.textDescriptions, placeDestination.photos )}
 
               </section>
             </form>
@@ -348,7 +348,7 @@ export default class PointEdit extends SmartView {
         сityDestination: evt.target.value,
         placeDestination: {
           textDescriptions: generateDescriptionTextArray(), //описание
-          photosArray: generatePhotosArray(), //фото
+          photos: generatePhotosArray(), //фото
         },
       });
   }

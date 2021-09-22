@@ -1,5 +1,5 @@
-import SortFormView from '../view/sort.js'; //Сортировка
-import ListPointView from '../view/list-points'; // контейнер для точек маршрута
+import SortView from '../view/sort.js'; //Сортировка
+import ListPointView from '../view/list-points.js'; // контейнер для точек маршрута
 import PointView from '../view/point.js'; // Точки маршрута
 import NoPointView from '../view/no-point.js';
 import PointPresenter, {State as PointPresenterViewState} from './point.js';
@@ -164,7 +164,7 @@ export default class Trip {
       this._sortComponent = null;
     }
 
-    this._sortComponent = new SortFormView(this._currentSortType);
+    this._sortComponent = new SortView(this._currentSortType);
     this._sortComponent.setSortTypeChangeHandler(this._handleSortTypeChange);
 
     render(this._pointsContainer, this._sortComponent, RenderPosition.AFTERBEGIN);

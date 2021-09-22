@@ -75,7 +75,7 @@ export default class Points extends AbstractObserver {
         price: point['base_price'],
         offersArray: point.offers,
         placeDestination: {
-          descriptionTextArray: point.destination.description, //описание
+          textDescriptions: point.destination.description, //описание
           photosArray: point.destination.pictures, //фото
         },
         isFavorite: point['is_favorite'],
@@ -107,7 +107,7 @@ export default class Points extends AbstractObserver {
         'date_to': point.time.timeEnd,
         destination: {
           name: point.сityDestination,
-          description: point.placeDestination.descriptionTextArray,
+          description: point.placeDestination.textDescriptions,
           pictures: point.placeDestination.photosArray,
         },
         id: point.id,
@@ -122,7 +122,7 @@ export default class Points extends AbstractObserver {
     delete adaptedPoint.time.timeStart,
     delete adaptedPoint.time.timeEnd;
     delete adaptedPoint.сityDestination;
-    delete adaptedPoint.descriptionTextArray;
+    delete adaptedPoint.textDescriptions;
     delete adaptedPoint.photosArray;
     delete adaptedPoint.id;
     delete adaptedPoint.isFavorite;

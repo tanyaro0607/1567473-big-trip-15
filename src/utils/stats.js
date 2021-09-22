@@ -28,8 +28,8 @@ export const getSumPriceFromType = (point) => {
 
 export const getSumTimeFromType = (point) => {
   const dataSortByTime = point.slice()
-    .sort((elem1, elem2) => dayjs(elem2.time.timeEnd).
-      diff(dayjs(elem2.time.timeStart)) - dayjs(elem1.time.timeEnd).diff(dayjs(elem1.time.timeStart)));
+    .sort((elemOne, elemTwo) => dayjs(elemTwo.time.timeEnd).
+      diff(dayjs(elemTwo.time.timeStart)) - dayjs(elemOne.time.timeEnd).diff(dayjs(elemOne.time.timeStart)));
 
   let result = null;
   result = Object.fromEntries(dataSortByTime.map((item) => [item.tripType, 0]));

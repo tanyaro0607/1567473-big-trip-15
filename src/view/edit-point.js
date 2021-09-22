@@ -42,27 +42,26 @@ const generateOffer = () => {
 };
 
 const generateOffersArray = () => {
-  const offersArray = new Array(0, 0, OFFERS.length - 1).fill().map(generateOffer);
-  return offersArray;
+  const tripOffers = new Array(0, 0, OFFERS.length - 1).fill().map(generateOffer);
+  return tripOffers;
 };
 
 //генерируем шаблон доп услуг
-const renderOffers = (randomOffersArray) => {
-  if (!randomOffersArray || !randomOffersArray.length) {
+const renderOffers = (randomTripOffers) => {
+  if (!randomTripOffers || !randomTripOffers.length) {
     return '';
   }
   let str = '';
-  for (let i = 0; i < randomOffersArray.length; i++) {
-    // console.log(randomOffersArray[i]);
-    const addChecked = randomOffersArray[i].isSelected
+  for (let i = 0; i < randomTripOffers.length; i++) {
+    const addChecked = randomTripOffers[i].isSelected
       ? 'checked'
       : '';
     str += ` <div class="event__offer-selector">
     <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" ${addChecked}>
     <label class="event__offer-label" for="event-offer-luggage-1">
-      <span class="event__offer-title">${randomOffersArray[i].title}</span>
+      <span class="event__offer-title">${randomTripOffers[i].title}</span>
       &plus;&euro;&nbsp;
-      <span class="event__offer-price">${randomOffersArray[i].price}</span>
+      <span class="event__offer-price">${randomTripOffers[i].price}</span>
     </label>
   </div> `;
   }
@@ -140,7 +139,7 @@ const generateDescriptionTextArray = () => {
 
 const createEditFormTemplate = (data = {}) => {
 
-  const {tripType, price, time, сityDestination, placeDestination, offersArray, isDisabled, isSaving, isDeleting, isNewPoint} = data;
+  const {tripType, price, time, сityDestination, placeDestination, tripOffers, isDisabled, isSaving, isDeleting, isNewPoint} = data;
 
   const timeStartEvent = dayjs(time.timeStart).format('DD/MM/YY HH:mm');
   const timeEndEvent = dayjs(time.timeEnd).format('DD/MM/YY HH:mm');
@@ -213,7 +212,7 @@ const createEditFormTemplate = (data = {}) => {
                 </header>
                 <section class="event__details">
 
-                  ${renderOffers(offersArray)}
+                  ${renderOffers(tripOffers)}
 
                   ${createDestinationInfoTemplate(placeDestination.textDescriptions, placeDestination.photos )}
 
@@ -368,14 +367,14 @@ export default class PointEdit extends SmartView {
     this.updateData(
       {
         tripType,
-        offersArray: generateOffersArray(),
+        tripOffers: generateOffersArray(),
       });
   }
 
   _offerChangeHandler(evt) {
     evt.preventDefault();
     // console.log(evt.target.innerText);
-    const offersRandom = this._data.offersArray;
+    const offersRandom = this._data.tripOffers;
     const offerIndex = offersRandom.findIndex((item) => item.text === evt.target.innerText);
     const updateOffer = offersRandom[offerIndex];
     // console.log(evt.target.innerText);
@@ -386,7 +385,7 @@ export default class PointEdit extends SmartView {
     // }
 
     this.updateData({
-      offersArray: [
+      tripOffers: [
         ...offersRandom.slice(0, offerIndex),
         updateOffer,
         ...offersRandom.slice(offerIndex + 1),

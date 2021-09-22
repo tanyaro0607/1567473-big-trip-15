@@ -2,20 +2,20 @@ import dayjs from 'dayjs';
 import AbstractView from './abstract.js';
 
 //передаем в шаблон
-const renderOffers = (offersArray) => {
+const renderOffers = (tripOffers) => {
   let str = '';
-  for (let i = 0; i < offersArray.length; i++) {
+  for (let i = 0; i < tripOffers.length; i++) {
     str += `<li class="event__offer">
-    <span class="event__offer-title">${offersArray[i].title}</span>
+    <span class="event__offer-title">${tripOffers[i].title}</span>
     &plus;&euro;&nbsp;
-    <span class="event__offer-price">${offersArray[i].price}</span>
+    <span class="event__offer-price">${tripOffers[i].price}</span>
     </li>`;
   }
   return `<ul class="event__selected-offers"> ${str} </ul>`;
 };
 
 const createPointTemplate = (point) => {
-  const { tripType, сityDestination, price, date, time, offersArray, isFavorite} = point;
+  const { tripType, сityDestination, price, date, time, tripOffers, isFavorite} = point;
   const dateEvent = dayjs(date).format('D MMM');
   const timeStartEvent = dayjs(time.timeStart).format('hh:mm');
   const timeEndEvent = dayjs(time.timeEnd).format('hh:mm');
@@ -71,7 +71,7 @@ const createPointTemplate = (point) => {
   </p>
   <h4 class="visually-hidden">Offers:</h4>
 
-  ${renderOffers(offersArray)}
+  ${renderOffers(tripOffers)}
 
   <button class="event__favorite-btn ${favoriteClassName}" type="button">
     <span class="visually-hidden">Add to favorite</span>

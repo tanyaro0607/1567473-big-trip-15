@@ -73,7 +73,7 @@ export default class Points extends AbstractObserver {
           timeEnd: dayjs(new Date(point.date_to)),
         },
         price: point['base_price'],
-        offersArray: point.offers,
+        tripOffers: point.offers,
         placeDestination: {
           textDescriptions: point.destination.description, //описание
           photos: point.destination.pictures, //фото
@@ -112,7 +112,7 @@ export default class Points extends AbstractObserver {
         },
         id: point.id,
         'is_favorite': point.isFavorite,
-        offers: point.offersArray,
+        offers: point.tripOffers,
         type: point.tripType,
       },
     );
@@ -126,7 +126,7 @@ export default class Points extends AbstractObserver {
     delete adaptedPoint.photos;
     delete adaptedPoint.id;
     delete adaptedPoint.isFavorite;
-    delete adaptedPoint.offersArray;
+    delete adaptedPoint.tripOffers;
     delete adaptedPoint.tripType;
 
     return adaptedPoint;

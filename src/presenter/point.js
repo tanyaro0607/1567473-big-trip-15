@@ -174,14 +174,6 @@ export default class Point {
   }
 
   _handleFormSubmit(update) {
-    // Проверяем, поменялись ли в задаче данные, которые попадают под фильтрацию,
-    // а значит требуют перерисовки списка - если таких нет, это PATCH-обновление
-    // дописать условие
-    // console.log(update.time.timeStart);
-    // if ((!update.price) || (!update.time.timeStart) || (!update.time.timeEnd)) {
-    //   return;
-    // }
-    // console.log(update);
     this._changeData(
       UserAction.UPDATE_POINT,
       UpdateType.MINOR,

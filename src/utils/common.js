@@ -7,12 +7,6 @@ export const getRandomInteger = (a = 0, b = 1) => {
   return Math.floor(lower + Math.random() * (upper - lower + 1));
 };
 
-//добавление в избранное
-export const getBoolean = () => {
-  const boolean = Boolean(getRandomInteger(0, 1));
-  return boolean;
-};
-
 //ф-я, необходимая чтобы создать но основании html-разметки создать новый дом-элемент, который мы потом сможем куда-то вставить
 export const createElement = (template) => {
   const newElement = document.createElement('div'); //создаём div

@@ -2,7 +2,6 @@ import SortFormView from '../view/sort.js'; //Сортировка
 import ListPointView from '../view/list-points'; // контейнер для точек маршрута
 import PointView from '../view/point.js'; // Точки маршрута
 import NoPointView from '../view/no-point.js';
-// import PointEditView from '../view/edit-point.js'; //Форма редактирования
 import PointPresenter, {State as PointPresenterViewState} from './point.js';
 import PointNewPresenter from './point-new.js';
 import LoadingView from '../view/loading.js';

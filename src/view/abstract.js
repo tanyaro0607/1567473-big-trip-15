@@ -10,12 +10,9 @@ export default class Abstract {
       throw new Error('Can\'t instantiate Abstract, only concrete one.');
     }
 
-    this._element = null;   // - Объявим свойство _element
-    this._callback = {}; // приватное поле - объект, где будем хранить ссылки на обработчики
+    this._element = null;
+    this._callback = {};
   }
-
-  //- Объявим методы getElement и removeElement
-  // - Метод getTemplate тоже объявим, но в качестве реализации будем бросать исключение, чтобы разработчик не забывал его переопределить
 
   getTemplate() {
     throw new Error('Abstract method not implemented: getTemplate');

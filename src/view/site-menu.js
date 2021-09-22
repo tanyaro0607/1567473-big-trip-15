@@ -38,7 +38,7 @@ export default class SiteMenu extends AbstractView {
     navItems.forEach((item) => {
       if (item !== null && item.classList.contains('trip-tabs__btn--active')) {
         item.classList.remove('trip-tabs__btn--active');
-      } 
+      }
     });
 
     this.getElement().querySelector(`[data-name=${menuItem}]`).classList.add('trip-tabs__btn--active');

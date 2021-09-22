@@ -16,7 +16,9 @@ export const State = {
 
 export default class Point {
 
-  constructor(pointListContainer, changeData, changeMode) {
+  constructor(pointListContainer, changeData, changeMode, offersModel, destinationsModel) {
+    this._offersModel = offersModel;
+    this._destinationsModel = destinationsModel;
     this._pointListContainer = pointListContainer;
     this._changeData = changeData;
     this._changeMode = changeMode; //для перехода карточек в стандартный режим, если открыто более 1 на ред-е
@@ -40,7 +42,7 @@ export default class Point {
     const prevPointEditComponent = this._pointEditComponent;
 
     this._pointComponent = new PointView(point);
-    this._pointEditComponent = new PointEditView(point);
+    this._pointEditComponent = new PointEditView(point, this._offersModel, this._destinationsModel);
 
     this._pointComponent.setEditClickHandler(this._handleEditClick);
     this._pointComponent.setFavoriteClickHandler(this._handleFavoriteClick);

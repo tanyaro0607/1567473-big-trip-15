@@ -14,6 +14,9 @@ export default class Trip {
   //инициализируем
   constructor(pointsContainer, pointsModel, filterModel, api, offersModel, destinationsModel) {
     this._pointsModel = pointsModel;
+    this._offersModel = offersModel;
+    
+    this._destinationsModel = destinationsModel;
     this._pointsContainer = pointsContainer;
     this._filterModel = filterModel;
     this._pointPresenter = new Map();
@@ -172,7 +175,7 @@ export default class Trip {
 
   //точка маршрута
   _renderPoint(point) {
-    const pointPresenter = new PointPresenter(this._listPointComponent, this._handleViewAction, this._handleModeChange);
+    const pointPresenter = new PointPresenter(this._listPointComponent, this._handleViewAction, this._handleModeChange, this._offersModel, this._destinationsModel);
     pointPresenter.init(point);
     this._pointPresenter.set(point.id, pointPresenter); //запоминает id
   }

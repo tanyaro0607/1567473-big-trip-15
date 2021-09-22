@@ -222,8 +222,10 @@ const createEditFormTemplate = (data = {}) => {
 };
 
 export default class PointEdit extends SmartView {
-  constructor(point = BLANK_POINT) {
+  constructor(point = BLANK_POINT, offersModel, destinationsModel) {
     super();
+    this._offersModel = offersModel;
+    this._destinationsModel = destinationsModel;
     this._data = PointEdit.parsePointToData(point);
     this._datepickerStart = null;// заводим поле для datepicker
     this._datepickerEnd = null;// заводим поле для datepicker
@@ -292,7 +294,7 @@ export default class PointEdit extends SmartView {
   }
 
   getTemplate() {
-    return createEditFormTemplate(this._data);
+    return createEditFormTemplate(this._data, this._offersModel, this._destinationsModel);
   }
 
   // восстановление внутрен
@@ -364,14 +366,16 @@ export default class PointEdit extends SmartView {
   _typeChangeHandler(evt) {
     evt.preventDefault();
     const  tripType = evt.target.value;
+    const tripOffers = this._offersModel.getOffers().find((offer) => offer.type === tripType).offers;
     this.updateData(
       {
         tripType,
-        tripOffers: generateOffersArray(),
+        tripOffers,
       });
   }
 
   _offerChangeHandler(evt) {
+    // console.log(this._offersModel);
     evt.preventDefault();
     // console.log(evt.target.innerText);
     const offersRandom = this._data.tripOffers;

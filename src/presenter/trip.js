@@ -15,7 +15,6 @@ export default class Trip {
   constructor(pointsContainer, pointsModel, filterModel, api, offersModel, destinationsModel) {
     this._pointsModel = pointsModel;
     this._offersModel = offersModel;
-    
     this._destinationsModel = destinationsModel;
     this._pointsContainer = pointsContainer;
     this._filterModel = filterModel;

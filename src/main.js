@@ -1,7 +1,4 @@
 import SiteMenuView from './view/site-menu.js'; //Меню
-// import TripInfoSectionView from './view/trip-info-section.js'; // контейнер для маршрута и стоимости
-// import TripInfoView from './view/trip-info.js'; //Маршрут
-// import TripInfoCostView from './view/trip-info-cost.js'; //стоимость
 import PointsModel from './model/points.js';
 import {render, RenderPosition, remove} from './utils/render.js';
 import TripPresenter from './presenter/trip.js';
@@ -16,26 +13,19 @@ import Api from './api.js';
 //создаем массив объектов описывающих 20 точек маршрута
 const AUTHORIZATION = 'Basic taNYa6d7Sk1l1g15f';
 const END_POINT = 'https://15.ecmascript.pages.academy/big-trip';
-
-// const siteMainElement = document.querySelector('.trip-main');
 const siteMainNavigationElement = document.querySelector('.trip-controls__navigation');
-
 const api = new Api(END_POINT, AUTHORIZATION);
 const destinationsModel = new DestinationsModel();
 const offersModel = new OffersModel();
 const pointsModel = new PointsModel();
 const filterModel = new FilterModel();
 const siteMenuComponent = new SiteMenuView();
-// const tripInfoSectionComponent = new TripInfoSectionView(); //контейнер для маршрута и стоимости
 const siteFilterElement = document.querySelector('.trip-controls__filters');
 const pointsContainer = document.querySelector('.trip-events');
 const tripPresenter = new TripPresenter(pointsContainer, pointsModel, filterModel, api);
 const filterPresenter = new FilterPresenter(siteFilterElement, filterModel, pointsModel);
-
-// render(siteMainElement, tripInfoSectionComponent, RenderPosition.AFTERBEGIN); //отриосвка контейнера для маршрута и стоимости
-// render(tripInfoSectionComponent, new TripInfoView(), RenderPosition.AFTERBEGIN); //отриосвка Маршрута
-// render(tripInfoSectionComponent, new TripInfoCostView(), RenderPosition.BEFOREEND); //отриосвка стоимости
 const statsContainer = document.querySelector('.page-body__stats-container');
+const addPointButton = document.querySelector('.trip-main__event-add-btn');
 let statsComponent = null;
 
 const handleSiteMenuClick = (menuItem) => {
@@ -57,8 +47,6 @@ const handleSiteMenuClick = (menuItem) => {
       break;
   }
 };
-
-const addPointButton = document.querySelector('.trip-main__event-add-btn');
 
 const handleNewPointFormClose = () => {
   addPointButton.disabled = false;

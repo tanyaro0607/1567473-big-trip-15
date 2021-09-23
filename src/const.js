@@ -10,7 +10,7 @@ export const OFFERS = [
 ];
 
 //создаем массив городов
-export const DESTINATIONS = [ 'Amsterdam', 'Geneva', 'Rome', 'Barselona', 'Paris', 'New-York', 'Prague', 'Tokio'];
+export const DESTINATIONS = [ 'Amsterdam', 'Geneva', 'Rome', 'Barcelona', 'Paris', 'New-York', 'Prague', 'Tokio'];
 
 //тип поездки
 export const TYPES_OF_TRIP = [

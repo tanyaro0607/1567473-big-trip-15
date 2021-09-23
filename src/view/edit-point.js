@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import {TYPES_OF_TRIP, DESTINATIONS} from '../const.js';
+import {TYPES_OF_TRIP} from '../const.js';
 import SmartView from './smart.js';
 import flatpickr from 'flatpickr';
 
@@ -13,19 +13,11 @@ const BLANK_POINT = {
   time: dayjs().toDate(),
   сityDestination: ''};
 
-//генерируем список городов
-// const renderListDestinations = (destinationsModel) => {
-//   let str = '';
-//   for (let i = 0; i < destinationsModel.length; i++) {
-//     str += `<option value="${destinationsModel[i].name}"></option>`;
-//   }
-//   return str;
-// };
-
-const renderListDestinations = () => {
+const renderListDestinations = (destinations) => {
+  console.log(destinations);
   let str = '';
-  for (let i = 0; i < DESTINATIONS.length; i++) {
-    str += `<option value="${DESTINATIONS[i]}"></option>`;
+  for (let i = 0; i < destinations.length; i++) {
+    str += `<option value="${destinations[i].name}"></option>`;
   }
   return str;
 };
@@ -110,8 +102,7 @@ const createDestinationInfoTemplate = (textDescriptions, photos) => {
   </section>`;
 };
 
-const createEditFormTemplate = (data = {}) => {
-  // console.log(destinationsModel);
+const createEditFormTemplate = (data = {}, destinationsModel) => {
   const {tripType, price, time, сityDestination, placeDestination, tripOffers, isDisabled, isSaving, isDeleting, isNewPoint} = data;
 
   const timeStartEvent = dayjs(time.timeStart).format('DD/MM/YY HH:mm');
@@ -156,7 +147,7 @@ const createEditFormTemplate = (data = {}) => {
                     <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" ${isDisabled ? 'disabled' : ''} onkeyup="this.value = this.value.replace(/[^]/g,'');" value="${сityDestination}" list="destination-list-1">
                     <datalist id="destination-list-1">
 
-                      ${renderListDestinations()}
+                      ${renderListDestinations(destinationsModel)}
 
                     </datalist>
                   </div>

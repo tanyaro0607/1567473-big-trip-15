@@ -14,6 +14,14 @@ const BLANK_POINT = {
   сityDestination: ''};
 
 //генерируем список городов
+// const renderListDestinations = (destinationsModel) => {
+//   let str = '';
+//   for (let i = 0; i < destinationsModel.length; i++) {
+//     str += `<option value="${destinationsModel[i].name}"></option>`;
+//   }
+//   return str;
+// };
+
 const renderListDestinations = () => {
   let str = '';
   for (let i = 0; i < DESTINATIONS.length; i++) {
@@ -35,21 +43,20 @@ const renderListTypesOfTrip = (isDisabled) => {
 };
 
 //генерируем шаблон доп услуг
-const renderOffers = (randomTripOffers) => {
-  if (!randomTripOffers || !randomTripOffers.length) {
+const renderOffers = (tripOffers) => {
+  if (!tripOffers || !tripOffers.length) {
     return '';
   }
   let str = '';
-  for (let i = 0; i < randomTripOffers.length; i++) {
-    const addChecked = randomTripOffers[i].isSelected
-      ? 'checked'
-      : '';
+  for (let i = 0; i < tripOffers.length; i++) {
+
+    const isChecked = tripOffers.some((offer) => offer.title === tripOffers[i].title); //some() проверяет, удовлетворяет ли какой-либо элемент массива условию,
     str += ` <div class="event__offer-selector">
-    <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" ${addChecked}>
+    <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" ${isChecked ? 'checked' : ''}>
     <label class="event__offer-label" for="event-offer-luggage-1">
-      <span class="event__offer-title">${randomTripOffers[i].title}</span>
+      <span class="event__offer-title">${tripOffers[i].title}</span>
       &plus;&euro;&nbsp;
-      <span class="event__offer-price">${randomTripOffers[i].price}</span>
+      <span class="event__offer-price">${tripOffers[i].price}</span>
     </label>
   </div> `;
   }
@@ -104,7 +111,7 @@ const createDestinationInfoTemplate = (textDescriptions, photos) => {
 };
 
 const createEditFormTemplate = (data = {}) => {
-
+  // console.log(destinationsModel);
   const {tripType, price, time, сityDestination, placeDestination, tripOffers, isDisabled, isSaving, isDeleting, isNewPoint} = data;
 
   const timeStartEvent = dayjs(time.timeStart).format('DD/MM/YY HH:mm');
@@ -260,7 +267,7 @@ export default class PointEdit extends SmartView {
   }
 
   getTemplate() {
-    return createEditFormTemplate(this._data, this._offersModel, this._destinationsModel);
+    return createEditFormTemplate(this._data, this._destinationsModel, this._offersModel);
   }
 
   // восстановление внутрен
@@ -299,7 +306,6 @@ export default class PointEdit extends SmartView {
 
   // получает дату и переводит ее в состояние
   _timeEndChangeHandler([userDateEnd]) {
-    // console.log(userDate);
     this.updateData({
       time: {
         timeEnd: userDateEnd,
@@ -343,18 +349,36 @@ export default class PointEdit extends SmartView {
       });
   }
 
+  // _offerChangeHandler(evt) {
+  //   evt.preventDefault();
+  //   const offersRandom = this._data.tripOffers;
+  //   const offerIndex = offersRandom.findIndex((item) => item.title === evt.target.innerText);
+  //   const updateOffer = offersRandom[offerIndex];
+  //   this.updateData({
+  //     tripOffers: [
+  //       ...offersRandom.slice(0, offerIndex),
+  //       updateOffer,
+  //       ...offersRandom.slice(offerIndex + 1),
+  //     ],
+  //   });
+  //   console.log(1);
+  // }
+
   _offerChangeHandler(evt) {
-    evt.preventDefault();
-    const offersRandom = this._data.tripOffers;
-    const offerIndex = offersRandom.findIndex((item) => item.text === evt.target.innerText);
-    const updateOffer = offersRandom[offerIndex];
-    this.updateData({
-      tripOffers: [
-        ...offersRandom.slice(0, offerIndex),
-        updateOffer,
-        ...offersRandom.slice(offerIndex + 1),
-      ],
-    });
+
+    const offersAll = this._data.tripOffers;
+    const selectedOffer = offersAll.find((offer) => offer.type === this._data.type);
+
+    if (evt.target.checked) {
+      this._data.tripOffers.push(selectedOffer);
+    } else {
+      const selectedOfferIndex = this._data.tripOffers.findIndex((tripOffer) => tripOffer.title === selectedOffer.title);
+
+      this._data.tripOffers = [
+        ...this._data.tripOffers.slice(0, selectedOfferIndex),
+        ...this._data.tripOffers.slice(selectedOfferIndex + 1),
+      ];
+    }
   }
 
 

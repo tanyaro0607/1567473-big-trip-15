@@ -6,7 +6,6 @@ export default class PointNew {
   constructor(pointListContainer, changeData) {
     this._pointListContainer = pointListContainer;
     this._changeData = changeData;
-
     this._pointEditComponent = null;
     this._destroyCallback = null;
 

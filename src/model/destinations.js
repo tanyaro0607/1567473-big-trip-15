@@ -1,10 +1,10 @@
 export default class Destinations {
   constructor() {
-    this._destinations = [];
+    this.__destinations = [];
   }
 
-  setDestinations(destinations) {
-    this._destinations = destinations.slice();
+  setDestinations(destinatons) {
+    this._destinationsModel = destinatons.slice();
   }
 
   getDestinations() {

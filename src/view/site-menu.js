@@ -6,7 +6,7 @@ import {MenuItem} from '../const.js';
 
 const createSiteMenuTemplate = () => (
   `<nav class="trip-controls__trip-tabs  trip-tabs">
-      <a class="trip-tabs__btn" href="#" data-name="${MenuItem.TABLE}">Table</a>
+      <a class="trip-tabs__btn trip-tabs__btn--active" href="#" data-name="${MenuItem.TABLE}">Table</a>
       <a class="trip-tabs__btn" href="#" data-name="${MenuItem.STATS}">Stats</a>
     </nav>`
 );

@@ -234,3 +234,4 @@ export default class Trip {
 
   }
 }
+

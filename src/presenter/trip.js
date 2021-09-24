@@ -20,7 +20,7 @@ export default class Trip {
     this._filterModel = filterModel;
     this._pointPresenter = new Map();
     this._filterType = FilterType.EVERYTHING;
-    this._currentSortType = SortType.DAY;
+    this._currentSortType = SortHeaders.DAY;
     this._sortComponent = null;
     this._isLoading = true;
     this._api = api;

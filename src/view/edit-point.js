@@ -21,6 +21,14 @@ const renderListDestinations = () => {
   return str;
 };
 
+// const renderListDestinations = (destinations) => {
+//   let str = '';
+//   for (let i = 0; i < destinations.length; i++) {
+//     str += `<option value="${destinations[i].name}"></option>`;
+//   }
+//   return str;
+// };
+
 //генерируем шаблон спискатипов поездки
 const renderListTypesOfTrip = (isDisabled) => {
   let str = '';
@@ -103,7 +111,6 @@ const createDestinationInfoTemplate = (textDescriptions, photos) => {
 
 const createEditFormTemplate = (data = {}) => {
   const {tripType, price, time, сityDestination, placeDestination, tripOffers, isDisabled, isSaving, isDeleting, isNewPoint} = data;
-  console.log(сityDestination);
   const timeStartEvent = dayjs(time.timeStart).format('DD/MM/YY HH:mm');
   const timeEndEvent = dayjs(time.timeEnd).format('DD/MM/YY HH:mm');
 
@@ -186,6 +193,7 @@ const createEditFormTemplate = (data = {}) => {
 
 export default class PointEdit extends SmartView {
   constructor(point = BLANK_POINT, offersModel, destinationsModel) {
+    // console.log(destinationsModel);
     super();
     this._offersModel = offersModel;
     this._destinationsModel = destinationsModel;

@@ -63,3 +63,5 @@ export const ChartType = {
 };
 
 export const SortType = [SortHeaders.DAY, SortHeaders.TIME, SortHeaders.PRICE];
+// console.log(SortType[0])
+

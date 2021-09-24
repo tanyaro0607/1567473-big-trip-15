@@ -34,6 +34,7 @@ const handleSiteMenuClick = (menuItem) => {
       tripPresenter.destroy();
       siteMenuComponent.setMenuItem(MenuItem.TABLE);
       tripPresenter.init();
+      filterPresenter.init();
       remove(statsComponent);
       filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
       document.querySelector('.trip-main__event-add-btn').disabled = false;

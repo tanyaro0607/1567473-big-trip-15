@@ -1,8 +1,6 @@
 import AbstractView from './abstract.js';
 
 const createFilterTemplate = (filter, currentFilterType) => {
-  const {type, name} = filter;
-  console.log(filter);
   let str = '';
   Object.keys(filter).forEach( (item) => {
     str += `<div class="trip-filters__filter">
@@ -12,8 +10,6 @@ const createFilterTemplate = (filter, currentFilterType) => {
   });
   return `<form class="trip-filters" action="#" method="get"> ${str} <button class="visually-hidden" type="submit">Accept filter</button>`;
 };
-
-
 
 export default class Filter extends AbstractView {
   constructor(filters, currentFilterType) {

@@ -47,9 +47,7 @@ const createPointTemplate = (point) => {
 
   const timeDiff = renderTimeDiff(dayjs(time.timeEnd).diff(dayjs(time.timeStart), 'minute'));
 
-  const favoriteClassName = isFavorite
-    ? 'event__favorite-btn--active'
-    : '';
+  const favoriteClassName = () => isFavorite ? 'event__favorite-btn--active' : '';
 
   return `<li class="trip-events__item">
   <div class="event">

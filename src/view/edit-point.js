@@ -8,10 +8,16 @@ import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 
 const BLANK_POINT = {
   tripType: 'taxi',
-  price: '0',
+  price: '',
   placeDestination: {textDescriptions: '', photos: ''},
-  time: dayjs().toDate(),
-  сityDestination: ''};
+  time: {
+    timeStart: dayjs().toDate(),
+    timeEnd: dayjs().toDate(),
+  },
+  сityDestination: '',
+  tripOffers: [],
+  isFavorite: false,
+};
 
 const renderListDestinations = () => {
   let str = '';
@@ -193,7 +199,6 @@ const createEditFormTemplate = (data = {}) => {
 
 export default class PointEdit extends SmartView {
   constructor(point = BLANK_POINT, offersModel, destinationsModel) {
-    // console.log(destinationsModel);
     super();
     this._offersModel = offersModel;
     this._destinationsModel = destinationsModel;

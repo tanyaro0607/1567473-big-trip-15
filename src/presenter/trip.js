@@ -209,7 +209,7 @@ export default class Trip {
 
     if (resetSortType) {
       this._currentSortType = SortHeader.DAY.name;
-    } 
+    }
   }
 
   // отрисовка всех методов

@@ -18,8 +18,6 @@ export default class Sort extends AbstractView {
   constructor(currentSortType) {
     super();
     this._currentSortType = currentSortType;
-
-    console.log(currentSortType)
     this._sortTypeChangeHandler = this._sortTypeChangeHandler.bind(this);
   }
 

@@ -24,12 +24,27 @@ export const TYPES_OF_TRIP = [
   {type:'Restaurant', icon: 'restaurant'},
 ];
 
-export const SortHeaders = {
-  DAY:'day',
-  EVENT:'event',
-  TIME:'time',
-  PRICE:'price',
-  OFFERS:'offers',
+export const SortHeader = {
+  DAY: {
+    name: 'day',
+    disabled: false,
+  },
+  EVENT: {
+    name: 'event',
+    disabled: true,
+  },
+  TIME: {
+    name: 'time',
+    disabled: false,
+  },
+  PRICE: {
+    name: 'price',
+    disabled: false,
+  },
+  OFFERS: {
+    name: 'offers',
+    disabled: true,
+  },
 };
 
 export const UserAction = {
@@ -62,6 +77,4 @@ export const ChartType = {
   TYPE: 'TYPE',
 };
 
-export const SortType = [SortHeaders.DAY, SortHeaders.TIME, SortHeaders.PRICE];
-// console.log(SortType[0])
 

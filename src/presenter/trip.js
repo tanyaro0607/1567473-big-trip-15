@@ -8,7 +8,7 @@ import LoadingView from '../view/loading.js';
 import {render, remove, RenderPosition} from '../utils/render.js';
 import {sortByDay, sortByPrice, sortByTime} from '../utils/point.js';
 import {filter} from '../utils/filter.js';
-import {SortType, SortHeaders, UpdateType, UserAction, FilterType} from '../const.js';
+import {SortHeader, UpdateType, UserAction, FilterType} from '../const.js';
 
 export default class Trip {
   //инициализируем
@@ -20,7 +20,7 @@ export default class Trip {
     this._filterModel = filterModel;
     this._pointPresenter = new Map();
     this._filterType = FilterType.EVERYTHING;
-    this._currentSortType = SortHeaders.DAY;
+    this._currentSortType = SortHeader.DAY.name;
     this._sortComponent = null;
     this._isLoading = true;
     this._api = api;
@@ -55,9 +55,10 @@ export default class Trip {
   }
 
   createPoint(callback) {
-    this._currentSortType = SortType.DAY; //сброс сортровки на DAY
+    this._currentSortType = SortHeader.DAY.name; //сброс сортровки на DAY
     this._filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING); //сброс фильтра на EVERYTHING
     this._pointNewPresenter.init(callback);
+    remove(this._noPointComponent);
   }
 
   _getPoints() {
@@ -66,9 +67,9 @@ export default class Trip {
     const filtredPoints  = filter[this._filterType](points); //фильтруем
     // сортируем результат
     switch (this._currentSortType) {
-      case SortHeaders.TIME:
+      case SortHeader.TIME.name:
         return filtredPoints.sort(sortByTime);
-      case SortHeaders.PRICE:
+      case SortHeader.PRICE.name:
         return filtredPoints.sort(sortByPrice);
     }
     return filtredPoints.sort(sortByDay);
@@ -195,17 +196,20 @@ export default class Trip {
   }
 
   _clearTrip({resetSortType = false} = {}) {
+    this._pointNewPresenter.destroy();
     this._pointPresenter.forEach((presenter) => presenter.destroy());
     this._pointPresenter.clear();
 
-    remove(this._loadingComponent);
-    remove(this._sortComponent); // удаляем сортировку
     if (this._noPointComponent) {
       remove(this._noPointComponent);
     }
+    remove(this._sortComponent);
+    remove(this._loadingComponent);
+    remove(this._listPointComponent);
+
     if (resetSortType) {
-      this._currentSortType = SortType.DEFAULT;
-    }
+      this._currentSortType = SortHeader.DAY.name;
+    } 
   }
 
   // отрисовка всех методов

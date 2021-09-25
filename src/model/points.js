@@ -116,7 +116,7 @@ export default class Points extends AbstractObserver {
 
     // Ненужные ключи мы удаляем
     delete adaptedPoint.price;
-    delete adaptedPoint.time,
+    delete adaptedPoint.time;
     delete adaptedPoint.сityDestination;
     delete adaptedPoint.textDescriptions;
     delete adaptedPoint.photos;

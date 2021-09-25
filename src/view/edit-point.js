@@ -25,12 +25,14 @@ const renderListDestinations = (allDestinations) => {
   return str;
 };
 
-const renderListTypesOfTrip = (allTripTypes, id) => {
+const renderListTypesOfTrip = (allTripTypes, id, tripType) => {
   let str = '';
   for (let i = 0; i < allTripTypes.length; i++) {
+    const typeOfTrip = allTripTypes[i];
+    const typeName = typeOfTrip[0].toUpperCase() + typeOfTrip.substring(1);
     str += ` <div class="event__type-item">
-                        <input id="event-type-${allTripTypes[i].toLowerCase()}-${id}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${allTripTypes[i].toLowerCase()}">
-                        <label class="event__type-label  event__type-label--${allTripTypes[i].toLowerCase()}" for="event-type-${allTripTypes[i].toLowerCase()}-${id}">${allTripTypes[i]}</label>
+                        <input id="event-type-${typeOfTrip}-${id}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${typeOfTrip}" ${typeOfTrip === tripType ? 'checked' : ''}>
+                        <label class="event__type-label  event__type-label--${typeOfTrip}" for="event-type-${typeOfTrip}-${id}">${typeName}</label>
                       </div>`;
   }
   return str;
@@ -140,7 +142,7 @@ const createEditFormTemplate = (data = {}, destinationsModel, offersModel) => {
                       <fieldset class="event__type-group">
                         <legend class="visually-hidden">Event type</legend>
 
-                        ${renderListTypesOfTrip(allTripTypes, id)}
+                        ${renderListTypesOfTrip(allTripTypes, id, tripType)}
 
                       </fieldset>
                     </div>
@@ -306,6 +308,7 @@ export default class PointEdit extends SmartView {
 
   // получает дату и переводит ее в состояние
   _timeEndChangeHandler([userDateEnd]) {
+    console.log(userDateEnd);
     this.updateData({
       time: {
         timeEnd: userDateEnd,

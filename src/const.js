@@ -1,29 +1,3 @@
-//создаем массив объектов доп услуг
-export const OFFERS = [
-  {text:'Order Uber',price: 20, isSelected: false},
-  {text:'Add luggage',price: 50, isSelected: false},
-  {text:'Switch to comfort',price: 80, isSelected: false},
-  {text:'Rent a car',price: 200, isSelected: false},
-  {text:'Add breakfast',price: 50, isSelected: false},
-  {text:'Book tickets',price: 40, isSelected: false},
-  {text:'Lunch in city',price: 30, isSelected: false},
-];
-
-//создаем массив городов
-export const DESTINATIONS = [ 'Amsterdam', 'Geneva', 'Rome', 'Barcelona', 'Paris', 'New-York', 'Prague', 'Tokio'];
-
-//тип поездки
-export const TYPES_OF_TRIP = [
-  {type:'Taxi', icon: 'taxi'},
-  {type:'Train', icon: 'train'},
-  {type:'Ship', icon: 'ship'},
-  {type:'Drive', icon: 'drive'},
-  {type:'Flight', icon: 'flight'},
-  {type:'Check-in', icon: 'check-in'},
-  {type:'Sightseeing', icon: 'sightseeing'},
-  {type:'Restaurant', icon: 'restaurant'},
-];
-
 export const SortHeader = {
   DAY: {
     name: 'day',

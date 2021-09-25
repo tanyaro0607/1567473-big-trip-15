@@ -11,7 +11,7 @@ import {MenuItem, UpdateType, FilterType} from './const.js';
 import Api from './api.js';
 
 //создаем массив объектов описывающих 20 точек маршрута
-const AUTHORIZATION = 'Basic taNYa6d7Sk1l1g12f';
+const AUTHORIZATION = 'Basic taNYa6d7Sk1l1g11f';
 const END_POINT = 'https://15.ecmascript.pages.academy/big-trip';
 const siteMainNavigationElement = document.querySelector('.trip-controls__navigation');
 const api = new Api(END_POINT, AUTHORIZATION);
@@ -65,6 +65,8 @@ siteMenuComponent.setMenuClickHandler(handleSiteMenuClick);
 filterPresenter.init();
 tripPresenter.init();
 
+api.getOffers().then((res) => offersModel.setOffers(res));
+api.getDestinations().then((res) => destinationsModel.setDestinations(res));
 api.getPoints()
   .then((points) => {
     pointsModel.setPoints(UpdateType.INIT, points);
@@ -72,7 +74,3 @@ api.getPoints()
   .catch(() => {
     pointsModel.setPoints(UpdateType.INIT, []);
   });
-
-
-api.getOffers().then((res) => offersModel.setOffers(res));
-api.getDestinations().then((res) => destinationsModel.setDestinations(res));

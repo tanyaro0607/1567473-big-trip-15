@@ -15,10 +15,14 @@ const renderOffers = (tripOffers) => {
 };
 
 const createPointTemplate = (point) => {
-  const { tripType, сityDestination, price, date, time, tripOffers, isFavorite} = point;
-  const dateEvent = dayjs(date).format('D MMM');
-  const timeStartEvent = dayjs(time.timeStart).format('hh:mm');
-  const timeEndEvent = dayjs(time.timeEnd).format('hh:mm');
+  const { tripType, сityDestination, price, time, tripOffers, isFavorite} = point;
+
+  const timeEndToInHours = dayjs(time.timeEnd).format('HH:mm');
+  const timeStartInHours = dayjs(time.timeStart).format('HH:mm');
+  const timeStartInMonthAndDay = dayjs(time.timeStart).format('MMM D');
+  const timeStartInDate = dayjs(time.timeStart).format('YYYY-MM-DD');
+  const timeEndInDateTime = dayjs(time.timeEnd).format('YYYY-MM-DDTHH:mm');
+  const timeStartInDateTime = dayjs(time.timeStart).format('YYYY-MM-DDTHH:mm');
 
   const MINUTES_IN_A_DAY = 1440;
   const MINUTES_IN_A_HOUR = 60;
@@ -51,16 +55,16 @@ const createPointTemplate = (point) => {
 
   return `<li class="trip-events__item">
   <div class="event">
-  <time class="event__date" datetime="2019-03-18">${dateEvent}</time>
+  <time class="event__date" datetime="${timeStartInDate}">${timeStartInMonthAndDay}</time>
   <div class="event__type">
     <img class="event__type-icon" width="42" height="42" src="img/icons/${tripType}.png" alt="Event type icon">
   </div>
   <h3 class="event__title">${tripType} ${сityDestination}</h3>
   <div class="event__schedule">
     <p class="event__time">
-      <time class="event__start-time" datetime="${timeStartEvent}">${timeStartEvent}</time>
+      <time class="event__start-time" datetime="${timeStartInDateTime}">${timeStartInHours}</time>
       &mdash;
-      <time class="event__end-time" datetime="${timeEndEvent}">${timeEndEvent}</time>
+      <time class="event__end-time" datetime="${timeEndInDateTime}">${timeEndToInHours}</time>
     </p>
     <p class="event__duration">${timeDiff}</p>
   </div>

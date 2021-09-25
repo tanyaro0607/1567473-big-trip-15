@@ -221,45 +221,15 @@ export default class PointEdit extends SmartView {
 
   // Перегружаем метод родителя removeElement,
   // чтобы при удалении удалялся более ненужный календарь
+
   removeElement() {
     super.removeElement();
-
-    if (this._datepicker) {
-      this._datepicker.destroy();
-      this._datepicker = null;
-    }
-  }
-
-  _setDatepicker() {
-    if (this._datepickerStart) {
-      // В случае обновления компонента удаляем вспомогательные DOM-элементы,
-      // которые создает flatpickr при инициализации
+    if (this._datepickerStart || this._datepickerStart) {
+      this._datepickerEnd.destroy();
+      this._datepickerEnd = null;
       this._datepickerStart.destroy();
       this._datepickerStart = null;
     }
-    if (this._datepickerEnd) {
-      // В случае обновления компонента удаляем вспомогательные DOM-элементы,
-      // которые создает flatpickr при инициализации
-      this._datepickerEnd.destroy();
-      this._datepickerEnd = null;
-    }
-    this._datepickerStart = flatpickr(
-      this.getElement().querySelector('[name = "event-start-time"]'), //поле, куда нужно прикрепить календарь
-      {
-        dateFormat: 'd/m/y H:i',
-        defaultDate: this._data.time.timeStart, // значение по умолчанию
-        onChange: this._timeStartChangeHandler, // что делаем, если пользователь ткнул в календарь
-      },
-    );
-    this._datepickerStart = flatpickr(
-      this.getElement().querySelector('[name = "event-end-time"]'), //поле, куда нужно прикрепить календарь
-      {
-        dateFormat: 'd/m/y H:i',
-        defaultDate: this._data.time.timeEnd, // значение по умолчанию
-        minDate: this._data.time.timeStart,
-        onChange: this._timeEndChangeHandler, // что делаем, если пользователь ткнул в календарь
-      },
-    );
   }
 
   reset(point) {
@@ -280,6 +250,52 @@ export default class PointEdit extends SmartView {
     this.setDeleteClickHandler(this._callback.deleteClick);
   }
 
+  removeHandlers() {
+    this._removeInnerHandlers();
+    this.getElement().querySelector('.event__reset-btn').removeEventListener('click', this._formDeleteClickHandler);
+    this._datepickerEnd.destroy();
+    this._datepickerEnd = null;
+    this._datepickerStart.destroy();
+    this._datepickerStart = null;
+  }
+
+
+  _setDatepicker() {
+    if (this._datepickerStart) {
+      // В случае обновления компонента удаляем вспомогательные DOM-элементы,
+      // которые создает flatpickr при инициализации
+      this._datepickerStart.destroy();
+      this._datepickerStart = null;
+    }
+    if (this._datepickerEnd) {
+      // В случае обновления компонента удаляем вспомогательные DOM-элементы,
+      // которые создает flatpickr при инициализации
+      this._datepickerEnd.destroy();
+      this._datepickerEnd = null;
+    }
+    this._datepickerStart = flatpickr(
+      this.getElement().querySelector('input[name = "event-start-time"]'), //поле, куда нужно прикрепить календарь
+      {
+        'time_24hr': true,
+        enableTime: true,
+        dateFormat: 'd/m/y H:i',
+        defaultDate: this._data.time.timeStart, // значение по умолчанию
+        onChange: this._timeStartChangeHandler, // что делаем, если пользователь ткнул в календарь
+      },
+    );
+    this._datepickerEnd = flatpickr(
+      this.getElement().querySelector('input[name = "event-end-time"]'), //поле, куда нужно прикрепить календарь
+      {
+        'time_24hr': true,
+        enableTime: true,
+        dateFormat: 'd/m/y H:i',
+        defaultDate: this._data.time.timeEnd, // значение по умолчанию
+        minDate: this._data.time.timeStart,
+        onChange: this._timeEndChangeHandler, // что делаем, если пользователь ткнул в календарь
+      },
+    );
+  }
+
   // установка внутренних обр-в
   _setInnerHandlers() {
     this.getElement()
@@ -297,6 +313,23 @@ export default class PointEdit extends SmartView {
       });
   }
 
+  // установка внутренних обр-в
+  _removeInnerHandlers() {
+    this.getElement()
+      .querySelector('.event__input--destination')
+      .removeEventListener('change', this._cityChangeHandler);
+    this.getElement()
+      .querySelector('.event__type-group')
+      .removeEventListener('change', this._typeChangeHandler);
+    this.getElement()
+      .querySelector('.event__input--price')
+      .removeEventListener('change', this._priceChangeHandler);
+    this.getElement()
+      .querySelectorAll('.event__offer-checkbox').forEach((element) => {
+        element.removeEventListener('change', this._offerChangeHandler);
+      });
+  }
+
   // получает дату и переводит ее в состояние
   _timeStartChangeHandler([userDateStart]) {
     this.updateData({
@@ -308,7 +341,6 @@ export default class PointEdit extends SmartView {
 
   // получает дату и переводит ее в состояние
   _timeEndChangeHandler([userDateEnd]) {
-    console.log(userDateEnd);
     this.updateData({
       time: {
         timeEnd: userDateEnd,
@@ -428,5 +460,4 @@ export default class PointEdit extends SmartView {
 
     return data;
   }
-
 }

@@ -115,7 +115,8 @@ const createDestinationInfoTemplate = (textDescriptions, photos) => {
   </section>`;
 };
 
-const createEditFormTemplate = (data = {}) => {
+const createEditFormTemplate = (data = {}, offersModel, destinationsModel) => {
+  console.log(offersModel, destinationsModel);
   const {tripType, price, time, сityDestination, placeDestination, tripOffers, isDisabled, isSaving, isDeleting, isNewPoint} = data;
   const timeStartEvent = dayjs(time.timeStart).format('DD/MM/YY HH:mm');
   const timeEndEvent = dayjs(time.timeEnd).format('DD/MM/YY HH:mm');

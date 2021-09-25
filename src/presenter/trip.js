@@ -231,7 +231,6 @@ export default class Trip {
     // если точки есть, то
     this._renderSort();   // рисуем сортировку
     this._renderPointsList();     // и список точек
-
   }
 }
 

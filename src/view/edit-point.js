@@ -1,55 +1,59 @@
 import dayjs from 'dayjs';
-import {TYPES_OF_TRIP, DESTINATIONS} from '../const.js';
 import SmartView from './smart.js';
 import flatpickr from 'flatpickr';
 
 import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 
-
 const BLANK_POINT = {
   tripType: 'taxi',
-  price: '0',
+  price: '',
   placeDestination: {textDescriptions: '', photos: ''},
-  time: dayjs().toDate(),
-  сityDestination: ''};
+  timeStart: dayjs().toDate(),
+  timeEnd: dayjs().toDate(),
+  сityDestination: '',
+  tripOffers: [],
+  isFavorite: false,
+};
 
-//генерируем список городов
-const renderListDestinations = () => {
+const renderListDestinations = (allDestinations) => {
   let str = '';
-  for (let i = 0; i < DESTINATIONS.length; i++) {
-    str += `<option value="${DESTINATIONS[i]}"></option>`;
+  for (let i = 0; i < allDestinations.length; i++) {
+    str += `<option value="${allDestinations[i]}"></option>`;
   }
   return str;
 };
 
-//генерируем шаблон спискатипов поездки
-const renderListTypesOfTrip = (isDisabled) => {
+const renderListTypesOfTrip = (allTripTypes, id, tripType) => {
   let str = '';
-  for (let i = 0; i < TYPES_OF_TRIP.length; i++) {
+  for (let i = 0; i < allTripTypes.length; i++) {
+    const typeOfTrip = allTripTypes[i];
+    const typeName = typeOfTrip[0].toUpperCase() + typeOfTrip.substring(1);
     str += ` <div class="event__type-item">
-                        <input id="event-type-${TYPES_OF_TRIP[i].type.toLowerCase()}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" ${isDisabled ? 'disabled' : ''} value="${TYPES_OF_TRIP[i].type.toLowerCase()}">
-                        <label class="event__type-label  event__type-label--${TYPES_OF_TRIP[i].type.toLowerCase()}" for="event-type-${TYPES_OF_TRIP[i].type.toLowerCase()}-1">${TYPES_OF_TRIP[i].type}</label>
+                        <input id="event-type-${typeOfTrip}-${id}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${typeOfTrip}" ${typeOfTrip === tripType ? 'checked' : ''}>
+                        <label class="event__type-label  event__type-label--${typeOfTrip}" for="event-type-${typeOfTrip}-${id}">${typeName}</label>
                       </div>`;
   }
   return str;
 };
 
 //генерируем шаблон доп услуг
-const renderOffers = (randomTripOffers) => {
-  if (!randomTripOffers || !randomTripOffers.length) {
+const renderOffers = (allOffers, currentTripOffers, id) => {
+  if (!allOffers || !allOffers.length) {
     return '';
   }
   let str = '';
-  for (let i = 0; i < randomTripOffers.length; i++) {
-    const addChecked = randomTripOffers[i].isSelected
-      ? 'checked'
-      : '';
+  for (let i = 0; i < allOffers.length; i++) {
+
+    const isChecked = currentTripOffers.some((offer) => offer.title === allOffers[i].title); //some() проверяет, удовлетворяет ли какой-либо элемент массива условию,
+    const offerTitle = allOffers[i].title;
+    const offerPrice = allOffers[i].price;
+    const lastWordTitle =  offerTitle.split(' ').pop();
     str += ` <div class="event__offer-selector">
-    <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" ${addChecked}>
-    <label class="event__offer-label" for="event-offer-luggage-1">
-      <span class="event__offer-title">${randomTripOffers[i].title}</span>
+    <input class="event__offer-checkbox  visually-hidden" id="event-offer-${lastWordTitle}-${id}" type="checkbox" name="event-offer-${lastWordTitle}" ${isChecked ? 'checked' : ''}>
+    <label class="event__offer-label" for="event-offer-${lastWordTitle}-${id}">
+      <span class="event__offer-title">${offerTitle}</span>
       &plus;&euro;&nbsp;
-      <span class="event__offer-price">${randomTripOffers[i].price}</span>
+      <span class="event__offer-price">${offerPrice}</span>
     </label>
   </div> `;
   }
@@ -103,12 +107,14 @@ const createDestinationInfoTemplate = (textDescriptions, photos) => {
   </section>`;
 };
 
-const createEditFormTemplate = (data = {}) => {
+const createEditFormTemplate = (data = {}, destinationsModel, offersModel) => {
+  const {tripType, price, timeStart, timeEnd, сityDestination, placeDestination, id, isDisabled, tripOffers, isSaving, isDeleting, isNewPoint} = data;
+  const timeStartEvent = dayjs(timeStart).format('DD/MM/YY HH:mm');
+  const timeEndEvent = dayjs(timeEnd).format('DD/MM/YY HH:mm');
 
-  const {tripType, price, time, сityDestination, placeDestination, tripOffers, isDisabled, isSaving, isDeleting, isNewPoint} = data;
-
-  const timeStartEvent = dayjs(time.timeStart).format('DD/MM/YY HH:mm');
-  const timeEndEvent = dayjs(time.timeEnd).format('DD/MM/YY HH:mm');
+  const allOffers = offersModel.getOffers().find((item) => item.type=== tripType).offers;
+  const allTripTypes = offersModel.getOffers().map((item) => item.type);
+  const allDestinations = destinationsModel.getDestinations().map((item) => item.name);
 
   //смена кнопки в форме
   let buttonTitle;
@@ -124,53 +130,53 @@ const createEditFormTemplate = (data = {}) => {
               <form class="event event--edit" action="#" method="post">
                 <header class="event__header">
                   <div class="event__type-wrapper">
-                    <label class="event__type  event__type-btn" for="event-type-toggle-1">
+                    <label class="event__type  event__type-btn" for="event-type-toggle-${id}">
                       <span class="visually-hidden">Choose event type</span>
                       <img class="event__type-icon" width="17" height="17" src="img/icons/${tripType}.png" alt="Event type icon">
                     </label>
-                    <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
+                    <input class="event__type-toggle  visually-hidden" id="event-type-toggle-${id}" type="checkbox">
 
                     <div class="event__type-list">
                       <fieldset class="event__type-group">
                         <legend class="visually-hidden">Event type</legend>
 
-                        ${renderListTypesOfTrip(TYPES_OF_TRIP.type)}
+                        ${renderListTypesOfTrip(allTripTypes, id, tripType)}
 
                       </fieldset>
                     </div>
                   </div>
 
                   <div class="event__field-group  event__field-group--destination">
-                    <label class="event__label  event__type-output" for="event-destination-1">
+                    <label class="event__label  event__type-output" for="event-destination-${id}">
 
                       ${tripType}
 
                     </label>
-                    <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" ${isDisabled ? 'disabled' : ''} onkeyup="this.value = this.value.replace(/[^]/g,'');" value="${сityDestination}" list="destination-list-1">
-                    <datalist id="destination-list-1">
+                    <input class="event__input  event__input--destination" id="event-destination-${id}" type="text" name="event-destination" ${isDisabled ? 'disabled' : ''} onkeyup="this.value = this.value.replace(/[^]/g,'');" value="${сityDestination}" list="destination-list-${id}">
+                    <datalist id="destination-list-${id}">
 
-                      ${renderListDestinations()}
+                      ${renderListDestinations(allDestinations)}
 
                     </datalist>
                   </div>
 
                   <div class="event__field-group  event__field-group--time">
-                    <label class="visually-hidden" for="event-start-time-1">From</label>
-                    <input class="event__input  event__input--time" id="event-start-time-1" type="text" ${isDisabled ? 'disabled' : ''} name="event-start-time" value="${timeStartEvent}">
+                    <label class="visually-hidden" for="event-start-time-${id}">From</label>
+                    <input class="event__input  event__input--time" id="event-start-time-${id}" type="text" ${isDisabled ? 'disabled' : ''} name="event-start-time" value="${timeStartEvent}">
                     &mdash;
-                    <label class="visually-hidden" for="event-end-time-1">To</label>
-                    <input class="event__input  event__input--time" id="event-end-time-1" type="text" ${isDisabled ? 'disabled' : ''} name="event-end-time" value="${timeEndEvent}">
+                    <label class="visually-hidden" for="event-end-time-${id}">To</label>
+                    <input class="event__input  event__input--time" id="event-end-time-${id}" type="text" ${isDisabled ? 'disabled' : ''} name="event-end-time" value="${timeEndEvent}">
                   </div>
 
                   <div class="event__field-group  event__field-group--price">
-                    <label class="event__label" for="event-price-1">
+                    <label class="event__label" for="event-price-${id}">
                       <span class="visually-hidden">Price</span>
                       &euro;
                     </label>
-                    <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" ${isDisabled ? 'disabled' : ''} onkeyup="this.value = this.value.replace(/[^0-9]/g,'');" value="${price}">
+                    <input class="event__input  event__input--price" id="event-price-${id}" type="text" name="event-price" ${isDisabled ? 'disabled' : ''} onkeyup="this.value = this.value.replace(/[^0-9]/g,'');" value="${price}">
                   </div>
 
-                  <button class="event__save-btn  btn  btn--blue" type="submit">${isSaving ? 'Saving...' : 'Save'}</button>
+                  <button class="event__save-btn  btn  btn--blue" type="submit"${isDisabled? 'disabled' : ''}>${isSaving ? 'Saving...' : 'Save'}</button>
                   <button class="event__reset-btn" type="reset">${buttonTitle}</button>
                   <button class="event__rollup-btn" type="button">
                     <span class="visually-hidden">Open event</span>
@@ -178,7 +184,7 @@ const createEditFormTemplate = (data = {}) => {
                 </header>
                 <section class="event__details">
 
-                  ${renderOffers(tripOffers)}
+                  ${renderOffers(allOffers, tripOffers, id)}
 
                   ${createDestinationInfoTemplate(placeDestination.textDescriptions, placeDestination.photos )}
 
@@ -213,14 +219,44 @@ export default class PointEdit extends SmartView {
 
   // Перегружаем метод родителя removeElement,
   // чтобы при удалении удалялся более ненужный календарь
+
   removeElement() {
     super.removeElement();
-
-    if (this._datepicker) {
-      this._datepicker.destroy();
-      this._datepicker = null;
+    if (this._datepickerStart || this._datepickerStart) {
+      this._datepickerEnd.destroy();
+      this._datepickerEnd = null;
+      this._datepickerStart.destroy();
+      this._datepickerStart = null;
     }
   }
+
+  reset(point) {
+    this.updateData(
+      PointEdit.parsePointToData(point),
+    );
+  }
+
+  getTemplate() {
+    return createEditFormTemplate(this._data, this._destinationsModel, this._offersModel);
+  }
+
+  // восстановление внутрен
+  restoreHandlers() {
+    this._setInnerHandlers();
+    this.setFormSubmitHandler(this._callback.formSubmit);
+    this._setDatepicker();
+    this.setDeleteClickHandler(this._callback.deleteClick);
+  }
+
+  removeHandlers() {
+    this._removeInnerHandlers();
+    this.getElement().querySelector('.event__reset-btn').removeEventListener('click', this._formDeleteClickHandler);
+    this._datepickerEnd.destroy();
+    this._datepickerEnd = null;
+    this._datepickerStart.destroy();
+    this._datepickerStart = null;
+  }
+
 
   _setDatepicker() {
     if (this._datepickerStart) {
@@ -238,37 +274,24 @@ export default class PointEdit extends SmartView {
     this._datepickerStart = flatpickr(
       this.getElement().querySelector('[name = "event-start-time"]'), //поле, куда нужно прикрепить календарь
       {
+        'time_24hr': true,
+        enableTime: true,
         dateFormat: 'd/m/y H:i',
-        defaultDate: this._data.time.timeStart, // значение по умолчанию
+        defaultDate: this._data.timeStart, // значение по умолчанию
         onChange: this._timeStartChangeHandler, // что делаем, если пользователь ткнул в календарь
       },
     );
-    this._datepickerStart = flatpickr(
+    this._datepickerEnd = flatpickr(
       this.getElement().querySelector('[name = "event-end-time"]'), //поле, куда нужно прикрепить календарь
       {
+        'time_24hr': true,
+        enableTime: true,
         dateFormat: 'd/m/y H:i',
-        defaultDate: this._data.time.timeEnd, // значение по умолчанию
+        defaultDate: this._data.timeEnd, // значение по умолчанию
+        minDate: this._data.timeStart,
         onChange: this._timeEndChangeHandler, // что делаем, если пользователь ткнул в календарь
       },
     );
-  }
-
-  reset(point) {
-    this.updateData(
-      PointEdit.parsePointToData(point),
-    );
-  }
-
-  getTemplate() {
-    return createEditFormTemplate(this._data, this._offersModel, this._destinationsModel);
-  }
-
-  // восстановление внутрен
-  restoreHandlers() {
-    this._setInnerHandlers();
-    this.setFormSubmitHandler(this._callback.formSubmit);
-    this._setDatepicker();
-    this.setDeleteClickHandler(this._callback.deleteClick);
   }
 
   // установка внутренних обр-в
@@ -280,30 +303,42 @@ export default class PointEdit extends SmartView {
       .querySelector('.event__type-group')
       .addEventListener('change', this._typeChangeHandler);
     this.getElement()
-      .querySelector('#event-price-1')
+      .querySelector('.event__input--price')
       .addEventListener('change', this._priceChangeHandler);
     this.getElement()
-      .querySelectorAll('.event__offer-label').forEach((element) => {
-        element.addEventListener('click', this._offerChangeHandler);
+      .querySelectorAll('.event__offer-checkbox').forEach((element) => {
+        element.addEventListener('change', this._offerChangeHandler);
+      });
+  }
+
+  // удаление внутренних обр-в
+  _removeInnerHandlers() {
+    this.getElement()
+      .querySelector('.event__input--destination')
+      .removeEventListener('change', this._cityChangeHandler);
+    this.getElement()
+      .querySelector('.event__type-group')
+      .removeEventListener('change', this._typeChangeHandler);
+    this.getElement()
+      .querySelector('.event__input--price')
+      .removeEventListener('change', this._priceChangeHandler);
+    this.getElement()
+      .querySelectorAll('.event__offer-checkbox').forEach((element) => {
+        element.removeEventListener('change', this._offerChangeHandler);
       });
   }
 
   // получает дату и переводит ее в состояние
   _timeStartChangeHandler([userDateStart]) {
     this.updateData({
-      time: {
-        timeStart: userDateStart,
-      },
+      timeStart: userDateStart,
     });
   }
 
   // получает дату и переводит ее в состояние
   _timeEndChangeHandler([userDateEnd]) {
-    // console.log(userDate);
     this.updateData({
-      time: {
-        timeEnd: userDateEnd,
-      },
+      timeEnd: userDateEnd,
     });
   }
 
@@ -337,26 +372,32 @@ export default class PointEdit extends SmartView {
 
   _priceChangeHandler(evt) {
     evt.preventDefault();
-    this.updateData(
-      {
-        price: evt.target.value,
-      });
+    this.updateData({
+      price: Number(evt.target.value),
+    });
+    this.getElement().querySelector('.event__input--price').focus();
   }
 
   _offerChangeHandler(evt) {
     evt.preventDefault();
-    const offersRandom = this._data.tripOffers;
-    const offerIndex = offersRandom.findIndex((item) => item.text === evt.target.innerText);
-    const updateOffer = offersRandom[offerIndex];
+    evt.target.toggleAttribute('checked');
+
+    const checkedOffers = document.querySelectorAll('.event__offer-checkbox:checked');
+    const selectedOffers = [];
+
+    checkedOffers.forEach((input) => {
+      const offerTitle = input.nextElementSibling.querySelector('.event__offer-title').textContent;
+      const offerPrice = input.nextElementSibling.querySelector('.event__offer-price').textContent;
+      selectedOffers.push({
+        title: offerTitle,
+        price: Number(offerPrice),
+      });
+    });
+
     this.updateData({
-      tripOffers: [
-        ...offersRandom.slice(0, offerIndex),
-        updateOffer,
-        ...offersRandom.slice(offerIndex + 1),
-      ],
+      tripOffers: selectedOffers,
     });
   }
-
 
   _formSubmitHandler(evt) {
     evt.preventDefault();
@@ -413,5 +454,4 @@ export default class PointEdit extends SmartView {
 
     return data;
   }
-
 }

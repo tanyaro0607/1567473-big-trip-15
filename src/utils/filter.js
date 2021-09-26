@@ -6,6 +6,6 @@ const getPastDate = (timeEnd) => dayjs(timeEnd) <= dayjs();
 
 export const filter = {
   [FilterType.EVERYTHING]: (points) => points,
-  [FilterType.FUTURE]: (points) => points.filter((point) => getFutureDate(point.time.timeStart)),
-  [FilterType.PAST]: (points) => points.filter((point) => getPastDate(point.time.timeEnd)),
+  [FilterType.FUTURE]: (points) => points.filter((point) => getFutureDate(point.timeStart)),
+  [FilterType.PAST]: (points) => points.filter((point) => getPastDate(point.timeEnd)),
 };

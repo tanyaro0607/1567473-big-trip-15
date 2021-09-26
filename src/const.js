@@ -1,51 +1,24 @@
-// массив с описаниями
-
-export const DESCRIPTIONS = [
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-  'Cras aliquet varius magna, non porta ligula feugiat eget.',
-  'Fusce tristique felis at fermentum pharetra.',
-  'Aliquam id orci ut lectus varius viverra.',
-  'Nullam nunc ex, convallis sed finibus eget, sollicitudin eget ante.',
-  'Phasellus eros mauris, condimentum sed nibh vitae, sodales efficitur ipsum.',
-  'Sed blandit, eros vel aliquam faucibus, purus ex euismod diam, eu luctus nunc ante ut dui.',
-  'Sed sed nisi sed augue convallis suscipit in sed felis.',
-  'Aliquam erat volutpat.',
-  'Nunc fermentum tortor ac porta dapibus.',
-  'In rutrum ac purus sit amet tempus.',
-];
-
-//создаем массив объектов доп услуг
-export const OFFERS = [
-  {text:'Order Uber',price: 20, isSelected: false},
-  {text:'Add luggage',price: 50, isSelected: false},
-  {text:'Switch to comfort',price: 80, isSelected: false},
-  {text:'Rent a car',price: 200, isSelected: false},
-  {text:'Add breakfast',price: 50, isSelected: false},
-  {text:'Book tickets',price: 40, isSelected: false},
-  {text:'Lunch in city',price: 30, isSelected: false},
-];
-
-//создаем массив городов
-export const DESTINATIONS = [ 'Amsterdam', 'Geneva', 'Rome', 'Barselona', 'Paris', 'New-York', 'Prague', 'Tokio'];
-
-//тип поездки
-export const TYPES_OF_TRIP = [
-  {type:'Taxi', icon: 'taxi'},
-  {type:'Train', icon: 'train'},
-  {type:'Ship', icon: 'ship'},
-  {type:'Drive', icon: 'drive'},
-  {type:'Flight', icon: 'flight'},
-  {type:'Check-in', icon: 'check-in'},
-  {type:'Sightseeing', icon: 'sightseeing'},
-  {type:'Restaurant', icon: 'restaurant'},
-];
-
-export const SortHeaders = {
-  DAY:'day',
-  EVENT:'event',
-  TIME:'time',
-  PRICE:'price',
-  OFFERS:'offers',
+export const SortHeader = {
+  DAY: {
+    name: 'day',
+    disabled: false,
+  },
+  EVENT: {
+    name: 'event',
+    disabled: true,
+  },
+  TIME: {
+    name: 'time',
+    disabled: false,
+  },
+  PRICE: {
+    name: 'price',
+    disabled: false,
+  },
+  OFFERS: {
+    name: 'offers',
+    disabled: true,
+  },
 };
 
 export const UserAction = {
@@ -78,4 +51,4 @@ export const ChartType = {
   TYPE: 'TYPE',
 };
 
-export const SortType = [SortHeaders.DAY, SortHeaders.TIME, SortHeaders.PRICE];
+

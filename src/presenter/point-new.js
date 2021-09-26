@@ -3,10 +3,11 @@ import {remove, render, RenderPosition} from '../utils/render.js';
 import {UserAction, UpdateType} from '../const.js';
 
 export default class PointNew {
-  constructor(pointListContainer, changeData) {
+  constructor(pointListContainer, changeData, offersModel, destinationsModel) {
     this._pointListContainer = pointListContainer;
     this._changeData = changeData;
-
+    this._offersModel = offersModel;
+    this._destinationsModel = destinationsModel;
     this._pointEditComponent = null;
     this._destroyCallback = null;
 
@@ -15,14 +16,15 @@ export default class PointNew {
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
   }
 
-  init(callback) {
+  init(callback, point) {
     if (this._pointEditComponent !== null) {
       return;
     }
 
+    this._point = point,
     this._destroyCallback = callback;
 
-    this._pointEditComponent = new PointEditView();
+    this._pointEditComponent = new PointEditView(this._point, this._offersModel, this._destinationsModel);
     this._pointEditComponent.setFormSubmitHandler(this._handleFormSubmit);
     this._pointEditComponent.setDeleteClickHandler(this._handleDeleteClick);
 

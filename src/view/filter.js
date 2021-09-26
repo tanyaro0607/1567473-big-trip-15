@@ -1,28 +1,19 @@
 import AbstractView from './abstract.js';
-import {FilterType} from '../const.js';
 
-const renderFilterItemList = (currentFilterType) => {
+const createFilterTemplate = (filter, currentFilterType) => {
   let str = '';
-  Object.keys(FilterType).forEach( (item) => {
+  Object.keys(filter).forEach( (item) => {
     str += `<div class="trip-filters__filter">
-    <input id="filter-${FilterType[item]}" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="${FilterType[item]}" ${FilterType[item] === currentFilterType ? 'checked' : ''}>
-    <label class="trip-filters__filter-label" for="filter-${FilterType[item]}">${FilterType[item]}</label>
+<input id="filter-${filter[item].type}" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="${filter[item].type}" ${filter[item].type === currentFilterType ? 'checked' : ''}>
+    <label class="trip-filters__filter-label" for="filter-${filter[item].type}">${filter[item].type}</label>
     </div>`;
   });
-  return str;
+  return `<form class="trip-filters" action="#" method="get"> ${str} <button class="visually-hidden" type="submit">Accept filter</button>`;
 };
-
-const createFilterTemplate = () => (
-  `<form class="trip-filters" action="#" method="get">
-
-  ${renderFilterItemList()}
-
-  <button class="visually-hidden" type="submit">Accept filter</button>`
-);
-
 
 export default class Filter extends AbstractView {
   constructor(filters, currentFilterType) {
+    // console.log(filters)
     super();
     this._filters = filters;
     this._currentFilter = currentFilterType;

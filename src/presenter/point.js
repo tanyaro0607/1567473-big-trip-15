@@ -32,7 +32,7 @@ export default class Point {
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
     this._handleDeleteClick = this._handleDeleteClick.bind(this);
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
-    this._handlePointClick = this._handlePointClick.bind(this);
+    this._handleClosePointClick = this._handleClosePointClick.bind(this);
   }
 
   init(point) {
@@ -47,7 +47,7 @@ export default class Point {
     this._pointComponent.setEditClickHandler(this._handleEditClick);
     this._pointComponent.setFavoriteClickHandler(this._handleFavoriteClick);
     this._pointEditComponent.setFormSubmitHandler(this._handleFormSubmit);
-    this._pointEditComponent.setEditClickHandler(this._handlePointClick);
+    this._pointEditComponent.setEditClickHandler(this._handleClosePointClick);
     this._pointEditComponent.setDeleteClickHandler(this._handleDeleteClick);
 
     //если точки отрисовываются и редактируются в первый раз
@@ -93,7 +93,6 @@ export default class Point {
     const resetFormState = () => {
       this._pointEditComponent.updateData({
         isDisabled: false,
-        isSaving: false,
         isDeleting: false,
       });
     };
@@ -120,8 +119,10 @@ export default class Point {
 
   //замена точки маршрута на форму редактирвоания
   _replacePointToFormEdit() {
+    this._pointEditComponent.setEditClickHandler(this._handleClosePointClick);
     replace(this._pointEditComponent, this._pointComponent);
     document.addEventListener('keydown', this._escKeyDownHandler);
+    this._pointEditComponent.restoreHandlers();
     this._changeMode(); //обновить карточку
     this._mode = Mode.EDITING; //на режим ред-я
   }
@@ -130,6 +131,7 @@ export default class Point {
   _replaceFormEditToPoint() {
     replace(this._pointComponent, this._pointEditComponent);
     document.removeEventListener('keydown', this._escKeyDownHandler);
+    this._pointEditComponent.removeHandlers();
     this._mode = Mode.DEFAULT; //карточка в режиме по умолчанию
   }
 
@@ -148,7 +150,7 @@ export default class Point {
   }
 
   //клик по кнопке свернуть
-  _handlePointClick() {
+  _handleClosePointClick() {
     this._replaceFormEditToPoint();
   }
 

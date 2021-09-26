@@ -21,11 +21,11 @@ const pointsModel = new PointsModel();
 const filterModel = new FilterModel();
 const siteMenuComponent = new SiteMenuView();
 const siteFilterElement = document.querySelector('.trip-controls__filters');
-const pointsContainer = document.querySelector('.trip-events');
-const tripPresenter = new TripPresenter(pointsContainer, pointsModel, filterModel, api, offersModel, destinationsModel);
+const pointsContainerElement = document.querySelector('.trip-events');
+const tripPresenter = new TripPresenter(pointsContainerElement, pointsModel, filterModel, api, offersModel, destinationsModel);
 const filterPresenter = new FilterPresenter(siteFilterElement, filterModel, pointsModel);
-const statsContainer = document.querySelector('.page-body__stats-container');
-const addPointButton = document.querySelector('.trip-main__event-add-btn');
+const statsContainerElement = document.querySelector('.page-body__stats-container');
+const addPointButtonElement = document.querySelector('.trip-main__event-add-btn');
 let statsComponent = null;
 
 const handleSiteMenuClick = (menuItem) => {
@@ -43,20 +43,20 @@ const handleSiteMenuClick = (menuItem) => {
       tripPresenter.destroy();
       siteMenuComponent.setMenuItem(MenuItem.STATS);
       statsComponent = new StatsView(pointsModel.getPoints());
-      render(statsContainer, statsComponent, RenderPosition.AFTERBEGIN);
+      render(statsContainerElement, statsComponent, RenderPosition.AFTERBEGIN);
       document.querySelector('.trip-main__event-add-btn').disabled = true;
       break;
   }
 };
 
 const handleNewPointFormClose = () => {
-  addPointButton.disabled = false;
+  addPointButtonElement.disabled = false;
   siteMenuComponent.setMenuItem(MenuItem.TABLE);
 };
 
-addPointButton.addEventListener('click', (evt) => {
+addPointButtonElement.addEventListener('click', (evt) => {
   evt.preventDefault();
-  addPointButton.disabled = true;
+  addPointButtonElement.disabled = true;
   tripPresenter.createPoint(handleNewPointFormClose);
 });
 
@@ -65,8 +65,8 @@ siteMenuComponent.setMenuClickHandler(handleSiteMenuClick);
 filterPresenter.init();
 tripPresenter.init();
 
-api.getOffers().then((res) => offersModel.setOffers(res));
 api.getDestinations().then((res) => destinationsModel.setDestinations(res));
+api.getOffers().then((res) => offersModel.setOffers(res));
 api.getPoints()
   .then((points) => {
     pointsModel.setPoints(UpdateType.INIT, points);

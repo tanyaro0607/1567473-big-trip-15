@@ -146,6 +146,7 @@ export default class Point {
 
   //клик по кнопке редактировать
   _handleEditClick() {
+    this._pointEditComponent.reset(this._point);
     this._replacePointToFormEdit();
   }
 

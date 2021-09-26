@@ -37,7 +37,7 @@ const renderListTypesOfTrip = (allTripTypes, id, tripType) => {
 };
 
 //генерируем шаблон доп услуг
-const renderOffers = (allOffers, currentTripOffers, id) => {
+const renderOffers = (allOffers, currentTripOffers) => {
   if (!allOffers || !allOffers.length) {
     return '';
   }
@@ -47,10 +47,10 @@ const renderOffers = (allOffers, currentTripOffers, id) => {
     const isChecked = currentTripOffers.some((offer) => offer.title === allOffers[i].title); //some() проверяет, удовлетворяет ли какой-либо элемент массива условию,
     const offerTitle = allOffers[i].title;
     const offerPrice = allOffers[i].price;
-    const lastWordTitle =  offerTitle.split(' ').pop();
+    const offerIdTitle = offerTitle.replace(' ','-');
     str += ` <div class="event__offer-selector">
-    <input class="event__offer-checkbox  visually-hidden" id="event-offer-${lastWordTitle}-${id}" type="checkbox" name="event-offer-${lastWordTitle}" ${isChecked ? 'checked' : ''}>
-    <label class="event__offer-label" for="event-offer-${lastWordTitle}-${id}">
+    <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offerIdTitle}-1" type="checkbox" name="event-offer-${offerIdTitle}" ${isChecked ? 'checked' : ''}>
+    <label class="event__offer-label" for="event-offer-${offerIdTitle}-1">
       <span class="event__offer-title">${offerTitle}</span>
       &plus;&euro;&nbsp;
       <span class="event__offer-price">${offerPrice}</span>
@@ -107,8 +107,8 @@ const createDestinationInfoTemplate = (textDescriptions, photos) => {
   </section>`;
 };
 
-const createEditFormTemplate = (data = {}, destinationsModel, offersModel) => {
-  const {tripType, price, timeStart, timeEnd, сityDestination, placeDestination, id, isDisabled, tripOffers, isSaving, isDeleting, isNewPoint} = data;
+const createEditFormTemplate = (data = {}, destinationsModel, offersModel, isNewPoint) => {
+  const {tripType, price, timeStart, timeEnd, сityDestination, placeDestination, id, isDisabled, tripOffers, isSaving, isDeleting} = data;
   const timeStartEvent = dayjs(timeStart).format('DD/MM/YY HH:mm');
   const timeEndEvent = dayjs(timeEnd).format('DD/MM/YY HH:mm');
 
@@ -184,7 +184,7 @@ const createEditFormTemplate = (data = {}, destinationsModel, offersModel) => {
                 </header>
                 <section class="event__details">
 
-                  ${renderOffers(allOffers, tripOffers, id)}
+                  ${renderOffers(allOffers, tripOffers)}
 
                   ${createDestinationInfoTemplate(placeDestination.textDescriptions, placeDestination.photos )}
 
@@ -194,10 +194,11 @@ const createEditFormTemplate = (data = {}, destinationsModel, offersModel) => {
 };
 
 export default class PointEdit extends SmartView {
-  constructor(point = BLANK_POINT, offersModel, destinationsModel) {
+  constructor(point = BLANK_POINT, offersModel, destinationsModel, isNewPoint) {
     super();
     this._offersModel = offersModel;
     this._destinationsModel = destinationsModel;
+    this._isNewPoint = isNewPoint;
     this._data = PointEdit.parsePointToData(point);
     this._datepickerStart = null;// заводим поле для datepicker
     this._datepickerEnd = null;// заводим поле для datepicker
@@ -237,7 +238,7 @@ export default class PointEdit extends SmartView {
   }
 
   getTemplate() {
-    return createEditFormTemplate(this._data, this._destinationsModel, this._offersModel);
+    return createEditFormTemplate(this._data, this._destinationsModel, this._offersModel, this._isNewPoint);
   }
 
   // восстановление внутрен
@@ -246,6 +247,7 @@ export default class PointEdit extends SmartView {
     this.setFormSubmitHandler(this._callback.formSubmit);
     this._setDatepicker();
     this.setDeleteClickHandler(this._callback.deleteClick);
+    this.setEditClickHandler(this._callback.editClick);
   }
 
   removeHandlers() {
@@ -362,11 +364,11 @@ export default class PointEdit extends SmartView {
   _typeChangeHandler(evt) {
     evt.preventDefault();
     const tripType = evt.target.value;
-    const tripOffers = this._offersModel.getOffers().find((offer) => offer.type === tripType).offers;
+    // const tripOffers = this._offersModel.getOffers().find((offer) => offer.type === tripType).offers;
     this.updateData(
       {
         tripType,
-        tripOffers,
+        tripOffers: [],
       });
   }
 

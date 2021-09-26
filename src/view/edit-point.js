@@ -364,7 +364,6 @@ export default class PointEdit extends SmartView {
   _typeChangeHandler(evt) {
     evt.preventDefault();
     const tripType = evt.target.value;
-    // const tripOffers = this._offersModel.getOffers().find((offer) => offer.type === tripType).offers;
     this.updateData(
       {
         tripType,

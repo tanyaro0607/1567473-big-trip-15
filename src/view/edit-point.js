@@ -272,7 +272,7 @@ export default class PointEdit extends SmartView {
       this._datepickerEnd = null;
     }
     this._datepickerStart = flatpickr(
-      this.getElement().querySelector('input[name = "event-start-time"]'), //поле, куда нужно прикрепить календарь
+      this.getElement().querySelector('[name = "event-start-time"]'), //поле, куда нужно прикрепить календарь
       {
         'time_24hr': true,
         enableTime: true,
@@ -282,7 +282,7 @@ export default class PointEdit extends SmartView {
       },
     );
     this._datepickerEnd = flatpickr(
-      this.getElement().querySelector('input[name = "event-end-time"]'), //поле, куда нужно прикрепить календарь
+      this.getElement().querySelector('[name = "event-end-time"]'), //поле, куда нужно прикрепить календарь
       {
         'time_24hr': true,
         enableTime: true,
@@ -311,7 +311,7 @@ export default class PointEdit extends SmartView {
       });
   }
 
-  // установка внутренних обр-в
+  // удаление внутренних обр-в
   _removeInnerHandlers() {
     this.getElement()
       .querySelector('.event__input--destination')

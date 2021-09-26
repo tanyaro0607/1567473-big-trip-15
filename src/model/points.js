@@ -67,8 +67,8 @@ export default class Points extends AbstractObserver {
       {
         tripType: point.type, //тип точки маршрута
         сityDestination:  point.destination.name, //Пункт назначения (город
-        timeStart: dayjs(new Date(point.date_from)),
-        timeEnd: dayjs(new Date(point.date_to)),
+        timeStart: point.date_from,
+        timeEnd: point.date_to,
         price: point['base_price'],
         tripOffers: point.offers,
         placeDestination: {

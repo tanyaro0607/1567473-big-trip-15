@@ -4,7 +4,6 @@ import {UserAction, UpdateType} from '../const.js';
 
 export default class PointNew {
   constructor(pointListContainer, changeData, offersModel, destinationsModel) {
-    console.log(offersModel, destinationsModel);
     this._pointListContainer = pointListContainer;
     this._changeData = changeData;
     this._offersModel = offersModel;

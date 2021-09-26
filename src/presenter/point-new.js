@@ -59,7 +59,6 @@ export default class PointNew {
   }
 
   setAborting() {
-    // console.log(this._pointEditComponent);
     const resetFormState = () => {
       this._pointEditComponent.updateData({
         isDisabled: false,

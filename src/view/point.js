@@ -15,14 +15,14 @@ const renderOffers = (tripOffers) => {
 };
 
 const createPointTemplate = (point) => {
-  const { tripType, сityDestination, price, time, tripOffers, isFavorite} = point;
+  const { tripType, сityDestination, price, timeEnd, timeStart, tripOffers, isFavorite} = point;
 
-  const timeEndToInHours = dayjs(time.timeEnd).format('HH:mm');
-  const timeStartInHours = dayjs(time.timeStart).format('HH:mm');
-  const timeStartInMonthAndDay = dayjs(time.timeStart).format('MMM D');
-  const timeStartInDate = dayjs(time.timeStart).format('YYYY-MM-DD');
-  const timeEndInDateTime = dayjs(time.timeEnd).format('YYYY-MM-DDTHH:mm');
-  const timeStartInDateTime = dayjs(time.timeStart).format('YYYY-MM-DDTHH:mm');
+  const timeEndToInHours = dayjs(timeEnd).format('HH:mm');
+  const timeStartInHours = dayjs(timeStart).format('HH:mm');
+  const timeStartInMonthAndDay = dayjs(timeStart).format('MMM D');
+  const timeStartInDate = dayjs(timeStart).format('YYYY-MM-DD');
+  const timeEndInDateTime = dayjs(timeEnd).format('YYYY-MM-DDTHH:mm');
+  const timeStartInDateTime = dayjs(timeStart).format('YYYY-MM-DDTHH:mm');
 
   const MINUTES_IN_A_DAY = 1440;
   const MINUTES_IN_A_HOUR = 60;
@@ -49,7 +49,7 @@ const createPointTemplate = (point) => {
     return formattedDuration;
   };
 
-  const timeDiff = renderTimeDiff(dayjs(time.timeEnd).diff(dayjs(time.timeStart), 'minute'));
+  const timeDiff = renderTimeDiff(dayjs(timeEnd).diff(dayjs(timeStart), 'minute'));
 
   const favoriteClassName = () => isFavorite ? 'event__favorite-btn--active' : '';
 

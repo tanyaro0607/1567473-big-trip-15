@@ -28,13 +28,13 @@ export const getSumPriceFromType = (point) => {
 
 export const getSumTimeFromType = (point) => {
   const dataSortByTime = point.slice()
-    .sort((elemOne, elemTwo) => dayjs(elemTwo.time.timeEnd).
-      diff(dayjs(elemTwo.time.timeStart)) - dayjs(elemOne.time.timeEnd).diff(dayjs(elemOne.time.timeStart)));
+    .sort((elemOne, elemTwo) => dayjs(elemTwo.timeEnd).
+      diff(dayjs(elemTwo.timeStart)) - dayjs(elemOne.timeEnd).diff(dayjs(elemOne.timeStart)));
 
   let result = null;
   result = Object.fromEntries(dataSortByTime.map((item) => [item.tripType, 0]));
   dataSortByTime.forEach((item) => {
-    result[item.tripType] += (item.time.timeEnd - item.time.timeStart);
+    result[item.tripType] += (item.timeEnd - item.timeStart);
   });
   return result;
 };

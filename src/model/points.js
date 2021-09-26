@@ -67,11 +67,8 @@ export default class Points extends AbstractObserver {
       {
         tripType: point.type, //тип точки маршрута
         сityDestination:  point.destination.name, //Пункт назначения (город
-        date: dayjs(new Date(point.date_from)), //дата события
-        time: {
-          timeStart: dayjs(new Date(point.date_from)),
-          timeEnd: dayjs(new Date(point.date_to)),
-        },
+        timeStart: dayjs(new Date(point.date_from)),
+        timeEnd: dayjs(new Date(point.date_to)),
         price: point['base_price'],
         tripOffers: point.offers,
         placeDestination: {
@@ -101,8 +98,8 @@ export default class Points extends AbstractObserver {
       point,
       {
         'base_price': point.price,
-        'date_from': point.time.timeStart,
-        'date_to': point.time.timeEnd,
+        'date_from': point.timeStart,
+        'date_to': point.timeEnd,
         destination: {
           name: point.сityDestination,
           description: point.placeDestination.textDescriptions,
@@ -116,7 +113,8 @@ export default class Points extends AbstractObserver {
 
     // Ненужные ключи мы удаляем
     delete adaptedPoint.price;
-    delete adaptedPoint.time;
+    delete adaptedPoint.timeStart;
+    delete adaptedPoint.timeEnd;
     delete adaptedPoint.сityDestination;
     delete adaptedPoint.textDescriptions;
     delete adaptedPoint.photos;

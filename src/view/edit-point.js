@@ -8,10 +8,8 @@ const BLANK_POINT = {
   tripType: 'taxi',
   price: '',
   placeDestination: {textDescriptions: '', photos: ''},
-  time: {
-    timeStart: dayjs().toDate(),
-    timeEnd: dayjs().toDate(),
-  },
+  timeStart: dayjs().toDate(),
+  timeEnd: dayjs().toDate(),
   сityDestination: '',
   tripOffers: [],
   isFavorite: false,
@@ -110,9 +108,9 @@ const createDestinationInfoTemplate = (textDescriptions, photos) => {
 };
 
 const createEditFormTemplate = (data = {}, destinationsModel, offersModel) => {
-  const {tripType, price, time, сityDestination, placeDestination, id, isDisabled, tripOffers, isSaving, isDeleting, isNewPoint} = data;
-  const timeStartEvent = dayjs(time.timeStart).format('DD/MM/YY HH:mm');
-  const timeEndEvent = dayjs(time.timeEnd).format('DD/MM/YY HH:mm');
+  const {tripType, price, timeStart, timeEnd, сityDestination, placeDestination, id, isDisabled, tripOffers, isSaving, isDeleting, isNewPoint} = data;
+  const timeStartEvent = dayjs(timeStart).format('DD/MM/YY HH:mm');
+  const timeEndEvent = dayjs(timeEnd).format('DD/MM/YY HH:mm');
 
   const allOffers = offersModel.getOffers().find((item) => item.type=== tripType).offers;
   const allTripTypes = offersModel.getOffers().map((item) => item.type);
@@ -279,7 +277,7 @@ export default class PointEdit extends SmartView {
         'time_24hr': true,
         enableTime: true,
         dateFormat: 'd/m/y H:i',
-        defaultDate: this._data.time.timeStart, // значение по умолчанию
+        defaultDate: this._data.timeStart, // значение по умолчанию
         onChange: this._timeStartChangeHandler, // что делаем, если пользователь ткнул в календарь
       },
     );
@@ -289,8 +287,8 @@ export default class PointEdit extends SmartView {
         'time_24hr': true,
         enableTime: true,
         dateFormat: 'd/m/y H:i',
-        defaultDate: this._data.time.timeEnd, // значение по умолчанию
-        minDate: this._data.time.timeStart,
+        defaultDate: this._data.timeEnd, // значение по умолчанию
+        minDate: this._data.timeStart,
         onChange: this._timeEndChangeHandler, // что делаем, если пользователь ткнул в календарь
       },
     );
@@ -333,18 +331,14 @@ export default class PointEdit extends SmartView {
   // получает дату и переводит ее в состояние
   _timeStartChangeHandler([userDateStart]) {
     this.updateData({
-      time: {
-        timeStart: userDateStart,
-      },
+      timeStart: userDateStart,
     });
   }
 
   // получает дату и переводит ее в состояние
   _timeEndChangeHandler([userDateEnd]) {
     this.updateData({
-      time: {
-        timeEnd: userDateEnd,
-      },
+      timeEnd: userDateEnd,
     });
   }
 

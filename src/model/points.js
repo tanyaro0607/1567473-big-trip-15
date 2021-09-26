@@ -1,5 +1,4 @@
 import AbstractObserver from '../utils/abstract-observer.js';
-import dayjs from 'dayjs';
 
 export default class Points extends AbstractObserver {
   constructor() {

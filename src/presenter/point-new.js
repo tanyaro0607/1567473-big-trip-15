@@ -10,6 +10,7 @@ export default class PointNew {
     this._destinationsModel = destinationsModel;
     this._pointEditComponent = null;
     this._destroyCallback = null;
+    this._isNewPoint = true;
 
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
     this._handleDeleteClick = this._handleDeleteClick.bind(this);
@@ -24,7 +25,7 @@ export default class PointNew {
     this._point = point,
     this._destroyCallback = callback;
 
-    this._pointEditComponent = new PointEditView(this._point, this._offersModel, this._destinationsModel);
+    this._pointEditComponent = new PointEditView(this._point, this._offersModel, this._destinationsModel, this._isNewPoint);
     this._pointEditComponent.setFormSubmitHandler(this._handleFormSubmit);
     this._pointEditComponent.setDeleteClickHandler(this._handleDeleteClick);
 
@@ -57,6 +58,7 @@ export default class PointNew {
   }
 
   setAborting() {
+    // console.log(this._pointEditComponent);
     const resetFormState = () => {
       this._pointEditComponent.updateData({
         isDisabled: false,
@@ -74,7 +76,6 @@ export default class PointNew {
       UpdateType.MINOR,
       newPoint,
     );
-    this.destroy();
   }
 
   _handleDeleteClick() {

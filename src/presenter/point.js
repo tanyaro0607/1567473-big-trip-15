@@ -151,6 +151,7 @@ export default class Point {
 
   //клик по кнопке свернуть
   _handleClosePointClick() {
+    this._pointEditComponent.reset(this._point);
     this._replaceFormEditToPoint();
   }
 

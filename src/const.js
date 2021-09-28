@@ -1,3 +1,6 @@
+const BAR_HEIGHT = 55;
+const SCALE = 5;
+
 export const SortHeader = {
   DAY: {
     name: 'day',
@@ -51,4 +54,5 @@ export const ChartType = {
   TYPE: 'TYPE',
 };
 
+export {BAR_HEIGHT, SCALE};
 

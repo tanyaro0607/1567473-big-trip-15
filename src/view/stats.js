@@ -2,9 +2,9 @@ import SmartView from './smart.js';
 import Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import {getTimeFormat, getSumPriceFromType, getSumTimeFromType, getQuantityType, getSortType} from '../utils/stats.js';
+import {SCALE, BAR_HEIGHT} from '../const.js';
 
 // Рассчитаем высоту канваса в зависимости от того, сколько данных в него будет передаваться
-const BAR_HEIGHT = 55;
 
 const generateMoneyChart = (moneyCtx, points) => {
   const typesPrice = Object.keys(getSumPriceFromType(points));
@@ -254,9 +254,9 @@ export default class Stats extends SmartView {
     const typeChartElement = this.getElement().querySelector('.statistics__chart--transport');
     const timeChartElement = this.getElement().querySelector('.statistics__chart--time');
 
-    moneyChartElement.height = BAR_HEIGHT * 5;
-    typeChartElement.height = BAR_HEIGHT * 5;
-    timeChartElement.height = BAR_HEIGHT * 5;
+    moneyChartElement.height = BAR_HEIGHT * SCALE;
+    typeChartElement.height = BAR_HEIGHT * SCALE;
+    timeChartElement.height = BAR_HEIGHT * SCALE;
 
     this._moneyChart = generateMoneyChart(moneyChartElement, this._data);
     this._timeChart = generateTypeChart(typeChartElement, this._data);
